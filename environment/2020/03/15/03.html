@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Visual studio code + WSL | 별거있나</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Visual studio code + WSL" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Windows 10 바탕에 WSL 기반으로 개발 환경을 셋팅하고, 본격적 사용을 하다보면 불편한 점이 바로 나타난다." />
+<meta property="og:description" content="Windows 10 바탕에 WSL 기반으로 개발 환경을 셋팅하고, 본격적 사용을 하다보면 불편한 점이 바로 나타난다." />
+<link rel="canonical" href="https://absyun.github.io/environment/2020/03/15/03.html" />
+<meta property="og:url" content="https://absyun.github.io/environment/2020/03/15/03.html" />
+<meta property="og:site_name" content="별거있나" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-03-15T12:57:43+09:00" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","datePublished":"2020-03-15T12:57:43+09:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://absyun.github.io/environment/2020/03/15/03.html"},"url":"https://absyun.github.io/environment/2020/03/15/03.html","headline":"Visual studio code + WSL","dateModified":"2020-03-15T12:57:43+09:00","description":"Windows 10 바탕에 WSL 기반으로 개발 환경을 셋팅하고, 본격적 사용을 하다보면 불편한 점이 바로 나타난다.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://absyun.github.io/feed.xml" title="별거있나" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">별거있나</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Visual studio code + WSL</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2020-03-15T12:57:43+09:00" itemprop="datePublished">Mar 15, 2020
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>Windows 10 바탕에 WSL 기반으로 개발 환경을 셋팅하고, 본격적 사용을 하다보면 불편한 점이 바로 나타난다.</p>
+
+<p>Linux 환경에서의 GUI 환경 부재다. 물론 vi 로 “모든 걸 다 할 수 있어!” 라고 주장하시는 분들이라면 뭐… 딱히 공감을 못할지도 모르겠지만, 자고로… 개발자들은 기술, 문명의 발전… 을 흡수할 수도 있어야하는 것이 아닌가 라는 측면에서 필자는 새로운 Tool들의 장점… 그로부터 오는 생산성을 받아들어야한다고 생각하는 입장이다.</p>
+
+<p>당장 GUI가 되지 않으면 바로 IDE 사용이 힘들어진다.</p>
+
+<p>Windows 환경에서 동작하는 IDE는 기본적으로 WSL상의 File system에서 기본적으로 접근이 되지 않는 것이 문제이다.</p>
+
+<p>이를 해결하기 위해 몇가지 시도를 해보았고, 그 내용을 공유하고자 한다.</p>
+
+<p><br /></p>
+
+<h2 id="1-xming의-이용">1. Xming의 이용</h2>
+
+<p>디스플레이 서버를 이용해서 Linux terminal에서 GUI 프로그램을 실행하게 되면, Windows 측에서 창을 하나 띄워주는 방법이 있다. 하지만 이는 해상도나 성능면에서 개인적으로 만족스럽지 못했다. 환경을 구성했다가 만족 못했기에 특별히 기록을 남기진 않았지만… 필요하신 분은 구글링을 통하면 쉽게 구축이 가능하실 것이다.</p>
+
+<p><br /></p>
+
+<h2 id="2-wsl에서-windows-폴더에-접근해서-사용하는-방식">2. WSL에서 Windows 폴더에 접근해서 사용하는 방식</h2>
+
+<p>Windows file system에서 workspace를 하나 만들고,WSL에서 이에 접근(/mnt/c)이 가능하므로 여기서 Linux 관련 명령(Git이나 빌드)를 수행한다. 해당 Directory는 Windows file system에 존재하기에 Windows용 IDE 역시 접근이 가능하다.<br />
+다만 실제로 사용해보면 파일 권한 문제등으로 인해 WSL에서의 사용이 불만족스러웠다.</p>
+
+<p><br /></p>
+
+<h2 id="3-visual-studio-code-plugin-활용">3. Visual studio code plugin 활용</h2>
+
+<p>실제로 VSCODE를 사용하지 않는 사람에게는 의미 없는 방법일 수 있지만, 주력 IDE로 사용하는 필자에게는 최고의 Plugin 중 하나이다.</p>
+
+<p><img src="/assets/2020-03-15-03/1.png" alt="" /></p>
+
+<p>설치를 하게 되면 왼쪽 하단에 초록색 아이콘을 클릭하게 되면 WSL 모드로 VSCODE를 실행 시킬 수 있다.</p>
+
+<p><br /></p>
+
+<ul>
+  <li>WSL 모드로 실행되면 왼쪽 아래와 같이 표시
+<img src="/assets/2020-03-15-03/2.png" alt="" /></li>
+</ul>
+
+<p>이제 Folder를 open하게 되면 기존과 달리 Windows의 탐색기 창이 뜨지 않고, 아래와 같이 WSL 내부 Directory 구조가 나타나고 원하는 위치의 파일을 열 수 있게 된다.</p>
+
+<p><br /></p>
+
+<p><img src="/assets/2020-03-15-03/3.png" alt="" /></p>
+
+<p>추가로 VSCODE 내부의 터미널 또한… WSL 기반의 터미널로 동작하게 된다!</p>
+
+<p><br /></p>
+
+<p><img src="/assets/2020-03-15-03/4.png" alt="" />
+더이상 Mac이 부럽지 않다 ㅠㅠ</p>
+
+  </div><a class="u-url" href="/environment/2020/03/15/03.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">별거있나</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">별거있나</li><li><a class="u-email" href="mailto:tjln0608@mail.com">tjln0608@mail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/absyun"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">absyun</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p></p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
