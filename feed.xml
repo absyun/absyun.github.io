@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="https://absyun.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://absyun.github.io/" rel="alternate" type="text/html" /><updated>2020-03-18T19:31:29+09:00</updated><id>https://absyun.github.io/feed.xml</id><title type="html">별거있나</title><entry><title type="html">OIDC Login 구현해보기 Part-1</title><link href="https://absyun.github.io/development/2020/03/18/01.html" rel="alternate" type="text/html" title="OIDC Login 구현해보기 Part-1" /><published>2020-03-18T11:15:00+09:00</published><updated>2020-03-18T11:15:00+09:00</updated><id>https://absyun.github.io/development/2020/03/18/01</id><content type="html" xml:base="https://absyun.github.io/development/2020/03/18/01.html">&lt;h1 id=&quot;oidc&quot;&gt;OIDC…&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="https://absyun.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://absyun.github.io/" rel="alternate" type="text/html" /><updated>2020-03-18T19:34:38+09:00</updated><id>https://absyun.github.io/feed.xml</id><title type="html">별거있나</title><entry><title type="html">OIDC Login 구현해보기 Part-1</title><link href="https://absyun.github.io/development/2020/03/18/01.html" rel="alternate" type="text/html" title="OIDC Login 구현해보기 Part-1" /><published>2020-03-18T11:15:00+09:00</published><updated>2020-03-18T11:15:00+09:00</updated><id>https://absyun.github.io/development/2020/03/18/01</id><content type="html" xml:base="https://absyun.github.io/development/2020/03/18/01.html">&lt;h1 id=&quot;oidc&quot;&gt;OIDC…&lt;/h1&gt;
 
 &lt;p&gt;Open ID Connect 일명 OIDC … 요즘 많은 사이트에서 볼 수 있는, 카카오, 네이버 로그인, 페이스북, 구글 계정 등으로 로그인과 같이 서비스를 제공해주는 측에서는 민감한 사용자의 개인정보 (아이디, 패스워드등)을 회원가입을 통해 수집/보관하지 않고 사용자를 인증하는 과정을 Provider측에 위임하는 형태의 서비스를 많이 볼 수 있다.
 이는 사용자 입장에서도 불필요하게 작은 사이트에도 회원가입을 일일이 해야하는 수고로움을 덜어주는 좋은 방향인 듯 하다.
@@ -17,16 +17,19 @@ Provider 측에서는 사용자가 접속하는 서버의 정보들을 다 수�
 
 &lt;ul&gt;
   &lt;li&gt;Container로 띄우기
-    &lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker run &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; 8080:8080 jboss/keycloak
+    &lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  docker run &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; 8080:8080 jboss/keycloak
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
   &lt;/li&gt;
-  &lt;li&gt;ps명령어로 CONTAINER ID 확인 후 Admin account 생성, Restart&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;ps명령어로 CONTAINER ID 확인 후 Admin account 생성, Restart&lt;/p&gt;
+
+    &lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  docker ps
+  docker &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &amp;lt;CONTAINER&amp;gt; /opt/jboss/keycloak/bin/add-user-keycloak.sh &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &amp;lt;USERNAME&amp;gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &amp;lt;PASSWORD&amp;gt;
+  docker restart &amp;lt;CONTAINER&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker ps
-docker &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &amp;lt;CONTAINER&amp;gt; /opt/jboss/keycloak/bin/add-user-keycloak.sh &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &amp;lt;USERNAME&amp;gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &amp;lt;PASSWORD&amp;gt;
-docker restart &amp;lt;CONTAINER&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;p&gt;&lt;img src=&quot;/assets/2020-03-18-01/1.PNG&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;정상적으로 수행되었다면 [http://localhost:8080/]로 접속시 Keycloak이 동작됨을 확인할 수 있다.

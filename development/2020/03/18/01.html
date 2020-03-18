@@ -253,16 +253,19 @@ Provider 측에서는 사용자가 접속하는 서버의 정보들을 다 수�
 
 <ul>
   <li>Container로 띄우기
-    <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">-p</span> 8080:8080 jboss/keycloak
+    <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  docker run <span class="nt">-p</span> 8080:8080 jboss/keycloak
 </code></pre></div>    </div>
   </li>
-  <li>ps명령어로 CONTAINER ID 확인 후 Admin account 생성, Restart</li>
+  <li>
+    <p>ps명령어로 CONTAINER ID 확인 후 Admin account 생성, Restart</p>
+
+    <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  docker ps
+  docker <span class="nb">exec</span> &lt;CONTAINER&gt; /opt/jboss/keycloak/bin/add-user-keycloak.sh <span class="nt">-u</span> &lt;USERNAME&gt; <span class="nt">-p</span> &lt;PASSWORD&gt;
+  docker restart &lt;CONTAINER&gt;
+</code></pre></div>    </div>
+  </li>
 </ul>
 
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker ps
-docker <span class="nb">exec</span> &lt;CONTAINER&gt; /opt/jboss/keycloak/bin/add-user-keycloak.sh <span class="nt">-u</span> &lt;USERNAME&gt; <span class="nt">-p</span> &lt;PASSWORD&gt;
-docker restart &lt;CONTAINER&gt;
-</code></pre></div></div>
 <p><img src="/assets/2020-03-18-01/1.PNG" alt="" /></p>
 
 <p>정상적으로 수행되었다면 [http://localhost:8080/]로 접속시 Keycloak이 동작됨을 확인할 수 있다.
