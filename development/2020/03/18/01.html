@@ -263,12 +263,12 @@ Provider 측에서는 사용자가 접속하는 서버의 정보들을 다 수�
 docker <span class="nb">exec</span> &lt;CONTAINER&gt; /opt/jboss/keycloak/bin/add-user-keycloak.sh <span class="nt">-u</span> &lt;USERNAME&gt; <span class="nt">-p</span> &lt;PASSWORD&gt;
 docker restart &lt;CONTAINER&gt;
 </code></pre></div></div>
-<p><img src="../assets/2020-03-18-01/1.PNG" alt="" /></p>
+<p><img src="/assets/2020-03-18-01/1.PNG" alt="" /></p>
 
 <p>정상적으로 수행되었다면 [http://localhost:8080/]로 접속시 Keycloak이 동작됨을 확인할 수 있다.
 Administration Consle을 통해 입력한 USERNAME, PASSWORD로 로그인하게 되면 메인화면이 나타난다.</p>
 
-<p><img src="../assets/2020-03-18-01/2.PNG" alt="" /></p>
+<p><img src="/assets/2020-03-18-01/2.PNG" alt="" /></p>
 
 <p>우선 Keycloak 측 Provider 세팅을 완료하도록 하자…
 Realm(Realm 하나가 하나의 IDP 라고 가볍게 생각할 수 있다.)은 Master로 두도록 하고 여기에 앞으로 우리가 접속할 Client를 등록하고 ID를 발급받도록 하자.
@@ -276,7 +276,7 @@ Realm(Realm 하나가 하나의 IDP 라고 가볍게 생각할 수 있다.)은 M
 
 <p>Clients로 가서 Create를 하자. Client ID는 가볍게 “oidc-test”, Protocal은 구현해볼 openid-connect로 설정한다.</p>
 
-<p><img src="../assets/2020-03-18-01/3.PNG" alt="" /></p>
+<p><img src="/assets/2020-03-18-01/3.PNG" alt="" /></p>
 
 <h3 id="여기서-초기설정시-결정해야할-타입이-하나-있다">여기서 초기설정시 결정해야할 타입이 하나 있다.</h3>
 <p>참고 [https://www.keycloak.org/docs/4.8/server_admin/]</p>
@@ -307,7 +307,7 @@ Bearer-only access type means that the application only allows bearer token requ
 
 <p>여기서는 간단히 로컬에서 모든 걸 다 진행할 예정이기에 http://localhost/* 로 입력해두자.</p>
 
-<p><img src="../assets/2020-03-18-01/4.PNG" alt="" /></p>
+<p><img src="/assets/2020-03-18-01/4.PNG" alt="" /></p>
 
 <p>이제 만든 Client Id와 앞으로 사용할 Secret을 확인해두자.</p>
 
