@@ -34,4 +34,10 @@ var store = [{
         "tags": [],
         "url": "https://absyun.github.io/development/2020/03/18/02.html",
         "teaser": null
+      },{
+        "title": "OIDC Login 구현해보기 Part-3",
+        "excerpt":"앞서 Part에서 Frontend 측에서 Browser를 통해 IDP를 거쳐 code를 받는 것 까지 진행되었다. Confidential Type의 인증은 최종적으로 Secret을 이용하여 access token을 받게 되는 데 이 Secret은 Backend 에서 보관하고 있는 것이 안전하다. Static에 해당하는 부분은 Browser에 보여질 때 실제로 Client측에 그대로 Download 되어지기 때문에 Client측에서 Secret을 사용하려고 하면 그대로 노출이...","categories": ["Development"],
+        "tags": [],
+        "url": "https://absyun.github.io/development/2020/03/18/03.html",
+        "teaser": null
       }]
