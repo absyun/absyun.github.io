@@ -28,4 +28,10 @@ var store = [{
         "tags": [],
         "url": "https://absyun.github.io/development/2020/03/18/01.html",
         "teaser": null
+      },{
+        "title": "OIDC Login 구현해보기 Part-2",
+        "excerpt":"사용할 IDP를 설정했으므로, 이제 본격적으로 User에게 Input을 받을 Frontend 그리고 최종적으로 인증을 완료하고 Token을 받게될 Backend를 구현해보기로 하자. Frontend쪽은 React 기반의 Javascript, Backend쪽은 Gin 기반의 GO 언어를 이용해보려고 한다. 실제 Flow을 이해하고 나면 어떤 Framework, Language를 사용할지에 대한 건 큰 문제는 아니다. 구현하는 과정에서도 단순히 Curl 명령으로도 이를 수행할 수...","categories": ["Development"],
+        "tags": [],
+        "url": "https://absyun.github.io/development/2020/03/18/02.html",
+        "teaser": null
       }]

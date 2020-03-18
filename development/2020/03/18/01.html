@@ -303,7 +303,7 @@ Bearer-only access type means that the application only allows bearer token requ
 
 <p>여기서 필자는 Confidential 타입으로 구현해볼 것이다.</p>
 
-<p>가이드에 나와있는 것 처럼, 웹사이트에서의 OIDC client를 구현할 예정이기에 해당 타입이 적절하다 판단된다. 순수 App client에서의 동작이더라도, Backend가 있다면 Confidential이 더 보안측면에서는 한결 더 유리하지 않을까 싶다. Confidentail 타입은 IDP가 제공해주는 Secret key가 없다면 아예 토큰자체를 받을 수 없는 구조이기 때문이다.</p>
+<p>가이드에 나와있는 것 처럼, 웹사이트에서의 OIDC client를 구현할 예정이기에 해당 타입이 적절하다 판단된다. 순수 App client에서의 동작이더라도, Backend가 있다면 Confidential이 더 보안측면에서는 한결 더 유리하지 않을까 싶다. Confidential 타입은 IDP가 제공해주는 Secret key가 없다면 아예 토큰자체를 받을 수 없는 구조이기 때문이다.</p>
 
 <p>그 다음 필수로 Redirect Url을 입력해야한다. 인증과정에서 IDP가 인증 완료 후 다시 요청해온 웹사이트로 Redirection을 해주게 되는 데, 이 장치로 인해 내가 등록한 Client 외의 다른 임의의 사이트가 이 ClientID를 사용할 수 없게 된다.
 등록한 Client는 로그인 후 무조건 인가된 사이트로만 Code등을 전달해주기 때문이다.</p>
@@ -324,7 +324,7 @@ Bearer-only access type means that the application only allows bearer token requ
   
     <li>
       <a href="#2020">
-        <strong>2020</strong> <span class="taxonomy__count">5</span>
+        <strong>2020</strong> <span class="taxonomy__count">6</span>
       </a>
     </li>
   
@@ -335,6 +335,35 @@ Bearer-only access type means that the application only allows bearer token requ
   <section id="2020" class="taxonomy__section">
     <h2 class="archive__subtitle">2020</h2>
     <div class="entries-list">
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/development/2020/03/18/02.html" rel="permalink">OIDC Login 구현해보기 Part-2
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">사용할 IDP를 설정했으므로, 이제 본격적으로 User에게 Input을 받을 Frontend 그리고 최종적으로 인증을 완료하고 Token을 받게될 Backend를 구현해보기로 하자.
+</p>
+  </article>
+</div>
+
       
         
 
