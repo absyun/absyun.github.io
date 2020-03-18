@@ -270,7 +270,7 @@
 <span class="p">}</span>
 
 </code></pre></div></div>
-<p>POST API를 통해 backend server(여기선 localhost에 4000번 port로 listen하는 서버가 있다고 가정하겠다. 쪽으로, 넘겨받은 code와 인증시 사용한 Redirect URL을 건네준다.</p>
+<p>POST API를 통해 backend server(여기선 localhost에 4000번 port로 listen하는 서버가 있다고 가정하겠다.) 쪽으로, 넘겨받은 code와 인증시 사용한 Redirect URL을 건네준다.</p>
 <hr />
 
 <p>[requestPost 함수]</p>
@@ -360,8 +360,47 @@ client_secret은 Keycloak에서 받을 수 있는 client의 암호키 같은 격
 </code></pre></div></div>
 <p>위 실행결과는 ad라는 map안에 return받은 token관련 정보들이 남게된다.</p>
 
-<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">func</span> <span class="n">getUserInfo</span><span class="p">()</span> <span class="k">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="k">interface</span><span class="p">{}</span> <span class="p">{</span>
+
+	<span class="n">data</span> <span class="o">:=</span> <span class="n">url</span><span class="o">.</span><span class="n">Values</span><span class="p">{}</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">Set</span><span class="p">(</span><span class="s">"access_token"</span><span class="p">,</span> <span class="s">"생략"</span><span class="p">)</span>
+
+    <span class="n">req</span><span class="p">,</span> <span class="n">_</span> <span class="o">:=</span> <span class="n">http</span><span class="o">.</span><span class="n">NewRequest</span><span class="p">(</span><span class="s">"POST"</span><span class="p">,</span> <span class="n">serverInfo</span><span class="o">.</span><span class="n">UserInfoUrl</span><span class="p">,</span> <span class="n">strings</span><span class="o">.</span><span class="n">NewReader</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">Encode</span><span class="p">()))</span> 
+    <span class="n">req</span><span class="o">.</span><span class="n">Header</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">"Content-Type"</span><span class="p">,</span> <span class="s">"application/x-www-form-urlencoded"</span><span class="p">)</span>
+    <span class="n">req</span><span class="o">.</span><span class="n">Header</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">"Content-Length"</span><span class="p">,</span> <span class="n">strconv</span><span class="o">.</span><span class="n">Itoa</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">Encode</span><span class="p">())))</span>
+
+    <span class="n">client</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="n">http</span><span class="o">.</span><span class="n">Client</span><span class="p">{}</span>
+    <span class="n">resp</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">client</span><span class="o">.</span><span class="n">Do</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+        <span class="nb">panic</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">defer</span> <span class="n">resp</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">Close</span><span class="p">()</span>
+ 
+	<span class="n">respBody</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">ioutil</span><span class="o">.</span><span class="n">ReadAll</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">Body</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">err</span> <span class="o">==</span> <span class="no">nil</span> <span class="p">{</span>
+		<span class="n">str</span> <span class="o">:=</span> <span class="kt">string</span><span class="p">(</span><span class="n">respBody</span><span class="p">)</span>
+		<span class="k">var</span> <span class="n">ui</span> <span class="k">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="k">interface</span><span class="p">{}</span>
+		<span class="n">json</span><span class="o">.</span><span class="n">Unmarshal</span><span class="p">([]</span><span class="kt">byte</span><span class="p">(</span><span class="n">str</span><span class="p">),</span> <span class="o">&amp;</span><span class="n">ui</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ui</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="no">nil</span>
+<span class="p">}</span>
 </code></pre></div></div>
+<p>Token 값은 너무 길어 생략하였지만, curl로 진행했던 동작을 go코드로 옮긴 것이다.
+초반에도 이야기했지만, Backend 또한 python, java등 언어에 상관없이 위에 동작을 수행하도록 로직을 작성하면 된다.</p>
+
+<p>최종적으로 전달 받은 정보와 Token등은 REST API 마지막에 다시 Client(Browser) 측으로 return해주던 Cookie를 굽는 방법등으로 넘겨주고 그 다음부터 Client측의 Request에는 해당 Token을 포함시켜서 보내주면 이를 이용해서 권한을 확인하고 Resource 접근을 허용해주는 식으로 동작하면 되겠다.</p>
+
+<p>참고로 Token은 IDP에서 넘겨주는 것을 그대로 사용하는 방법도 있겠지만, IDP의 인증 후에는 자체 Token으로 대체해서 관리하는 것 또한 방법일 것이다.</p>
+
+<p><br />
+이로서 OIDC Login 과정을 간단한 방법으로 구현해보았다.
+<br /></p>
+
+<blockquote>
+  <p>Code가 한번의 실수나 시간만료로 인해 금방 유효하지 않게 되기 때문에
+샘플 코드에서 코드의 값들이 자꾸 변하는 것이 보일탠데, 전체 흐름을 보고 따라가면 전체 컨택스트를 이해하는 데는 큰 문제가 없으리라 판단된다.</p>
+</blockquote>
 
 
 <ul class="taxonomy__index">
@@ -400,7 +439,7 @@ client_secret은 Keycloak에서 받을 수 있는 client의 암호키 같은 격
 
 
 
-  2 minute read
+  3 minute read
 
 </p>
     
