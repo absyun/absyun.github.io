@@ -22,4 +22,10 @@ var store = [{
         "tags": [],
         "url": "https://absyun.github.io/environment/2020/03/15/04.html",
         "teaser": null
+      },{
+        "title": "OIDC Login 구현해보기 Part-1",
+        "excerpt":"OIDC… Open ID Connect 일명 OIDC … 요즘 많은 사이트에서 볼 수 있는, 카카오, 네이버 로그인, 페이스북, 구글 계정 등으로 로그인과 같이 서비스를 제공해주는 측에서는 민감한 사용자의 개인정보 (아이디, 패스워드등)을 회원가입을 통해 수집/보관하지 않고 사용자를 인증하는 과정을 Provider측에 위임하는 형태의 서비스를 많이 볼 수 있다. 이는 사용자 입장에서도 불필요하게 작은...","categories": ["Development"],
+        "tags": [],
+        "url": "https://absyun.github.io/development/2020/03/18/01.html",
+        "teaser": null
       }]

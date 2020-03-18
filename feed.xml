@@ -1,4 +1,83 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="https://absyun.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://absyun.github.io/" rel="alternate" type="text/html" /><updated>2020-03-18T17:37:40+09:00</updated><id>https://absyun.github.io/feed.xml</id><title type="html">별거있나</title><entry><title type="html">Windows 10 WSL</title><link href="https://absyun.github.io/environment/2020/03/15/01.html" rel="alternate" type="text/html" title="Windows 10 WSL" /><published>2020-03-15T12:57:43+09:00</published><updated>2020-03-15T12:57:43+09:00</updated><id>https://absyun.github.io/environment/2020/03/15/01</id><content type="html" xml:base="https://absyun.github.io/environment/2020/03/15/01.html">&lt;h1 id=&quot;wsl-windows-subsystem-for-linux&quot;&gt;WSL (Windows Subsystem for Linux)&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="https://absyun.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://absyun.github.io/" rel="alternate" type="text/html" /><updated>2020-03-18T18:57:59+09:00</updated><id>https://absyun.github.io/feed.xml</id><title type="html">별거있나</title><entry><title type="html">OIDC Login 구현해보기 Part-1</title><link href="https://absyun.github.io/development/2020/03/18/01.html" rel="alternate" type="text/html" title="OIDC Login 구현해보기 Part-1" /><published>2020-03-18T11:15:00+09:00</published><updated>2020-03-18T11:15:00+09:00</updated><id>https://absyun.github.io/development/2020/03/18/01</id><content type="html" xml:base="https://absyun.github.io/development/2020/03/18/01.html">&lt;h1 id=&quot;oidc&quot;&gt;OIDC…&lt;/h1&gt;
+
+&lt;p&gt;Open ID Connect 일명 OIDC … 요즘 많은 사이트에서 볼 수 있는, 카카오, 네이버 로그인, 페이스북, 구글 계정 등으로 로그인과 같이 서비스를 제공해주는 측에서는 민감한 사용자의 개인정보 (아이디, 패스워드등)을 회원가입을 통해 수집/보관하지 않고 사용자를 인증하는 과정을 Provider측에 위임하는 형태의 서비스를 많이 볼 수 있다.
+이는 사용자 입장에서도 불필요하게 작은 사이트에도 회원가입을 일일이 해야하는 수고로움을 덜어주는 좋은 방향인 듯 하다.
+Provider 측에서는 사용자가 접속하는 서버의 정보들을 다 수집할 수 있긴하겠지만…&lt;/p&gt;
+
+&lt;p&gt;사실 OIDC 이전에 SAML 2.0, OAuth 2.0 등의 IDP(IDentity Provider)도 있지만, 가장 최근에 정의된 OIDC에 대해서 좀 더 관심이 갔기에 해당 로그인 방식을 살펴보고 샘플로 구현해보자 한다.&lt;/p&gt;
+
+&lt;h2 id=&quot;provider---keycloak-설정&quot;&gt;Provider - Keycloak 설정&lt;/h2&gt;
+
+&lt;p&gt;우선 로그인을 구현할 Provider를 선정해야하는 데… 실제로 서비스하는 Provider가 아닌 Provider 또한 컨트롤이 가능한 Keycloak이라는 툴을 Local에 설치하여 테스트하며 사용하기로 한다.&lt;/p&gt;
+
+&lt;p&gt;Keycloak은 Docker 이미지로 바로 Bootup이 가능하기 때문에 굉장히 편리하게 Local setup이 가능하다.
+[참고] https://hub.docker.com/r/jboss/keycloak/&lt;/p&gt;
+
+&lt;p&gt;일단 Keycloak은 실 목적을 달성하기 위한 툴에 불과하므로 부가 설명은 생략하고… 요약하면 아래와 같은 명령어로 금방 띄울 수 있다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Container로 띄우기
+    &lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker run &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; 8080:8080 jboss/keycloak
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;ps명령어로 CONTAINER ID 확인 후 Admin account 생성, Restart
+&lt;img src=&quot;/blog/assets/2020-03-21-01/1.PNG&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker ps
+docker &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &amp;lt;CONTAINER&amp;gt; /opt/jboss/keycloak/bin/add-user-keycloak.sh &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &amp;lt;USERNAME&amp;gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &amp;lt;PASSWORD&amp;gt;
+docker restart &amp;lt;CONTAINER&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;정상적으로 수행되었다면 [http://localhost:8080/]로 접속시 Keycloak이 동작됨을 확인할 수 있다.
+Administration Consle을 통해 입력한 USERNAME, PASSWORD로 로그인하게 되면 메인화면이 나타난다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/2020-03-21-01/2.PNG&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;우선 Keycloak 측 Provider 세팅을 완료하도록 하자…
+Realm(Realm 하나가 하나의 IDP 라고 가볍게 생각할 수 있다.)은 Master로 두도록 하고 여기에 앞으로 우리가 접속할 Client를 등록하고 ID를 발급받도록 하자.
+실제로 다른 IDP서비스에 인증을 제공받기 위해 등록시에도 동일한 절차를 거칠 것이다.&lt;/p&gt;
+
+&lt;p&gt;Clients로 가서 Create를 하자. Client ID는 가볍게 “oidc-test”, Protocal은 구현해볼 openid-connect로 설정한다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/2020-03-21-01/3.PNG&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;여기서-초기설정시-결정해야할-타입이-하나-있다&quot;&gt;여기서 초기설정시 결정해야할 타입이 하나 있다.&lt;/h3&gt;
+&lt;p&gt;참고 [https://www.keycloak.org/docs/4.8/server_admin/]&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;h4 id=&quot;access-type&quot;&gt;Access Type&lt;/h4&gt;
+
+  &lt;p&gt;This defines the type of the OIDC client.&lt;/p&gt;
+
+  &lt;p&gt;&lt;b&gt;confidential&lt;/b&gt;
+Confidential access type is for server-side clients that need to perform a browser login and require a client secret when they turn an access code into an access token, (see Access Token Request in the OAuth 2.0 spec for more details). This type should be used for server-side applications.&lt;/p&gt;
+
+  &lt;p&gt;&lt;b&gt;public&lt;/b&gt;
+Public access type is for client-side clients that need to perform a browser login. With a client-side application there is no way to keep a secret safe. Instead it is very important to restrict access by configuring correct redirect URIs for the client.&lt;/p&gt;
+
+  &lt;p&gt;&lt;b&gt;bearer-only&lt;/b&gt;
+Bearer-only access type means that the application only allows bearer token requests. If this is turned on, this application cannot participate in browser logins.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Keycloak 사이트에서 설명해놓은 설정이다.&lt;/p&gt;
+
+&lt;p&gt;여기서 필자는 Confidential 타입으로 구현해볼 것이다.&lt;/p&gt;
+
+&lt;p&gt;가이드에 나와있는 것 처럼, 웹사이트에서의 OIDC client를 구현할 예정이기에 해당 타입이 적절하다 판단된다. 순수 App client에서의 동작이더라도, Backend가 있다면 Confidential이 더 보안측면에서는 한결 더 유리하지 않을까 싶다. Confidentail 타입은 IDP가 제공해주는 Secret key가 없다면 아예 토큰자체를 받을 수 없는 구조이기 때문이다.&lt;/p&gt;
+
+&lt;p&gt;그 다음 필수로 Redirect Url을 입력해야한다. 인증과정에서 IDP가 인증 완료 후 다시 요청해온 웹사이트로 Redirection을 해주게 되는 데, 이 장치로 인해 내가 등록한 Client 외의 다른 임의의 사이트가 이 ClientID를 사용할 수 없게 된다.
+등록한 Client는 로그인 후 무조건 인가된 사이트로만 Code등을 전달해주기 때문이다.&lt;/p&gt;
+
+&lt;p&gt;여기서는 간단히 로컬에서 모든 걸 다 진행할 예정이기에 http://localhost/* 로 입력해두자.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/2020-03-21-01/4.PNG&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;이제 만든 Client Id와 앞으로 사용할 Secret을 확인해두자.&lt;/p&gt;
+
+&lt;p&gt;자, 이제 기본 Keycloak 및 기본 준비는 끝난 것 같다.&lt;/p&gt;
+
+&lt;p&gt;다음 Part 부터 본격적으로 로그인 구현을 해볼 예정이다.&lt;/p&gt;</content><author><name></name></author><summary type="html">OIDC…</summary></entry><entry><title type="html">Windows 10 WSL</title><link href="https://absyun.github.io/environment/2020/03/15/01.html" rel="alternate" type="text/html" title="Windows 10 WSL" /><published>2020-03-15T12:57:43+09:00</published><updated>2020-03-15T12:57:43+09:00</updated><id>https://absyun.github.io/environment/2020/03/15/01</id><content type="html" xml:base="https://absyun.github.io/environment/2020/03/15/01.html">&lt;h1 id=&quot;wsl-windows-subsystem-for-linux&quot;&gt;WSL (Windows Subsystem for Linux)&lt;/h1&gt;
 
 &lt;p&gt;Microsoft에서 Windows PC로 더 훌륭한 개발경험을 제공해주기 위해 내놓은 시스템이다. 익숙해지면 Mac이 아쉬워지지 않을까… 개인적으로 단일 디바이스를 선호하는 데, Windows는 여러 이유로 포기하기가 어려웠던 터라 이 기능이 기대되지 않을 수 없었다.&lt;/p&gt;
 
