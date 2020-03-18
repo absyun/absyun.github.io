@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="https://absyun.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://absyun.github.io/" rel="alternate" type="text/html" /><updated>2020-03-19T02:28:03+09:00</updated><id>https://absyun.github.io/feed.xml</id><title type="html">별거있나</title><entry><title type="html">OIDC Login 구현해보기 Part-2</title><link href="https://absyun.github.io/development/2020/03/18/02.html" rel="alternate" type="text/html" title="OIDC Login 구현해보기 Part-2" /><published>2020-03-18T12:15:00+09:00</published><updated>2020-03-18T12:15:00+09:00</updated><id>https://absyun.github.io/development/2020/03/18/02</id><content type="html" xml:base="https://absyun.github.io/development/2020/03/18/02.html">&lt;p&gt;사용할 IDP를 설정했으므로, 이제 본격적으로 User에게 Input을 받을 Frontend 그리고 최종적으로 인증을 완료하고 Token을 받게될 Backend를 구현해보기로 하자.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="https://absyun.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://absyun.github.io/" rel="alternate" type="text/html" /><updated>2020-03-19T02:31:07+09:00</updated><id>https://absyun.github.io/feed.xml</id><title type="html">별거있나</title><entry><title type="html">OIDC Login 구현해보기 Part-2</title><link href="https://absyun.github.io/development/2020/03/18/02.html" rel="alternate" type="text/html" title="OIDC Login 구현해보기 Part-2" /><published>2020-03-18T12:15:00+09:00</published><updated>2020-03-18T12:15:00+09:00</updated><id>https://absyun.github.io/development/2020/03/18/02</id><content type="html" xml:base="https://absyun.github.io/development/2020/03/18/02.html">&lt;p&gt;사용할 IDP를 설정했으므로, 이제 본격적으로 User에게 Input을 받을 Frontend 그리고 최종적으로 인증을 완료하고 Token을 받게될 Backend를 구현해보기로 하자.&lt;/p&gt;
 
 &lt;p&gt;Frontend쪽은 React 기반의 Javascript, Backend쪽은 Gin 기반의 GO 언어를 이용해보려고 한다. 실제 Flow을 이해하고 나면 어떤 Framework, Language를 사용할지에 대한 건 큰 문제는 아니다.
 구현하는 과정에서도 단순히 Curl 명령으로도 이를 수행할 수 있음을 짚고 넘어갈 것이다.&lt;/p&gt;
@@ -65,7 +65,7 @@ Keycloak console에서 해당 Realm의 Endpoint 정보를 확인할 수 있다.
 
 &lt;span class=&quot;k&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;default&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;App&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;웹사이트 진입시 나타나는 Page를 randering하는 코드이다.
+&lt;p&gt;웹사이트 진입시 나타나는 Page를 rendering하는 코드이다.
 역할은 간단하다, 그냥 root path, authorizing path를 Routing rule로 설정하고 진입시 root 이므로 Login 컴포넌트로 연결해준다.&lt;/p&gt;
 
 &lt;hr /&gt;
