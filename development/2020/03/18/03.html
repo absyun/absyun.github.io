@@ -97,7 +97,7 @@
 
   </head>
 
-  <body class="layout--posts">
+  <body class="layout--commenting_posts">
     <nav class="skip-links">
   <h2 class="screen-reader-text">Skip links</h2>
   <ul>
@@ -406,6 +406,28 @@ client_secret은 Keycloak에서 받을 수 있는 client의 암호키 같은 격
   <p>Code가 한번의 실수나 시간만료로 인해 금방 유효하지 않게 되기 때문에
 샘플 코드에서 코드의 값들이 자꾸 변하는 것이 보일탠데, 전체 흐름을 보고 따라가면 전체 컨택스트를 이해하는 데는 큰 문제가 없으리라 판단된다.</p>
 </blockquote>
+
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://absyun.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 
 
 <ul class="taxonomy__index">
