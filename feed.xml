@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="https://absyun.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://absyun.github.io/" rel="alternate" type="text/html" /><updated>2020-03-19T05:46:34+09:00</updated><id>https://absyun.github.io/feed.xml</id><title type="html">별거있나</title><entry><title type="html">OIDC Login 구현해보기 Part-3</title><link href="https://absyun.github.io/development/2020/03/18/03.html" rel="alternate" type="text/html" title="OIDC Login 구현해보기 Part-3" /><published>2020-03-18T22:15:00+09:00</published><updated>2020-03-18T22:15:00+09:00</updated><id>https://absyun.github.io/development/2020/03/18/03</id><content type="html" xml:base="https://absyun.github.io/development/2020/03/18/03.html">&lt;p&gt;앞서 Part에서 Frontend 측에서 Browser를 통해 IDP를 거쳐 code를 받는 것 까지 진행되었다. Confidential Type의 인증은 최종적으로 Secret을 이용하여 access token을 받게 되는 데 이 Secret은 Backend 에서 보관하고 있는 것이 안전하다. Static에 해당하는 부분은 Browser에 보여질 때 실제로 Client측에 그대로 Download 되어지기 때문에 Client측에서 Secret을 사용하려고 하면 그대로 노출이 되게 된다.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="https://absyun.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://absyun.github.io/" rel="alternate" type="text/html" /><updated>2020-03-19T05:48:31+09:00</updated><id>https://absyun.github.io/feed.xml</id><title type="html">별거있나</title><entry><title type="html">OIDC Login 구현해보기 Part-3</title><link href="https://absyun.github.io/development/2020/03/18/03.html" rel="alternate" type="text/html" title="OIDC Login 구현해보기 Part-3" /><published>2020-03-18T22:15:00+09:00</published><updated>2020-03-18T22:15:00+09:00</updated><id>https://absyun.github.io/development/2020/03/18/03</id><content type="html" xml:base="https://absyun.github.io/development/2020/03/18/03.html">&lt;p&gt;앞서 Part에서 Frontend 측에서 Browser를 통해 IDP를 거쳐 code를 받는 것 까지 진행되었다. Confidential Type의 인증은 최종적으로 Secret을 이용하여 access token을 받게 되는 데 이 Secret은 Backend 에서 보관하고 있는 것이 안전하다. Static에 해당하는 부분은 Browser에 보여질 때 실제로 Client측에 그대로 Download 되어지기 때문에 Client측에서 Secret을 사용하려고 하면 그대로 노출이 되게 된다.&lt;/p&gt;
 
 &lt;p&gt;앞서 User가 ID, PASSWORD를 입력해서 받은 CODE를 가지고 backend로 가져와서 실제 Token을 발급받고, 이 Token을 이용해서 IDP로 부터 USER의 정보도 받아보도록 하자.&lt;/p&gt;
 
@@ -421,7 +421,29 @@ Bearer-only access type means that the application only allows bearer token requ
 &lt;p&gt;첫 실행시 일부 설정을 완료하면 아래와 같이 Terminal이 실행된다. 이미 Shell 설정을 한 상태라 순정인 이미지는 아니지만.. (참고차.. 기록)&lt;/p&gt;
 
 &lt;p&gt;과거에 Windows에서 Git을 사용하기 위해, 또 터미널을 사용하기 위해 개인적으로 UX등이 마음에 들진 않지만 불가피하게 별도의 프로그램 등을 설치하여 사용했지만 이제는 Linux 기분을 느끼게 해주는 Terminal 에서&lt;br /&gt;
-Lunix용 툴들을 설치해가며 신세계를 경험할 수 있다.!&lt;/p&gt;</content><author><name></name></author><summary type="html">WSL (Windows Subsystem for Linux)</summary></entry><entry><title type="html">Github sshkey로 계정 연결하기</title><link href="https://absyun.github.io/environment/2020/03/15/02.html" rel="alternate" type="text/html" title="Github sshkey로 계정 연결하기" /><published>2020-03-15T12:57:43+09:00</published><updated>2020-03-15T12:57:43+09:00</updated><id>https://absyun.github.io/environment/2020/03/15/02</id><content type="html" xml:base="https://absyun.github.io/environment/2020/03/15/02.html">&lt;h1 id=&quot;github-sshkey로-계정-연결하기&quot;&gt;Github sshkey로 계정 연결하기&lt;/h1&gt;
+Lunix용 툴들을 설치해가며 신세계를 경험할 수 있다.!&lt;/p&gt;
+
+&lt;div id=&quot;disqus_thread&quot;&gt;&lt;/div&gt;
+&lt;script&gt;
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://absyun.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+&lt;/script&gt;
+
+&lt;noscript&gt;Please enable JavaScript to view the &lt;a href=&quot;https://disqus.com/?ref_noscript&quot;&gt;comments powered by Disqus.&lt;/a&gt;&lt;/noscript&gt;</content><author><name></name></author><summary type="html">WSL (Windows Subsystem for Linux)</summary></entry><entry><title type="html">Github sshkey로 계정 연결하기</title><link href="https://absyun.github.io/environment/2020/03/15/02.html" rel="alternate" type="text/html" title="Github sshkey로 계정 연결하기" /><published>2020-03-15T12:57:43+09:00</published><updated>2020-03-15T12:57:43+09:00</updated><id>https://absyun.github.io/environment/2020/03/15/02</id><content type="html" xml:base="https://absyun.github.io/environment/2020/03/15/02.html">&lt;h1 id=&quot;github-sshkey로-계정-연결하기&quot;&gt;Github sshkey로 계정 연결하기&lt;/h1&gt;
 
 &lt;p&gt;SSH-key를 이용해서 git-repo 사용하기…&lt;/p&gt;
 
