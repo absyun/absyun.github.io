@@ -9,21 +9,18 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>WSL2 … and Docker - 별거있나</title>
-<meta name="description" content="WSL + VSCODE의 조합으로 많은 것들을 편리한 환경에서 수행해 올 수 있었다. 하지만 WSL에서 아쉬움으로 와 닿았던 것… 바로 Docker 실행이다. 초반에는 Docker를 포기하고 준비된 환경안에서 할 수 있는 것들에 만족해 왔지만… ">
+<!-- begin _includes/seo.html --><title>Posts by Category - 별거있나</title>
+<meta name="description" content="">
 
 
   <meta name="author" content="absyun">
 
 
-<meta property="og:type" content="article">
+<meta property="og:type" content="website">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="별거있나">
-<meta property="og:title" content="WSL2 … and Docker">
-<meta property="og:url" content="https://absyun.github.io/environment/2020/03/15/04.html">
-
-
-  <meta property="og:description" content="WSL + VSCODE의 조합으로 많은 것들을 편리한 환경에서 수행해 올 수 있었다. 하지만 WSL에서 아쉬움으로 와 닿았던 것… 바로 Docker 실행이다. 초반에는 Docker를 포기하고 준비된 환경안에서 할 수 있는 것들에 만족해 왔지만… ">
+<meta property="og:title" content="Posts by Category">
+<meta property="og:url" content="https://absyun.github.io/categories/">
 
 
 
@@ -31,14 +28,13 @@
 
 
 
-  <meta property="article:published_time" content="2020-03-15T12:57:43+09:00">
 
 
 
 
 
 
-<link rel="canonical" href="https://absyun.github.io/environment/2020/03/15/04.html">
+<link rel="canonical" href="https://absyun.github.io/categories/">
 
 
 
@@ -99,7 +95,7 @@
 
   </head>
 
-  <body class="layout--postings">
+  <body class="layout--archive">
     <nav class="skip-links">
   <h2 class="screen-reader-text">Skip links</h2>
   <ul>
@@ -264,132 +260,55 @@
 
   <div class="archive">
     
-      <h1 id="page-title" class="page__title">WSL2 ... and Docker</h1>
+      <h1 id="page-title" class="page__title">Posts by Category</h1>
     
-    <head>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-161444856-1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <!--
+# Jekyll Group-By-Array 0.1.0
+# https://github.com/mushishi78/jekyll-group-by-array
+# © 2015 Max White <mushishi78@gmail.com>
+# MIT License
+-->
 
-  gtag('config', 'UA-161444856-1');
-</script>
+<!-- Initialize -->
 
-</head>
+<!-- Map -->
 
-<p>WSL + VSCODE의 조합으로 많은 것들을 편리한 환경에서 수행해 올 수 있었다. 하지만 WSL에서 아쉬움으로 와 닿았던 것… 바로 Docker 실행이다. 초반에는 Docker를 포기하고 준비된 환경안에서 할 수 있는 것들에 만족해 왔지만…</p>
+<!-- Flatten -->
 
-<p>어느 순간 Docker가 절실히 필요해진 상황이왔고… 이를 해결하기 위해 WSL2로 Windows10을 테스트 버전 업그레이드를 강행하게 되었다.<br />
-참고로 불안정하다고 누누이 경고하고 있기에 필자처럼 성격급한 사람이 아니라면 정중히 말리고싶다.</p>
+<!-- Uniq -->
 
-<p><br /></p>
+<!-- If not equal to previous then it must be unique as sorted -->
 
-<h2 id="wsl2">WSL2</h2>
+<!-- Push to group_names -->
 
-<p>WSL1 대비해서 기본 아키텍쳐가 가상머신을 활용하는 구조였고, File IO 성능면에서 아쉬운 점이 많았다고 한다.<br />
-(소규모 Build만 수행해봤기에.. 큰 불편은 못느꼈던 1인..)<br />
-아마.. 20년에 정식 릴리즈 되게될 WSL2는 아예 Windows용 Linux 커널을 새로 만들고 Hyper-v 기반으로 변경되어 WSL1 대비 성능이 좋아진다고 한다. 특히 Docker가 native 형태로 정식지원이 된다.</p>
+<!-- If not equal to previous then it must be unique as sorted -->
 
-<p><br /></p>
+<!-- If not equal to previous then it must be unique as sorted -->
 
-<h2 id="windows-10-업그레이드">Windows 10 업그레이드</h2>
+<!-- If not equal to previous then it must be unique as sorted -->
 
-<p>현시점에선 Windows 버전이 정식 Release버전이 아닌 Insider Preview 버전을 설치해야한다.<br />
-설정에 들어가서 Windows 참가자 프로그램에 가입한 다음 WIndows를 업데이트 해주자.</p>
+<!-- Push to group_names -->
 
-<p><img src="/assets/2020-03-15-04/1.png" alt="" /></p>
+<!-- If not equal to previous then it must be unique as sorted -->
 
-<p>업데이트 후 cmd창에서 ver을 입력하면 Windows build 번호를 확인할 수 있다.</p>
+<!-- If not equal to previous then it must be unique as sorted -->
 
-<p><img src="/assets/2020-03-15-04/2.png" alt="" /></p>
+<!-- If not equal to previous then it must be unique as sorted -->
 
-<p><br /></p>
+<!-- group_items -->
 
-<h2 id="바이너리-직접-설치">바이너리 직접 설치</h2>
+<!-- Collect if contains -->
 
-<p>18917 버전 이상만이 WSL2 사용이 가능하다. 어떤 이유에서인지 필자의 경우 참가자 프로그램 가입만으로는 해당 버전으로 올라가지 않아, 찾아보니 19041 버전이 조만간 정식 릴리즈 예정인지 Binary자체가 풀려있었다.</p>
+<!-- Push to group_items -->
 
-<p>Preview insider라면 직접 다운받아서 설치가 가능하다.[<a href="https://www.microsoft.com/en-us/software-download/windowsinsiderpreviewadvanced">Download page</a>]</p>
+<!-- Collect if contains -->
 
-<p><br /></p>
+<!-- Push to group_items -->
 
-<h2 id="wsl2-설치">WSL2 설치</h2>
-
-<p>Windows 설치 후 <a href="https://docs.microsoft.com/ko-kr/windows/wsl/wsl2-install">[WSL 2 설치 가이드]</a> 에 안내되어있는 Command를 차례로 수행해나가면 WSL2 설치는 끝이난다.</p>
-
-<p>설치가 정상적으로 되었다면 사용하는 Diastro가 version 2가 된 것을 확인할 수 있다.</p>
-
-<p><img src="/assets/2020-03-15-04/3.png" alt="" /></p>
-
-<p><br /></p>
-
-<h2 id="docker-desktop-설치">Docker desktop 설치</h2>
-
-<p>이제 Windows용 Docker Desktop을 설치할 차례다.</p>
-
-<p><img src="/assets/2020-03-15-04/4.png" alt="" /></p>
-
-<p>정식 사이트에서 그냥 다운 받아서 설치하면 된다.</p>
-
-<p><br /></p>
-
-<p>Resource에 WSL INTEGRATION 메뉴에 체크를 해주게 되면, </p>
-
-<p><img src="/assets/2020-03-15-04/5.png" alt="" />
-docker.sock … 드디어 나왔다.</p>
-
-<p><br /></p>
-
-<p>이제 일반 Linux 환경에서 Docker를 사용하는 것 처럼 그냥 사용하면 된다.!</p>
-
-
-<div id="disqus_thread"></div>
-<script>
-
-/**
-*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
-/*
-var disqus_config = function () {
-this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-};
-*/
-(function() { // DON'T EDIT BELOW THIS LINE
-var d = document, s = d.createElement('script');
-s.src = 'https://absyun.disqus.com/embed.js';
-s.setAttribute('data-timestamp', +new Date());
-(d.head || d.body).appendChild(s);
-})();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-
-
-<ul class="taxonomy__index">
-  
-  
-    <li>
-      <a href="#2020">
-        <strong>2020</strong> <span class="taxonomy__count">7</span>
-      </a>
-    </li>
-  
-</ul>
-
-
-
-  <section id="2020" class="taxonomy__section">
-    <h2 class="archive__subtitle">2020</h2>
-    <div class="entries-list">
-      
-        
-
-
+<h2 id="development" class="archive__subtitle">Development</h2>
 
 <div class="list__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+  <article class="archive__item" itemscope="" itemtype="https://schema.org/CreativeWork">
     
     <h2 class="archive__item-title" itemprop="headline">
       
@@ -411,13 +330,8 @@ s.setAttribute('data-timestamp', +new Date());
   </article>
 </div>
 
-      
-        
-
-
-
 <div class="list__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+  <article class="archive__item" itemscope="" itemtype="https://schema.org/CreativeWork">
     
     <h2 class="archive__item-title" itemprop="headline">
       
@@ -440,13 +354,8 @@ s.setAttribute('data-timestamp', +new Date());
   </article>
 </div>
 
-      
-        
-
-
-
 <div class="list__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+  <article class="archive__item" itemscope="" itemtype="https://schema.org/CreativeWork">
     
     <h2 class="archive__item-title" itemprop="headline">
       
@@ -469,13 +378,10 @@ s.setAttribute('data-timestamp', +new Date());
   </article>
 </div>
 
-      
-        
-
-
+<h2 id="environment" class="archive__subtitle">Environment</h2>
 
 <div class="list__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+  <article class="archive__item" itemscope="" itemtype="https://schema.org/CreativeWork">
     
     <h2 class="archive__item-title" itemprop="headline">
       
@@ -498,13 +404,8 @@ s.setAttribute('data-timestamp', +new Date());
   </article>
 </div>
 
-      
-        
-
-
-
 <div class="list__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+  <article class="archive__item" itemscope="" itemtype="https://schema.org/CreativeWork">
     
     <h2 class="archive__item-title" itemprop="headline">
       
@@ -527,13 +428,8 @@ s.setAttribute('data-timestamp', +new Date());
   </article>
 </div>
 
-      
-        
-
-
-
 <div class="list__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+  <article class="archive__item" itemscope="" itemtype="https://schema.org/CreativeWork">
     
     <h2 class="archive__item-title" itemprop="headline">
       
@@ -556,13 +452,8 @@ s.setAttribute('data-timestamp', +new Date());
   </article>
 </div>
 
-      
-        
-
-
-
 <div class="list__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+  <article class="archive__item" itemscope="" itemtype="https://schema.org/CreativeWork">
     
     <h2 class="archive__item-title" itemprop="headline">
       
@@ -584,11 +475,6 @@ s.setAttribute('data-timestamp', +new Date());
 </p>
   </article>
 </div>
-
-      
-    </div>
-    <a href="#page-title" class="back-to-top">Back to Top &uarr;</a>
-  </section>
 
 
   </div>
