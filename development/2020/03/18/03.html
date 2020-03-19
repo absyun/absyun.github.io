@@ -234,7 +234,20 @@
     
       <h1 id="page-title" class="page__title">OIDC Login 구현해보기 Part-3</h1>
     
-    <p>앞서 Part에서 Frontend 측에서 Browser를 통해 IDP를 거쳐 code를 받는 것 까지 진행되었다. Confidential Type의 인증은 최종적으로 Secret을 이용하여 access token을 받게 되는 데 이 Secret은 Backend 에서 보관하고 있는 것이 안전하다. Static에 해당하는 부분은 Browser에 보여질 때 실제로 Client측에 그대로 Download 되어지기 때문에 Client측에서 Secret을 사용하려고 하면 그대로 노출이 되게 된다.</p>
+    <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-161444856-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-161444856-1');
+</script>
+
+</head>
+
+<p>앞서 Part에서 Frontend 측에서 Browser를 통해 IDP를 거쳐 code를 받는 것 까지 진행되었다. Confidential Type의 인증은 최종적으로 Secret을 이용하여 access token을 받게 되는 데 이 Secret은 Backend 에서 보관하고 있는 것이 안전하다. Static에 해당하는 부분은 Browser에 보여질 때 실제로 Client측에 그대로 Download 되어지기 때문에 Client측에서 Secret을 사용하려고 하면 그대로 노출이 되게 된다.</p>
 
 <p>앞서 User가 ID, PASSWORD를 입력해서 받은 CODE를 가지고 backend로 가져와서 실제 Token을 발급받고, 이 Token을 이용해서 IDP로 부터 USER의 정보도 받아보도록 하자.</p>
 
