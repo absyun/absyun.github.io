@@ -365,11 +365,11 @@ result3: 3
 0
 </code></pre></div></div>
 <p>위의 코드는 일단 panic이다. interCh로 부터 값을 건네받기 위해 대기를 시키지만, interCh쪽으로 값을 보내주는 코드는 없기 때문이다.
-이는 go routine들을 실행하고 바로 Main thread가 종료되지 않도록 붙잡는 용도로 써넣은 코드이지만 똑똑하게도 Main thread가 무한정 기다리지 않고, 이를 깨워줄 다른 running코드가 없으니 그냥 바로 panic을 뱉어준다.</p>
+이는 go routine들을 실행하고 바로 Main thread(?)가 종료되지 않도록 붙잡는 용도로 써넣은 코드이지만 똑똑하게도 Main thread가 무한정 기다리지 않고, 이를 깨워줄 다른 running코드가 없으니 go runtime에서 그냥 바로 panic을 뱉어준다.</p>
 
 <h2 id="4-일반-chan-대기하고-있어야-보낼-수-있다">4. 일반 chan 대기하고 있어야 보낼 수 있다.</h2>
 <p>그냥 만든 channel은 대기를 하고 있어야지 발송이 가능하다.
-아래의 코드는 int type channel을 만들고 go routine안에서 channel로 발송을 한다. 하지만 수신을 하는 코드는 없으므로 무한 대기 상태에 빠지게 되고, Main thread측에서도 go routine이 끝나길 기대리게 되니… 위와 같이 deadlock에 빠지고만다. go는 panic을 표시하며 바로 종료시켜버린다.</p>
+아래의 코드는 int type channel을 만들고 go routine안에서 channel로 발송을 한다. 하지만 수신을 하는 코드는 없으므로 무한 대기 상태에 빠지게 되고, Main thread측에서도 go routine이 끝나길 기대리게 되니… 위와 같이 deadlock에 빠지고만다. go runtime은 panic을 표시하며 바로 종료시켜버린다.</p>
 <div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
 	<span class="n">ch</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="k">chan</span> <span class="kt">int</span><span class="p">)</span>
 	<span class="k">var</span> <span class="n">wg</span> <span class="n">sync</span><span class="o">.</span><span class="n">WaitGroup</span>
