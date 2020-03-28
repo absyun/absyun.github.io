@@ -1,1 +1,1 @@
-Sitemap: absyun.github.com/sitemap.xml
+Sitemap: absyun.github.io/sitemap.xml
