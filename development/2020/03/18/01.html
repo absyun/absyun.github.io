@@ -9,8 +9,8 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>OIDC Login 구현해보기 Part-1 - 별거있나</title>
-<meta name="description" content="OIDC… ">
+<!-- begin _includes/seo.html --><title>golang GO routine channel 테스트 - 별거있나</title>
+<meta name="description" content="요즘 핫하다는 golang, 과거에는 Android app개발을 주로 해왔던 터라, Java를 사용하다가 근래에 주로 사용하는 언어가 Python으로 변경이 되면서 초반에는 심플한 문법… 파이써닉하다. 라는 표현에 매료되어 찬양할 수 밖에 없는 경험을 해왔다. 하지만 사용하면 할수록 단점들도 보이기 시작했다. 물론 단점이 있다고 나쁘다는 건 아니다. 단점이 없는 언어는 없을 것이기에… 넘쳐나는 다양한 Module들과 이로인해 간단한 기능을 수행하기 위한 코드를 작성하는 데는 아직도 Python이 가장 먼저 떠오른다. 하지만 좀 더 복잡도 있고, 안정적인 프로그램을 만들어야하는 상황이 되면 Python을 택하는 데 조금 고민이 되기 시작했다. ">
 
 
   <meta name="author" content="absyun">
@@ -19,11 +19,11 @@
 <meta property="og:type" content="article">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="별거있나">
-<meta property="og:title" content="OIDC Login 구현해보기 Part-1">
+<meta property="og:title" content="golang GO routine channel 테스트">
 <meta property="og:url" content="https://absyun.github.io/development/2020/03/18/01.html">
 
 
-  <meta property="og:description" content="OIDC… ">
+  <meta property="og:description" content="요즘 핫하다는 golang, 과거에는 Android app개발을 주로 해왔던 터라, Java를 사용하다가 근래에 주로 사용하는 언어가 Python으로 변경이 되면서 초반에는 심플한 문법… 파이써닉하다. 라는 표현에 매료되어 찬양할 수 밖에 없는 경험을 해왔다. 하지만 사용하면 할수록 단점들도 보이기 시작했다. 물론 단점이 있다고 나쁘다는 건 아니다. 단점이 없는 언어는 없을 것이기에… 넘쳐나는 다양한 Module들과 이로인해 간단한 기능을 수행하기 위한 코드를 작성하는 데는 아직도 Python이 가장 먼저 떠오른다. 하지만 좀 더 복잡도 있고, 안정적인 프로그램을 만들어야하는 상황이 되면 Python을 택하는 데 조금 고민이 되기 시작했다. ">
 
 
 
@@ -31,7 +31,7 @@
 
 
 
-  <meta property="article:published_time" content="2020-03-18T11:15:00+09:00">
+  <meta property="article:published_time" content="2020-03-18T22:15:00+09:00">
 
 
 
@@ -264,7 +264,7 @@
 
   <div class="archive">
     
-      <h1 id="page-title" class="page__title">OIDC Login 구현해보기 Part-1</h1>
+      <h1 id="page-title" class="page__title">golang GO routine channel 테스트</h1>
     
     <head>
     <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -279,89 +279,185 @@
 
 </head>
 
-<h1 id="oidc">OIDC…</h1>
+<p>요즘 핫하다는 golang, 과거에는 Android app개발을 주로 해왔던 터라, Java를 사용하다가 근래에 주로 사용하는 언어가 Python으로 변경이 되면서 초반에는 심플한 문법… 파이써닉하다. 라는 표현에 매료되어 찬양할 수 밖에 없는 경험을 해왔다. 하지만 사용하면 할수록 단점들도 보이기 시작했다. 물론 단점이 있다고 나쁘다는 건 아니다. 단점이 없는 언어는 없을 것이기에… 넘쳐나는 다양한 Module들과 이로인해 간단한 기능을 수행하기 위한 코드를 작성하는 데는 아직도 Python이 가장 먼저 떠오른다. 하지만 좀 더 복잡도 있고, 안정적인 프로그램을 만들어야하는 상황이 되면 Python을 택하는 데 조금 고민이 되기 시작했다.</p>
 
-<p>Open ID Connect 일명 OIDC … 요즘 많은 사이트에서 볼 수 있는, 카카오, 네이버 로그인, 페이스북, 구글 계정 등으로 로그인과 같이 서비스를 제공해주는 측에서는 민감한 사용자의 개인정보 (아이디, 패스워드등)을 회원가입을 통해 수집/보관하지 않고 사용자를 인증하는 과정을 Provider측에 위임하는 형태의 서비스를 많이 볼 수 있다.
-이는 사용자 입장에서도 불필요하게 작은 사이트에도 회원가입을 일일이 해야하는 수고로움을 덜어주는 좋은 방향인 듯 하다.
-Provider 측에서는 사용자가 접속하는 서버의 정보들을 다 수집할 수 있긴하겠지만…</p>
+<p>Type… 이건 Python에게 양날의 검이라고 할 수 있는 것 같다.
+최초 Python을 접했을 땐, Type에 대한 고민을 하지 않는 것이 너무도 편했다. Function pointer 같은 복잡한 Type도 그냥 알아서 판단을 해주기에 코드양도 많이 줄어들고, 자잘한 실수로 컴파일 에러를 볼일이 없어지는 것에 굉장히 만족도가 높았다.</p>
 
-<p>사실 OIDC 이전에 SAML 2.0, OAuth 2.0 등의 IDP(IDentity Provider)도 있지만, 가장 최근에 정의된 OIDC에 대해서 좀 더 관심이 갔기에 해당 로그인 방식을 살펴보고 샘플로 구현해보자 한다.</p>
+<p>하지만 누가 그랬던 가… 고통은 축복이라고… 컴파일러가 미리 잡아주던 Syntax 문제를 런타임에 몇번 맞고 나면서… 미리 맞는 고통에 감사하게 되었다. 물론 Python도 컴파일을 할 수 있는 기능도 있고, Unit test로 커버리지를 많이 끌어올리면 런타임에 도달하기 전에 대부분의 관련 에러를 잡을 수는 있을 것이다.
+그렇지만 이러한 경험들은 역설적으로 Type strict한 언어가 가끔은 그리워지는 사건이 되었다.</p>
 
-<h2 id="provider---keycloak-설정">Provider - Keycloak 설정</h2>
+<p>그러던 시기에 Backend를 개발할 기회가 생겼는 데, 언어에 대한 고민을 하게 되면서 새로운 언어를 또 접해보고자 하는 마음으로 GO에 관심을 갖게 되었다.</p>
 
-<p>우선 로그인을 구현할 Provider를 선정해야하는 데… 실제로 서비스하는 Provider가 아닌 Provider 또한 컨트롤이 가능한 Keycloak이라는 툴을 Local에 설치하여 테스트하며 사용하기로 한다.</p>
+<p>기본 문법을 부터 봐가면서 느낀건… 이 언어는 정말 체계적으로 만들어졌구나, 그리고 필자는 GO를 이렇게 표현하고 싶어졌다.
+Programing language 계의 한글, Python을 닮고싶은 C… (쓸데 없는 소리는 이제 그만하고… )</p>
 
-<p>Keycloak은 Docker 이미지로 바로 Bootup이 가능하기 때문에 굉장히 편리하게 Local setup이 가능하다.
-[참고] https://hub.docker.com/r/jboss/keycloak/</p>
+<p>GO 언어를 조금씩 사용해가며, 이해도를 높혀가며 좀 더 심도 있게 이 언어의 강점을 이용하려면 꼭 짚고 넘어가야할 기능 중 하나가 단연코 go routine일 것이다. 타 언어에서는 Thread라는 Common한 OS의 개념 용어을 그대로 사용하는 데.. GO언어에서는 해당 기능을 go routine이라는 걸 통해서 대체할 수 있다.</p>
 
-<p>일단 Keycloak은 실 목적을 달성하기 위한 툴에 불과하므로 부가 설명은 생략하고… 요약하면 아래와 같은 명령어로 금방 띄울 수 있다.</p>
+<p>여러가지 실험을 하면서 go routine에 대한 특성을 이해해보고자 한다.</p>
 
-<ul>
-  <li>Container로 띄우기
-    <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  docker run <span class="nt">-p</span> 8080:8080 jboss/keycloak
-</code></pre></div>    </div>
-  </li>
-  <li>
-    <p>ps명령어로 CONTAINER ID 확인 후 Admin account 생성, Restart</p>
+<h2 id="1-chan">1. chan</h2>
+<p>go routine을 사용하면서 chan을 사용하지 않는 경우는 드물 것이다. 물론 독자적으로 돌고 종료하는 로직도 있을 수는 있지만, 많은 경우 Main thread에서 Lock 되지 않도록 background로 특정 기능을 수행하기 때문에 background 기능이 끝나고나면 Noti를 받고 그 결과를 어딘가에 반영해야하는 경우가 많기 때문이다. 이때 chan을 이용하면 go routine과 데이터 송수신이 가능하다.</p>
 
-    <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  docker ps
-  docker <span class="nb">exec</span> &lt;CONTAINER&gt; /opt/jboss/keycloak/bin/add-user-keycloak.sh <span class="nt">-u</span> &lt;USERNAME&gt; <span class="nt">-p</span> &lt;PASSWORD&gt;
-  docker restart &lt;CONTAINER&gt;
-</code></pre></div>    </div>
-  </li>
-</ul>
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">type</span> <span class="n">test</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">a</span> <span class="kt">int</span>
+	<span class="n">b</span> <span class="kt">string</span>
+<span class="p">}</span>
+<span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">stringCh</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="k">chan</span> <span class="kt">string</span><span class="p">)</span>
+	<span class="n">structCh</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="k">chan</span> <span class="n">test</span><span class="p">)</span>
+	<span class="k">go</span> <span class="k">func</span><span class="p">()</span> <span class="p">{</span>
+		<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"GO routine"</span><span class="p">)</span>
+		<span class="n">stringCh</span> <span class="o">&lt;-</span> <span class="s">"done"</span>
+		<span class="n">structCh</span> <span class="o">&lt;-</span> <span class="n">test</span><span class="p">{</span><span class="m">0</span><span class="p">,</span> <span class="s">"done"</span><span class="p">}</span>
 
-<p><img src="/assets/2020-03-18-01/1.PNG" alt="" /></p>
+	<span class="p">}()</span>
+	<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"result1:"</span><span class="p">,</span> <span class="o">&lt;-</span><span class="n">stringCh</span><span class="p">)</span>
+	<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"result2:"</span><span class="p">,</span> <span class="o">&lt;-</span><span class="n">structCh</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Channel을 원하는 자료형으로 선언하고 데이터를 전달하고 받는 샘플이다.</p>
 
-<p>정상적으로 수행되었다면 [http://localhost:8080/]로 접속시 Keycloak이 동작됨을 확인할 수 있다.
-Administration Consle을 통해 입력한 USERNAME, PASSWORD로 로그인하게 되면 메인화면이 나타난다.</p>
+<h2 id="2-channel은-make로-초기화한다">2. Channel은 Make로 초기화한다.</h2>
+<p>Channel은 make 명령으로 최초에 생성한다.
+생성시 Type을 지정을 지정해야만 golang의 void pointer와 같은 interface 타입도 사용가능하다.</p>
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">type</span> <span class="n">test</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">a</span> <span class="kt">int</span>
+	<span class="n">b</span> <span class="kt">string</span>
+<span class="p">}</span>
+<span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">interCh</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="k">chan</span> <span class="k">interface</span><span class="p">{})</span>
+	<span class="k">go</span> <span class="k">func</span><span class="p">()</span> <span class="p">{</span>
+		<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"GO routine"</span><span class="p">)</span>
+		<span class="n">interCh</span> <span class="o">&lt;-</span> <span class="s">"done"</span>
+		<span class="n">interCh</span> <span class="o">&lt;-</span> <span class="n">test</span><span class="p">{</span><span class="m">0</span><span class="p">,</span> <span class="s">"done"</span><span class="p">}</span>
+		<span class="n">interCh</span> <span class="o">&lt;-</span> <span class="m">3</span>
+	<span class="p">}()</span>
+	<span class="c">//get first result</span>
+	<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"result1:"</span><span class="p">,</span> <span class="o">&lt;-</span><span class="n">interCh</span><span class="p">)</span>
+	<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"result2:"</span><span class="p">,</span> <span class="o">&lt;-</span><span class="n">interCh</span><span class="p">)</span>
+	<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"result3:"</span><span class="p">,</span> <span class="o">&lt;-</span><span class="n">interCh</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GO routine
+result1: <span class="k">done
+</span>result2: <span class="o">{</span>0 <span class="k">done</span><span class="o">}</span>
+result3: 3
+</code></pre></div></div>
+<h2 id="3-실행순서는-랜덤">3. 실행순서는 랜덤</h2>
+<p>Go routine을 빠른 순서로 순차 실행시 실제 Running순서는 보장되지 않는다.</p>
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">interCh</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="k">chan</span> <span class="k">interface</span><span class="p">{})</span>
+	<span class="k">for</span> <span class="n">i</span> <span class="o">:=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="m">5</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">{</span>
+		<span class="n">j</span> <span class="o">:=</span> <span class="n">i</span>
+		<span class="k">go</span> <span class="k">func</span><span class="p">()</span> <span class="p">{</span>
+			<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+		<span class="p">}()</span>
+	<span class="p">}</span>
+	<span class="n">fmt</span><span class="o">.</span><span class="n">Print</span><span class="p">(</span><span class="o">&lt;-</span><span class="n">interCh</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>결과는 늘 다르다.</p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>4
+1
+2
+3
+0
+</code></pre></div></div>
+<p>위의 코드는 일단 panic이다. interCh로 부터 값을 건네받기 위해 대기를 시키지만, interCh쪽으로 값을 보내주는 코드는 없기 때문이다.
+이는 go routine들을 실행하고 바로 Main thread가 종료되지 않도록 붙잡는 용도로 써넣은 코드이지만 똑똑하게도 Main thread가 무한정 기다리지 않고, 이를 깨워줄 다른 running코드가 없으니 그냥 바로 panic을 뱉어준다.</p>
 
-<p><img src="/assets/2020-03-18-01/2.PNG" alt="" /></p>
+<h2 id="4-일반-chan-대기하고-있어야-보낼-수-있다">4. 일반 chan 대기하고 있어야 보낼 수 있다.</h2>
+<p>그냥 만든 channel은 대기를 하고 있어야지 발송이 가능하다.
+아래의 코드는 int type channel을 만들고 go routine안에서 channel로 발송을 한다. 하지만 수신을 하는 코드는 없으므로 무한 대기 상태에 빠지게 되고, Main thread측에서도 go routine이 끝나길 기대리게 되니… 위와 같이 deadlock에 빠지고만다. go는 panic을 표시하며 바로 종료시켜버린다.</p>
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">ch</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="k">chan</span> <span class="kt">int</span><span class="p">)</span>
+	<span class="k">var</span> <span class="n">wg</span> <span class="n">sync</span><span class="o">.</span><span class="n">WaitGroup</span>
+	<span class="n">wg</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+	<span class="k">go</span> <span class="k">func</span><span class="p">()</span> <span class="p">{</span>
+		<span class="k">defer</span> <span class="n">wg</span><span class="o">.</span><span class="n">Done</span><span class="p">()</span>
+		<span class="n">ch</span> <span class="o">&lt;-</span> <span class="m">1</span>
+	<span class="p">}()</span>
+	<span class="n">fmt</span><span class="o">.</span><span class="n">Print</span><span class="p">(</span><span class="o">&lt;-</span><span class="n">ch</span><span class="p">)</span> <span class="c">// 해당 부분이 없으면 deadlock</span>
+	<span class="n">wg</span><span class="o">.</span><span class="n">Wait</span><span class="p">()</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<h2 id="5-4번의-상황을-회피하기-위한-방법-중-하나는-buffer이다">5. (4)번의 상황을 회피하기 위한 방법 중 하나는 buffer이다.</h2>
+<p>make시 두번째 파라메터로 버퍼사이즈 지정이 가능하다.
+버퍼가 있을 경우 chan은 수신측이 준비되지 않아도 바로 버퍼로 전송이 가능하기 때문에 4번과 같이 수신 코드가 없어도 발송을 할 수 있다. 다만 당연히 버퍼가 Full이면 (4)번 상황이 발생한다.</p>
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">ch</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="k">chan</span> <span class="kt">int</span><span class="p">,</span> <span class="m">1</span><span class="p">)</span>
+	<span class="k">var</span> <span class="n">wg</span> <span class="n">sync</span><span class="o">.</span><span class="n">WaitGroup</span>
+	<span class="n">wg</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+	<span class="k">go</span> <span class="k">func</span><span class="p">()</span> <span class="p">{</span>
+		<span class="k">defer</span> <span class="n">wg</span><span class="o">.</span><span class="n">Done</span><span class="p">()</span>
+		<span class="n">ch</span> <span class="o">&lt;-</span> <span class="m">1</span>
+	<span class="p">}()</span>
+	<span class="n">wg</span><span class="o">.</span><span class="n">Wait</span><span class="p">()</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<h2 id="5-닫고-보내면-패닉">5. 닫고 보내면 패닉</h2>
+<p>닫혀진 channel에 발신 시도를 할 경우 바로 panic 이다…</p>
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">ch</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="k">chan</span> <span class="kt">int</span><span class="p">,</span> <span class="m">1</span><span class="p">)</span>
+	<span class="k">var</span> <span class="n">wg</span> <span class="n">sync</span><span class="o">.</span><span class="n">WaitGroup</span>
+	<span class="n">wg</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+	<span class="nb">close</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span>
+	<span class="k">go</span> <span class="k">func</span><span class="p">()</span> <span class="p">{</span>
+		<span class="k">defer</span> <span class="n">wg</span><span class="o">.</span><span class="n">Done</span><span class="p">()</span>
+		<span class="n">ch</span> <span class="o">&lt;-</span> <span class="m">1</span>
+	<span class="p">}()</span>
+	<span class="n">wg</span><span class="o">.</span><span class="n">Wait</span><span class="p">()</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ go run test.go
+panic: send on closed channel
+</code></pre></div></div>
 
-<p>우선 Keycloak 측 Provider 세팅을 완료하도록 하자…
-Realm(Realm 하나가 하나의 IDP 라고 가볍게 생각할 수 있다.)은 Master로 두도록 하고 여기에 앞으로 우리가 접속할 Client를 등록하고 ID를 발급받도록 하자.
-실제로 다른 IDP서비스에 인증을 제공받기 위해 등록시에도 동일한 절차를 거칠 것이다.</p>
+<h2 id="6-channel은-수신-송신-용도-한정이-가능하다">6. channel은 수신, 송신 용도 한정이 가능하다.</h2>
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">func</span> <span class="n">server</span><span class="p">(</span><span class="n">ch</span> <span class="o">&lt;-</span><span class="k">chan</span> <span class="kt">string</span><span class="p">,</span> <span class="n">wg</span> <span class="o">*</span><span class="n">sync</span><span class="o">.</span><span class="n">WaitGroup</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">defer</span> <span class="n">wg</span><span class="o">.</span><span class="n">Done</span><span class="p">()</span>
+	<span class="n">ch</span> <span class="o">&lt;-</span> <span class="s">"result"</span>
+<span class="p">}</span>
 
-<p>Clients로 가서 Create를 하자. Client ID는 가볍게 “oidc-test”, Protocal은 구현해볼 openid-connect로 설정한다.</p>
+<span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">ch</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="o">&lt;-</span><span class="k">chan</span> <span class="kt">string</span><span class="p">,</span> <span class="m">1</span><span class="p">)</span>
+	<span class="k">var</span> <span class="n">wg</span> <span class="n">sync</span><span class="o">.</span><span class="n">WaitGroup</span>
+	<span class="n">wg</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+	<span class="k">go</span> <span class="n">server</span><span class="p">(</span><span class="n">ch</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">wg</span><span class="p">)</span>
 
-<p><img src="/assets/2020-03-18-01/3.PNG" alt="" /></p>
+	<span class="n">fmt</span><span class="o">.</span><span class="n">Print</span><span class="p">(</span><span class="o">&lt;-</span><span class="n">ch</span><span class="p">)</span>
+	<span class="n">wg</span><span class="o">.</span><span class="n">Wait</span><span class="p">()</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>위 케이스는 chan을 파라메터로 넘길때 수신용으로 한정해서 넘겼는 데, 이를 내부에서 발신용으로 사용하는 코드가 있으므로 컴파일 에러이다. 참고로”&lt;-chan”, “chan&lt;-“ 각각 수, 발신용 Type을 나태난다.</p>
 
-<h3 id="여기서-초기설정시-결정해야할-타입이-하나-있다">여기서 초기설정시 결정해야할 타입이 하나 있다.</h3>
-<p>참고 [https://www.keycloak.org/docs/4.8/server_admin/]</p>
-
-<blockquote>
-  <h4 id="access-type">Access Type</h4>
-
-  <p>This defines the type of the OIDC client.</p>
-
-  <p><b>confidential</b>
-Confidential access type is for server-side clients that need to perform a browser login and require a client secret when they turn an access code into an access token, (see Access Token Request in the OAuth 2.0 spec for more details). This type should be used for server-side applications.</p>
-
-  <p><b>public</b>
-Public access type is for client-side clients that need to perform a browser login. With a client-side application there is no way to keep a secret safe. Instead it is very important to restrict access by configuring correct redirect URIs for the client.</p>
-
-  <p><b>bearer-only</b>
-Bearer-only access type means that the application only allows bearer token requests. If this is turned on, this application cannot participate in browser logins.</p>
-</blockquote>
-
-<p>Keycloak 사이트에서 설명해놓은 설정이다.</p>
-
-<p>여기서 필자는 Confidential 타입으로 구현해볼 것이다.</p>
-
-<p>가이드에 나와있는 것 처럼, 웹사이트에서의 OIDC client를 구현할 예정이기에 해당 타입이 적절하다 판단된다. 순수 App client에서의 동작이더라도, Backend가 있다면 Confidential이 더 보안측면에서는 한결 더 유리하지 않을까 싶다. Confidential 타입은 IDP가 제공해주는 Secret key가 없다면 아예 토큰자체를 받을 수 없는 구조이기 때문이다.</p>
-
-<p>그 다음 필수로 Redirect Url을 입력해야한다. 인증과정에서 IDP가 인증 완료 후 다시 요청해온 웹사이트로 Redirection을 해주게 되는 데, 이 장치로 인해 내가 등록한 Client 외의 다른 임의의 사이트가 이 ClientID를 사용할 수 없게 된다.
-등록한 Client는 로그인 후 무조건 인가된 사이트로만 Code등을 전달해주기 때문이다.</p>
-
-<p>여기서는 간단히 로컬에서 모든 걸 다 진행할 예정이기에 http://localhost/* 로 입력해두자.</p>
-
-<p><img src="/assets/2020-03-18-01/4.PNG" alt="" /></p>
-
-<p>이제 만든 Client Id와 앞으로 사용할 Secret을 확인해두자.</p>
-
-<p>자, 이제 기본 Keycloak 및 기본 준비는 끝난 것 같다.</p>
-
-<p>다음 Part 부터 본격적으로 로그인 구현을 해볼 예정이다.</p>
+<h2 id="7-select-문">7. select 문</h2>
+<p>switch case와 문법은 유사하지만 용도는 조금 다르다. 여러 go routine에서 채널로 값이 전달되면 웨이팅을 하고 있다가 먼저 수신되는 channel에 해당하는 루틴이 수행된다.
+select문이 수행될 때, 어느 case의 channel에도 데이터가 수신되지 않고, default가 선언되어있으면 default문이 수행된다. select문을 반복문에 포함시키게 되면 channel로 값이 수신되는 순서로 select문이 수행되는 Thread에서 처리하는 로직을 쉽게 구현할 수 있다.</p>
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">func</span> <span class="n">background1</span><span class="p">(</span><span class="n">ch</span> <span class="k">chan</span> <span class="kt">string</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">ch</span> <span class="o">&lt;-</span> <span class="s">"1"</span>
+<span class="p">}</span>
+<span class="k">func</span> <span class="n">background2</span><span class="p">(</span><span class="n">ch</span> <span class="k">chan</span> <span class="kt">string</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">ch</span> <span class="o">&lt;-</span> <span class="s">"2"</span>
+<span class="p">}</span>
+<span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">ch1</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="k">chan</span> <span class="kt">string</span><span class="p">)</span>
+	<span class="n">ch2</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="k">chan</span> <span class="kt">string</span><span class="p">)</span>
+	<span class="k">go</span> <span class="n">background1</span><span class="p">(</span><span class="n">ch1</span><span class="p">)</span>
+	<span class="k">go</span> <span class="n">background1</span><span class="p">(</span><span class="n">ch2</span><span class="p">)</span>
+	<span class="n">time</span><span class="o">.</span><span class="n">Sleep</span><span class="p">(</span><span class="m">10000</span><span class="p">)</span>
+	<span class="k">select</span> <span class="p">{</span>
+	<span class="k">case</span> <span class="o">&lt;-</span><span class="n">ch1</span><span class="o">:</span>
+		<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"value is transfered 1"</span><span class="p">)</span>
+	<span class="k">case</span> <span class="o">&lt;-</span><span class="n">ch2</span><span class="o">:</span>
+		<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"value is transfered 2"</span><span class="p">)</span>
+	<span class="k">default</span><span class="o">:</span>
+		<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"default"</span><span class="p">)</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>위 코드는 sleep을 조절하여, default, ch1, ch2 수신이 적당히 랜덤으로 수행되는 테스트 코드이다. 해당 케이스를 유발하는 sleep 수치는 환경마다 다를 수 있다.</p>
 
 
 <div id="disqus_thread"></div>
@@ -391,7 +487,7 @@ s.setAttribute('data-timestamp', +new Date());
   
     <li>
       <a href="#2020">
-        <strong>2020</strong> <span class="taxonomy__count">7</span>
+        <strong>2020</strong> <span class="taxonomy__count">8</span>
       </a>
     </li>
   
@@ -402,6 +498,34 @@ s.setAttribute('data-timestamp', +new Date());
   <section id="2020" class="taxonomy__section">
     <h2 class="archive__subtitle">2020</h2>
     <div class="entries-list">
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/development/2020/03/18/01.html" rel="permalink">golang GO routine channel 테스트
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">요즘 핫하다는 golang, 과거에는 Android app개발을 주로 해왔던 터라, Java를 사용하다가 근래에 주로 사용하는 언어가 Python으로 변경이 되면서 초반에는 심플한 문법… 파이써닉하다. 라는 표현에 매료되어 찬양할 수 밖에 없는 경험을 해왔다. 하지만 사용하면 할수...</p>
+  </article>
+</div>
+
       
         
 

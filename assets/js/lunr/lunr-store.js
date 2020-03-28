@@ -40,4 +40,10 @@ var store = [{
         "tags": ["oidc"],
         "url": "https://absyun.github.io/development/2020/03/18/03.html",
         "teaser": null
+      },{
+        "title": "golang GO routine channel 테스트",
+        "excerpt":"요즘 핫하다는 golang, 과거에는 Android app개발을 주로 해왔던 터라, Java를 사용하다가 근래에 주로 사용하는 언어가 Python으로 변경이 되면서 초반에는 심플한 문법… 파이써닉하다. 라는 표현에 매료되어 찬양할 수 밖에 없는 경험을 해왔다. 하지만 사용하면 할수록 단점들도 보이기 시작했다. 물론 단점이 있다고 나쁘다는 건 아니다. 단점이 없는 언어는 없을 것이기에… 넘쳐나는 다양한...","categories": ["Development"],
+        "tags": ["go","golang","goroutine"],
+        "url": "https://absyun.github.io/development/2020/03/18/01.html",
+        "teaser": null
       }]
