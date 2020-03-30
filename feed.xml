@@ -6,9 +6,27 @@
 </description>
     <link>absyun.github.io/</link>
     <atom:link href="absyun.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 29 Mar 2020 01:09:38 +0900</pubDate>
-    <lastBuildDate>Sun, 29 Mar 2020 01:09:38 +0900</lastBuildDate>
+    <pubDate>Mon, 30 Mar 2020 23:25:52 +0900</pubDate>
+    <lastBuildDate>Mon, 30 Mar 2020 23:25:52 +0900</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>Serverless AWS Lambda</title>
+        <description>&lt;h1 id=&quot;serverless-architecture&quot;&gt;Serverless Architecture&lt;/h1&gt; &lt;p&gt;과거 IDC 기반에서는 단순한 로직하나를 수행하기 위해서도, Hardware가 필요했고, 이를 유지하고 관리하기 위한 리소스들 또한 필요로 하였다. Cloud 세상이 오면서 새로운 페러다임이 생겨나고 그로 인해 많은 변화가...</description>
+        <pubDate>Sun, 29 Mar 2020 11:15:00 +0900</pubDate>
+        <link>absyun.github.io/devops/2020/03/29/01.html</link>
+        <guid isPermaLink="true">absyun.github.io/devops/2020/03/29/01.html</guid>
+        
+        <category>aws</category>
+        
+        <category>lambda</category>
+        
+        <category>serverless</category>
+        
+        
+        <category>Devops</category>
+        
+      </item>
     
       <item>
         <title>golang GO routine channel 테스트</title>
