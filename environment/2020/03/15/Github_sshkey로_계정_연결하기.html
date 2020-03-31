@@ -6,8 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Windows 10 WSL</title>
-  <meta name="description" content="WSL (Windows Subsystem for Linux)">
+  <title>Github sshkey로 계정 연결하기</title>
+  <meta name="description" content="Github sshkey로 계정 연결하기">
   
   <meta name="author" content="absyun">
   <meta name="copyright" content="&copy; absyun 2020">
@@ -32,7 +32,7 @@
 
   <!-- Site styles -->
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="absyun.github.io/environment/2020/03/15/01.html">
+  <link rel="canonical" href="absyun.github.io/environment/2020/03/15/Github_sshkey%EB%A1%9C_%EA%B3%84%EC%A0%95_%EC%97%B0%EA%B2%B0%ED%95%98%EA%B8%B0.html">
 	<link rel="alternate" type="application/rss+xml" title="별거있나" href="absyun.github.io/feed.xml" />
 	
 	<!-- Tooltips -->
@@ -133,7 +133,7 @@
 <div class="post-header-container " >
   <div class="scrim ">
     <header class="post-header">
-      <h1 class="title">Windows 10 WSL</h1>
+      <h1 class="title">Github sshkey로 계정 연결하기</h1>
       <p class="info">by <strong></strong></p>
     </header>
   </div>
@@ -159,56 +159,82 @@
 </section>
 
 <article class="post-content">
-  <h1 id="wsl-windows-subsystem-for-linux">WSL (Windows Subsystem for Linux)</h1>
+  <h1 id="github-sshkey로-계정-연결하기">Github sshkey로 계정 연결하기</h1>
 
-<p>Microsoft에서 Windows PC로 더 훌륭한 개발경험을 제공해주기 위해 내놓은 시스템이다. 익숙해지면 Mac이 아쉬워지지 않을까… 개인적으로 단일 디바이스를 선호하는 데, Windows는 여러 이유로 포기하기가 어려웠던 터라 이 기능이 기대되지 않을 수 없었다.</p>
+<p>SSH-key를 이용해서 git-repo 사용하기…</p>
 
-<h4 id="microsoft에서-공개한-아키텍쳐">Microsoft에서 공개한 아키텍쳐</h4>
+<p>Github을 사용하다보면 보면 username, password를 계속 입력하기 싫어서 config에 Setting하게 되는 데, 이보다 더 안정적으로 매번 password를 입력하는 불편함 없이 사용하기 위해 ssh-key를 이용해서 설정하는 방법을 기록해둔다.</p>
 
-<p><img src="/assets/2020-03-15-01/1.png" alt="" /></p>
+<h3 id="ssh-key-생성">ssh-key 생성</h3>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$&gt;</span> ssh-keygen
+</code></pre></div></div>
+
+<p>명령을 수행하면 Key이름을 설정할 수 있고 (하지 않을 경우 id_rsa로 생성) passphrase <a href="https://www.ssh.com/ssh/passphrase">https://www.ssh.com/ssh/passphrase</a>는 private key의 유출 및 탈취 상황을 대비하기 위해 encryption 하는 방식인데, 여기선 입력하지 않는 걸로…<br />
+키를 생성하게 되면 $HOME 밑에 .ssh/ 아래에 id_rsa, id_rsa.pub (다른 이름을 입력했을 경우 해당 이름) 키가 생성된다.</p>
+
+<p><img src="/assets/2020-03-15-02/2.png" alt="" /></p>
+
+<p>생성된 Public key, Private key는 항상 세트로 움직여야하고<br />
+Public key는 이름 답게 외부에 Open하는 키 이다. SSH로 접속할 서버에 보통 등록을 해두게 되고, 그에 대응하는 Private key는 절대 유출되어서는 안되며, Public key를 등록해놓은 곳에 접속할 때 자신을 인증하는 용도로 사용되어 진다.</p>
+
+<p>그럼 이제 이 Public key를 Github에 먼저 등록하러 가보자.</p>
+
+<p><br /></p>
+
+<h2 id="github에-public-key-등록하기">Github에 Public key 등록하기</h2>
+
+<p><img src="/assets/2020-03-15-02/1.png" alt="" /></p>
+
+<p>위의 계정내 Settings로 진입하게 되면 “SSH and GPG Keys”<br />
+에서 New SSH key를 입력한다음, Public key의 내용을 복사해서 입력하면 된다.</p>
+
+<p>cat ./id_rsa.pub</p>
 
 <ul>
-  <li><a href="https://blogs.msdn.microsoft.com/wsl/2016/04/22/windows-subsystem-for-linux-overview/">https://blogs.msdn.microsoft.com/wsl/2016/04/22/windows-subsystem-for-linux-overview/</a></li>
+  <li>등록된 상태<br />
+<img src="/assets/2020-03-15-02/3.png" alt="" /></li>
 </ul>
 
 <p><br /></p>
 
-<h2 id="설치-방법">설치 방법</h2>
+<h2 id="ssh-config-설정">ssh config 설정</h2>
 
-<p>우선 제어판에서 Linux용 하위 시스템 Option을 켜줘야하며,</p>
+<p>$HOME 아래에 .ssh directory 밑에 config파일 설정을 해야한다.</p>
 
-<p><strong>제어판 -&gt; 프로그램 및 기능 -&gt; Windows 기능 켜기/끄기</strong></p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Host github.com
+HostName github.com
+User Username
+IdentityFile /home/someuser/.ssh/id_rsa
 
-<p><img src="/assets/2020-03-15-01/2.png" alt="" /></p>
+Host github.com
+HostName github.com
+User Username2
+IdentityFile /home/someuser/.ssh/id2_rsa
+</code></pre></div></div>
 
-<p>아래 존재하는 리스트 중 WSL으로 사용할 원하는 Linux 배포판을 설치해 줘야한다. 일반적으로 Microsoft store에서 찾아서 설치를 진행하면 된다.</p>
-
-<p><strong>Disto list</strong></p>
-
-<p><img src="/assets/2020-03-15-01/2-2.png" alt="" /></p>
-
-<p><br /></p>
-
-<p><strong>설치가 완료되면 일반 Window용 Program 처럼 실행이 가능(Debian 계열이 익숙하기에 Ubuntu를 설치했다.)</strong></p>
-
-<p><img src="/assets/2020-03-15-01/3.png" alt="" /></p>
+<p>위와 같이 설정하게 되면 ssh로 github.com 도메인으로 접속할 경우<br />
+설정된 IdentitiFile (key)와 User ID를 이용해서 로그인을 하게 된다. 보는 바와 같이 Username을 다르게 해서 User에 따라 키를 다르게 사용할 수도 있고, Repo를 Github, Gitlab 어느 host로 접속하게 되는 가에 따라 다른 키를 자동으로 매핑되도록 관리해줄 수 있다.</p>
 
 <p><br /></p>
 
-<p><img src="/assets/2020-03-15-01/4.png" alt="" /></p>
+<h2 id="git-repo">Git repo</h2>
 
-<p>첫 실행시 일부 설정을 완료하면 아래와 같이 Terminal이 실행된다. 이미 Shell 설정을 한 상태라 순정인 이미지는 아니지만.. (참고차.. 기록)</p>
+<p><img src="/assets/2020-03-15-02/4.png" alt="" /></p>
 
-<p>과거에 Windows에서 Git을 사용하기 위해, 또 터미널을 사용하기 위해 개인적으로 UX등이 마음에 들진 않지만 불가피하게 별도의 프로그램 등을 설치하여 사용했지만 이제는 Linux 기분을 느끼게 해주는 Terminal 에서<br />
-Lunix용 툴들을 설치해가며 신세계를 경험할 수 있다.!</p>
+<p>Git에서 Repo를 Clone할때 SSH를 이용해서 Clone을 하자.<br />
+Clone 후 해당 Repo에 .git/config 파일을 살펴보면,<br />
+[remote] 에 https로 되어있으면, push를 할 때 ssh로 설정으로 동작되지 않을 수 있기 때문에 ssh 주소를 사용하자,<br />
+참고로 ssh config에 Multiuser를 설정해 놓을 경우 각 Repo 안에 어떤 User의 정보를 사용할지를 판단할 수 있는 정보가 들어있다.</p>
 
+<h3 id="이제-password-입력-불편함-없이-사용하면-된다">이제 Password 입력 불편함 없이 사용하면 된다.!</h3>
 
 </article>
 
 
 
 <section class="tags">
-  <strong>Tags:</strong> <a href="/tag/WSL">WSL</a>,&nbsp;<a href="/tag/Windows10">Windows10</a>
+  <strong>Tags:</strong> <a href="/tag/Github">Github</a>
 </section>
 
 

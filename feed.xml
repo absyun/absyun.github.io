@@ -6,16 +6,16 @@
 </description>
     <link>absyun.github.io/</link>
     <atom:link href="absyun.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 30 Mar 2020 23:26:12 +0900</pubDate>
-    <lastBuildDate>Mon, 30 Mar 2020 23:26:12 +0900</lastBuildDate>
+    <pubDate>Tue, 31 Mar 2020 11:15:39 +0900</pubDate>
+    <lastBuildDate>Tue, 31 Mar 2020 11:15:39 +0900</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
     
       <item>
         <title>Serverless AWS Lambda</title>
         <description>&lt;h1 id=&quot;serverless-architecture&quot;&gt;Serverless Architecture&lt;/h1&gt; &lt;p&gt;과거 IDC 기반에서는 단순한 로직하나를 수행하기 위해서도, Hardware가 필요했고, 이를 유지하고 관리하기 위한 리소스들 또한 필요로 하였다. Cloud 세상이 오면서 새로운 페러다임이 생겨나고 그로 인해 많은 변화가...</description>
         <pubDate>Sun, 29 Mar 2020 11:15:00 +0900</pubDate>
-        <link>absyun.github.io/devops/2020/03/29/01.html</link>
-        <guid isPermaLink="true">absyun.github.io/devops/2020/03/29/01.html</guid>
+        <link>absyun.github.io/devops/2020/03/29/Serverless_AWS_Lambda.html</link>
+        <guid isPermaLink="true">absyun.github.io/devops/2020/03/29/Serverless_AWS_Lambda.html</guid>
         
         <category>aws</category>
         
@@ -32,8 +32,8 @@
         <title>golang GO routine channel 테스트</title>
         <description>&lt;p&gt;요즘 핫하다는 golang, 과거에는 Android app개발을 주로 해왔던 터라, Java를 사용하다가 근래에 주로 사용하는 언어가 Python으로 변경이 되면서 초반에는 심플한 문법… 파이써닉하다. 라는 표현에 매료되어 찬양할 수 밖에 없는 경험을...</description>
         <pubDate>Wed, 18 Mar 2020 22:15:00 +0900</pubDate>
-        <link>absyun.github.io/development/2020/03/18/01.html</link>
-        <guid isPermaLink="true">absyun.github.io/development/2020/03/18/01.html</guid>
+        <link>absyun.github.io/development/2020/03/18/golang_GO_routine_channel_%ED%85%8C%EC%8A%A4%ED%8A%B8.html</link>
+        <guid isPermaLink="true">absyun.github.io/development/2020/03/18/golang_GO_routine_channel_%ED%85%8C%EC%8A%A4%ED%8A%B8.html</guid>
         
         <category>go</category>
         
@@ -50,8 +50,8 @@
         <title>OIDC Login 구현해보기 Part-3</title>
         <description>&lt;p&gt;앞서 Part에서 Frontend 측에서 Browser를 통해 IDP를 거쳐 code를 받는 것 까지 진행되었다. Confidential Type의 인증은 최종적으로 Secret을 이용하여 access token을 받게 되는 데 이 Secret은 Backend 에서 보관하고 있는...</description>
         <pubDate>Wed, 18 Mar 2020 22:15:00 +0900</pubDate>
-        <link>absyun.github.io/development/2020/03/18/03.html</link>
-        <guid isPermaLink="true">absyun.github.io/development/2020/03/18/03.html</guid>
+        <link>absyun.github.io/development/2020/03/18/OIDC_Login_%EA%B5%AC%ED%98%84%ED%95%B4%EB%B3%B4%EA%B8%B0_Part-3.html</link>
+        <guid isPermaLink="true">absyun.github.io/development/2020/03/18/OIDC_Login_%EA%B5%AC%ED%98%84%ED%95%B4%EB%B3%B4%EA%B8%B0_Part-3.html</guid>
         
         <category>oidc</category>
         
@@ -64,8 +64,8 @@
         <title>OIDC Login 구현해보기 Part-2</title>
         <description>&lt;p&gt;사용할 IDP를 설정했으므로, 이제 본격적으로 User에게 Input을 받을 Frontend 그리고 최종적으로 인증을 완료하고 Token을 받게될 Backend를 구현해보기로 하자.&lt;/p&gt; &lt;p&gt;Frontend쪽은 React 기반의 Javascript, Backend쪽은 Gin 기반의 GO 언어를 이용해보려고 한다. 실제...</description>
         <pubDate>Wed, 18 Mar 2020 12:15:00 +0900</pubDate>
-        <link>absyun.github.io/development/2020/03/18/02.html</link>
-        <guid isPermaLink="true">absyun.github.io/development/2020/03/18/02.html</guid>
+        <link>absyun.github.io/development/2020/03/18/OIDC_Login_%EA%B5%AC%ED%98%84%ED%95%B4%EB%B3%B4%EA%B8%B0_Part-2.html</link>
+        <guid isPermaLink="true">absyun.github.io/development/2020/03/18/OIDC_Login_%EA%B5%AC%ED%98%84%ED%95%B4%EB%B3%B4%EA%B8%B0_Part-2.html</guid>
         
         <category>oidc</category>
         
@@ -78,8 +78,8 @@
         <title>OIDC Login 구현해보기 Part-1</title>
         <description>&lt;h1 id=&quot;oidc&quot;&gt;OIDC…&lt;/h1&gt; &lt;p&gt;Open ID Connect 일명 OIDC … 요즘 많은 사이트에서 볼 수 있는, 카카오, 네이버 로그인, 페이스북, 구글 계정 등으로 로그인과 같이 서비스를 제공해주는 측에서는 민감한 사용자의 개인정보 (아이디,...</description>
         <pubDate>Wed, 18 Mar 2020 11:15:00 +0900</pubDate>
-        <link>absyun.github.io/development/2020/03/18/01.html</link>
-        <guid isPermaLink="true">absyun.github.io/development/2020/03/18/01.html</guid>
+        <link>absyun.github.io/development/2020/03/18/OIDC_Login_%EA%B5%AC%ED%98%84%ED%95%B4%EB%B3%B4%EA%B8%B0_Part-1.html</link>
+        <guid isPermaLink="true">absyun.github.io/development/2020/03/18/OIDC_Login_%EA%B5%AC%ED%98%84%ED%95%B4%EB%B3%B4%EA%B8%B0_Part-1.html</guid>
         
         <category>oidc</category>
         
@@ -89,11 +89,27 @@
       </item>
     
       <item>
+        <title>Windows 10 WSL</title>
+        <description>&lt;h1 id=&quot;wsl-windows-subsystem-for-linux&quot;&gt;WSL (Windows Subsystem for Linux)&lt;/h1&gt; &lt;p&gt;Microsoft에서 Windows PC로 더 훌륭한 개발경험을 제공해주기 위해 내놓은 시스템이다. 익숙해지면 Mac이 아쉬워지지 않을까… 개인적으로 단일 디바이스를 선호하는 데, Windows는 여러 이유로 포기하기가 어려웠던...</description>
+        <pubDate>Sun, 15 Mar 2020 12:57:43 +0900</pubDate>
+        <link>absyun.github.io/environment/2020/03/15/Windows_10_WSL.html</link>
+        <guid isPermaLink="true">absyun.github.io/environment/2020/03/15/Windows_10_WSL.html</guid>
+        
+        <category>WSL</category>
+        
+        <category>Windows10</category>
+        
+        
+        <category>Environment</category>
+        
+      </item>
+    
+      <item>
         <title>WSL2 ... and Docker</title>
         <description>&lt;p&gt;WSL + VSCODE의 조합으로 많은 것들을 편리한 환경에서 수행해 올 수 있었다. 하지만 WSL에서 아쉬움으로 와 닿았던 것… 바로 Docker 실행이다. 초반에는 Docker를 포기하고 준비된 환경안에서 할 수 있는 것들에...</description>
         <pubDate>Sun, 15 Mar 2020 12:57:43 +0900</pubDate>
-        <link>absyun.github.io/environment/2020/03/15/04.html</link>
-        <guid isPermaLink="true">absyun.github.io/environment/2020/03/15/04.html</guid>
+        <link>absyun.github.io/environment/2020/03/15/WSL2_and_Docker.html</link>
+        <guid isPermaLink="true">absyun.github.io/environment/2020/03/15/WSL2_and_Docker.html</guid>
         
         <category>WSL2</category>
         
@@ -108,8 +124,8 @@
         <title>Visual studio code + WSL</title>
         <description>&lt;p&gt;Windows 10 바탕에 WSL 기반으로 개발 환경을 셋팅하고, 본격적 사용을 하다보면 불편한 점이 바로 나타난다.&lt;/p&gt; &lt;p&gt;Linux 환경에서의 GUI 환경 부재다. 물론 vi 로 “모든 걸 다 할 수 있어!” 라고...</description>
         <pubDate>Sun, 15 Mar 2020 12:57:43 +0900</pubDate>
-        <link>absyun.github.io/environment/2020/03/15/03.html</link>
-        <guid isPermaLink="true">absyun.github.io/environment/2020/03/15/03.html</guid>
+        <link>absyun.github.io/environment/2020/03/15/Visual_studio_code_WSL.html</link>
+        <guid isPermaLink="true">absyun.github.io/environment/2020/03/15/Visual_studio_code_WSL.html</guid>
         
         <category>WSL</category>
         
@@ -124,26 +140,10 @@
         <title>Github sshkey로 계정 연결하기</title>
         <description>&lt;h1 id=&quot;github-sshkey로-계정-연결하기&quot;&gt;Github sshkey로 계정 연결하기&lt;/h1&gt; &lt;p&gt;SSH-key를 이용해서 git-repo 사용하기…&lt;/p&gt; &lt;p&gt;Github을 사용하다보면 보면 username, password를 계속 입력하기 싫어서 config에 Setting하게 되는 데, 이보다 더 안정적으로 매번 password를 입력하는 불편함 없이 사용하기...</description>
         <pubDate>Sun, 15 Mar 2020 12:57:43 +0900</pubDate>
-        <link>absyun.github.io/environment/2020/03/15/02.html</link>
-        <guid isPermaLink="true">absyun.github.io/environment/2020/03/15/02.html</guid>
+        <link>absyun.github.io/environment/2020/03/15/Github_sshkey%EB%A1%9C_%EA%B3%84%EC%A0%95_%EC%97%B0%EA%B2%B0%ED%95%98%EA%B8%B0.html</link>
+        <guid isPermaLink="true">absyun.github.io/environment/2020/03/15/Github_sshkey%EB%A1%9C_%EA%B3%84%EC%A0%95_%EC%97%B0%EA%B2%B0%ED%95%98%EA%B8%B0.html</guid>
         
         <category>Github</category>
-        
-        
-        <category>Environment</category>
-        
-      </item>
-    
-      <item>
-        <title>Windows 10 WSL</title>
-        <description>&lt;h1 id=&quot;wsl-windows-subsystem-for-linux&quot;&gt;WSL (Windows Subsystem for Linux)&lt;/h1&gt; &lt;p&gt;Microsoft에서 Windows PC로 더 훌륭한 개발경험을 제공해주기 위해 내놓은 시스템이다. 익숙해지면 Mac이 아쉬워지지 않을까… 개인적으로 단일 디바이스를 선호하는 데, Windows는 여러 이유로 포기하기가 어려웠던...</description>
-        <pubDate>Sun, 15 Mar 2020 12:57:43 +0900</pubDate>
-        <link>absyun.github.io/environment/2020/03/15/01.html</link>
-        <guid isPermaLink="true">absyun.github.io/environment/2020/03/15/01.html</guid>
-        
-        <category>WSL</category>
-        
-        <category>Windows10</category>
         
         
         <category>Environment</category>

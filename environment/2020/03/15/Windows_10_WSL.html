@@ -6,8 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>WSL2 ... and Docker</title>
-  <meta name="description" content="WSL + VSCODE의 조합으로 많은 것들을 편리한 환경에서 수행해 올 수 있었다. 하지만 WSL에서 아쉬움으로 와 닿았던 것… 바로 Docker 실행이다. 초반에는 Docker를 포기하고 준비된 환경안에서 할 수 있는 것들에 만족해 왔지만…">
+  <title>Windows 10 WSL</title>
+  <meta name="description" content="WSL (Windows Subsystem for Linux)">
   
   <meta name="author" content="absyun">
   <meta name="copyright" content="&copy; absyun 2020">
@@ -32,7 +32,7 @@
 
   <!-- Site styles -->
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="absyun.github.io/environment/2020/03/15/04.html">
+  <link rel="canonical" href="absyun.github.io/environment/2020/03/15/Windows_10_WSL.html">
 	<link rel="alternate" type="application/rss+xml" title="별거있나" href="absyun.github.io/feed.xml" />
 	
 	<!-- Tooltips -->
@@ -133,7 +133,7 @@
 <div class="post-header-container " >
   <div class="scrim ">
     <header class="post-header">
-      <h1 class="title">WSL2 ... and Docker</h1>
+      <h1 class="title">Windows 10 WSL</h1>
       <p class="info">by <strong></strong></p>
     </header>
   </div>
@@ -159,77 +159,56 @@
 </section>
 
 <article class="post-content">
-  <p>WSL + VSCODE의 조합으로 많은 것들을 편리한 환경에서 수행해 올 수 있었다. 하지만 WSL에서 아쉬움으로 와 닿았던 것… 바로 Docker 실행이다. 초반에는 Docker를 포기하고 준비된 환경안에서 할 수 있는 것들에 만족해 왔지만…</p>
+  <h1 id="wsl-windows-subsystem-for-linux">WSL (Windows Subsystem for Linux)</h1>
 
-<p>어느 순간 Docker가 절실히 필요해진 상황이왔고… 이를 해결하기 위해 WSL2로 Windows10을 테스트 버전 업그레이드를 강행하게 되었다.<br />
-참고로 불안정하다고 누누이 경고하고 있기에 필자처럼 성격급한 사람이 아니라면 정중히 말리고싶다.</p>
+<p>Microsoft에서 Windows PC로 더 훌륭한 개발경험을 제공해주기 위해 내놓은 시스템이다. 익숙해지면 Mac이 아쉬워지지 않을까… 개인적으로 단일 디바이스를 선호하는 데, Windows는 여러 이유로 포기하기가 어려웠던 터라 이 기능이 기대되지 않을 수 없었다.</p>
 
-<p><br /></p>
+<h4 id="microsoft에서-공개한-아키텍쳐">Microsoft에서 공개한 아키텍쳐</h4>
 
-<h2 id="wsl2">WSL2</h2>
+<p><img src="/assets/2020-03-15-01/1.png" alt="" /></p>
 
-<p>WSL1 대비해서 기본 아키텍쳐가 가상머신을 활용하는 구조였고, File IO 성능면에서 아쉬운 점이 많았다고 한다.<br />
-(소규모 Build만 수행해봤기에.. 큰 불편은 못느꼈던 1인..)<br />
-아마.. 20년에 정식 릴리즈 되게될 WSL2는 아예 Windows용 Linux 커널을 새로 만들고 Hyper-v 기반으로 변경되어 WSL1 대비 성능이 좋아진다고 한다. 특히 Docker가 native 형태로 정식지원이 된다.</p>
-
-<p><br /></p>
-
-<h2 id="windows-10-업그레이드">Windows 10 업그레이드</h2>
-
-<p>현시점에선 Windows 버전이 정식 Release버전이 아닌 Insider Preview 버전을 설치해야한다.<br />
-설정에 들어가서 Windows 참가자 프로그램에 가입한 다음 WIndows를 업데이트 해주자.</p>
-
-<p><img src="/assets/2020-03-15-04/1.png" alt="" /></p>
-
-<p>업데이트 후 cmd창에서 ver을 입력하면 Windows build 번호를 확인할 수 있다.</p>
-
-<p><img src="/assets/2020-03-15-04/2.png" alt="" /></p>
+<ul>
+  <li><a href="https://blogs.msdn.microsoft.com/wsl/2016/04/22/windows-subsystem-for-linux-overview/">https://blogs.msdn.microsoft.com/wsl/2016/04/22/windows-subsystem-for-linux-overview/</a></li>
+</ul>
 
 <p><br /></p>
 
-<h2 id="바이너리-직접-설치">바이너리 직접 설치</h2>
+<h2 id="설치-방법">설치 방법</h2>
 
-<p>18917 버전 이상만이 WSL2 사용이 가능하다. 어떤 이유에서인지 필자의 경우 참가자 프로그램 가입만으로는 해당 버전으로 올라가지 않아, 찾아보니 19041 버전이 조만간 정식 릴리즈 예정인지 Binary자체가 풀려있었다.</p>
+<p>우선 제어판에서 Linux용 하위 시스템 Option을 켜줘야하며,</p>
 
-<p>Preview insider라면 직접 다운받아서 설치가 가능하다.[<a href="https://www.microsoft.com/en-us/software-download/windowsinsiderpreviewadvanced">Download page</a>]</p>
+<p><strong>제어판 -&gt; 프로그램 및 기능 -&gt; Windows 기능 켜기/끄기</strong></p>
 
-<p><br /></p>
+<p><img src="/assets/2020-03-15-01/2.png" alt="" /></p>
 
-<h2 id="wsl2-설치">WSL2 설치</h2>
+<p>아래 존재하는 리스트 중 WSL으로 사용할 원하는 Linux 배포판을 설치해 줘야한다. 일반적으로 Microsoft store에서 찾아서 설치를 진행하면 된다.</p>
 
-<p>Windows 설치 후 <a href="https://docs.microsoft.com/ko-kr/windows/wsl/wsl2-install">[WSL 2 설치 가이드]</a> 에 안내되어있는 Command를 차례로 수행해나가면 WSL2 설치는 끝이난다.</p>
+<p><strong>Disto list</strong></p>
 
-<p>설치가 정상적으로 되었다면 사용하는 Diastro가 version 2가 된 것을 확인할 수 있다.</p>
-
-<p><img src="/assets/2020-03-15-04/3.png" alt="" /></p>
+<p><img src="/assets/2020-03-15-01/2-2.png" alt="" /></p>
 
 <p><br /></p>
 
-<h2 id="docker-desktop-설치">Docker desktop 설치</h2>
+<p><strong>설치가 완료되면 일반 Window용 Program 처럼 실행이 가능(Debian 계열이 익숙하기에 Ubuntu를 설치했다.)</strong></p>
 
-<p>이제 Windows용 Docker Desktop을 설치할 차례다.</p>
-
-<p><img src="/assets/2020-03-15-04/4.png" alt="" /></p>
-
-<p>정식 사이트에서 그냥 다운 받아서 설치하면 된다.</p>
+<p><img src="/assets/2020-03-15-01/3.png" alt="" /></p>
 
 <p><br /></p>
 
-<p>Resource에 WSL INTEGRATION 메뉴에 체크를 해주게 되면, </p>
+<p><img src="/assets/2020-03-15-01/4.png" alt="" /></p>
 
-<p><img src="/assets/2020-03-15-04/5.png" alt="" />
-docker.sock … 드디어 나왔다.</p>
+<p>첫 실행시 일부 설정을 완료하면 아래와 같이 Terminal이 실행된다. 이미 Shell 설정을 한 상태라 순정인 이미지는 아니지만.. (참고차.. 기록)</p>
 
-<p><br /></p>
+<p>과거에 Windows에서 Git을 사용하기 위해, 또 터미널을 사용하기 위해 개인적으로 UX등이 마음에 들진 않지만 불가피하게 별도의 프로그램 등을 설치하여 사용했지만 이제는 Linux 기분을 느끼게 해주는 Terminal 에서<br />
+Lunix용 툴들을 설치해가며 신세계를 경험할 수 있다.!</p>
 
-<p>이제 일반 Linux 환경에서 Docker를 사용하는 것 처럼 그냥 사용하면 된다.!</p>
 
 </article>
 
 
 
 <section class="tags">
-  <strong>Tags:</strong> <a href="/tag/WSL2">WSL2</a>,&nbsp;<a href="/tag/docker">docker</a>
+  <strong>Tags:</strong> <a href="/tag/WSL">WSL</a>,&nbsp;<a href="/tag/Windows10">Windows10</a>
 </section>
 
 

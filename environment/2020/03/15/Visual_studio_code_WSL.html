@@ -6,8 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Github sshkey로 계정 연결하기</title>
-  <meta name="description" content="Github sshkey로 계정 연결하기">
+  <title>Visual studio code + WSL</title>
+  <meta name="description" content="Windows 10 바탕에 WSL 기반으로 개발 환경을 셋팅하고, 본격적 사용을 하다보면 불편한 점이 바로 나타난다.">
   
   <meta name="author" content="absyun">
   <meta name="copyright" content="&copy; absyun 2020">
@@ -32,7 +32,7 @@
 
   <!-- Site styles -->
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="absyun.github.io/environment/2020/03/15/02.html">
+  <link rel="canonical" href="absyun.github.io/environment/2020/03/15/Visual_studio_code_WSL.html">
 	<link rel="alternate" type="application/rss+xml" title="별거있나" href="absyun.github.io/feed.xml" />
 	
 	<!-- Tooltips -->
@@ -133,7 +133,7 @@
 <div class="post-header-container " >
   <div class="scrim ">
     <header class="post-header">
-      <h1 class="title">Github sshkey로 계정 연결하기</h1>
+      <h1 class="title">Visual studio code + WSL</h1>
       <p class="info">by <strong></strong></p>
     </header>
   </div>
@@ -159,82 +159,65 @@
 </section>
 
 <article class="post-content">
-  <h1 id="github-sshkey로-계정-연결하기">Github sshkey로 계정 연결하기</h1>
+  <p>Windows 10 바탕에 WSL 기반으로 개발 환경을 셋팅하고, 본격적 사용을 하다보면 불편한 점이 바로 나타난다.</p>
 
-<p>SSH-key를 이용해서 git-repo 사용하기…</p>
+<p>Linux 환경에서의 GUI 환경 부재다. 물론 vi 로 “모든 걸 다 할 수 있어!” 라고 주장하시는 분들이라면 뭐… 딱히 공감을 못할지도 모르겠지만, 자고로… 개발자들은 기술, 문명의 발전… 을 흡수할 수도 있어야하는 것이 아닌가 라는 측면에서 필자는 새로운 Tool들의 장점… 그로부터 오는 생산성을 받아들어야한다고 생각하는 입장이다.</p>
 
-<p>Github을 사용하다보면 보면 username, password를 계속 입력하기 싫어서 config에 Setting하게 되는 데, 이보다 더 안정적으로 매번 password를 입력하는 불편함 없이 사용하기 위해 ssh-key를 이용해서 설정하는 방법을 기록해둔다.</p>
+<p>당장 GUI가 되지 않으면 바로 IDE 사용이 힘들어진다.</p>
 
-<h3 id="ssh-key-생성">ssh-key 생성</h3>
+<p>Windows 환경에서 동작하는 IDE는 기본적으로 WSL상의 File system에서 기본적으로 접근이 되지 않는 것이 문제이다.</p>
 
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$&gt;</span> ssh-keygen
-</code></pre></div></div>
-
-<p>명령을 수행하면 Key이름을 설정할 수 있고 (하지 않을 경우 id_rsa로 생성) passphrase <a href="https://www.ssh.com/ssh/passphrase">https://www.ssh.com/ssh/passphrase</a>는 private key의 유출 및 탈취 상황을 대비하기 위해 encryption 하는 방식인데, 여기선 입력하지 않는 걸로…<br />
-키를 생성하게 되면 $HOME 밑에 .ssh/ 아래에 id_rsa, id_rsa.pub (다른 이름을 입력했을 경우 해당 이름) 키가 생성된다.</p>
-
-<p><img src="/assets/2020-03-15-02/2.png" alt="" /></p>
-
-<p>생성된 Public key, Private key는 항상 세트로 움직여야하고<br />
-Public key는 이름 답게 외부에 Open하는 키 이다. SSH로 접속할 서버에 보통 등록을 해두게 되고, 그에 대응하는 Private key는 절대 유출되어서는 안되며, Public key를 등록해놓은 곳에 접속할 때 자신을 인증하는 용도로 사용되어 진다.</p>
-
-<p>그럼 이제 이 Public key를 Github에 먼저 등록하러 가보자.</p>
+<p>이를 해결하기 위해 몇가지 시도를 해보았고, 그 내용을 공유하고자 한다.</p>
 
 <p><br /></p>
 
-<h2 id="github에-public-key-등록하기">Github에 Public key 등록하기</h2>
+<h2 id="1-xming의-이용">1. Xming의 이용</h2>
 
-<p><img src="/assets/2020-03-15-02/1.png" alt="" /></p>
+<p>디스플레이 서버를 이용해서 Linux terminal에서 GUI 프로그램을 실행하게 되면, Windows 측에서 창을 하나 띄워주는 방법이 있다. 하지만 이는 해상도나 성능면에서 개인적으로 만족스럽지 못했다. 환경을 구성했다가 만족 못했기에 특별히 기록을 남기진 않았지만… 필요하신 분은 구글링을 통하면 쉽게 구축이 가능하실 것이다.</p>
 
-<p>위의 계정내 Settings로 진입하게 되면 “SSH and GPG Keys”<br />
-에서 New SSH key를 입력한다음, Public key의 내용을 복사해서 입력하면 된다.</p>
+<p><br /></p>
 
-<p>cat ./id_rsa.pub</p>
+<h2 id="2-wsl에서-windows-폴더에-접근해서-사용하는-방식">2. WSL에서 Windows 폴더에 접근해서 사용하는 방식</h2>
+
+<p>Windows file system에서 workspace를 하나 만들고,WSL에서 이에 접근(/mnt/c)이 가능하므로 여기서 Linux 관련 명령(Git이나 빌드)를 수행한다. 해당 Directory는 Windows file system에 존재하기에 Windows용 IDE 역시 접근이 가능하다.<br />
+다만 실제로 사용해보면 파일 권한 문제등으로 인해 WSL에서의 사용이 불만족스러웠다.</p>
+
+<p><br /></p>
+
+<h2 id="3-visual-studio-code-plugin-활용">3. Visual studio code plugin 활용</h2>
+
+<p>실제로 VSCODE를 사용하지 않는 사람에게는 의미 없는 방법일 수 있지만, 주력 IDE로 사용하는 필자에게는 최고의 Plugin 중 하나이다.</p>
+
+<p><img src="/assets/2020-03-15-03/1.png" alt="" /></p>
+
+<p>설치를 하게 되면 왼쪽 하단에 초록색 아이콘을 클릭하게 되면 WSL 모드로 VSCODE를 실행 시킬 수 있다.</p>
+
+<p><br /></p>
 
 <ul>
-  <li>등록된 상태<br />
-<img src="/assets/2020-03-15-02/3.png" alt="" /></li>
+  <li>WSL 모드로 실행되면 왼쪽 아래와 같이 표시
+<img src="/assets/2020-03-15-03/2.png" alt="" /></li>
 </ul>
 
-<p><br /></p>
-
-<h2 id="ssh-config-설정">ssh config 설정</h2>
-
-<p>$HOME 아래에 .ssh directory 밑에 config파일 설정을 해야한다.</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Host github.com
-HostName github.com
-User Username
-IdentityFile /home/someuser/.ssh/id_rsa
-
-Host github.com
-HostName github.com
-User Username2
-IdentityFile /home/someuser/.ssh/id2_rsa
-</code></pre></div></div>
-
-<p>위와 같이 설정하게 되면 ssh로 github.com 도메인으로 접속할 경우<br />
-설정된 IdentitiFile (key)와 User ID를 이용해서 로그인을 하게 된다. 보는 바와 같이 Username을 다르게 해서 User에 따라 키를 다르게 사용할 수도 있고, Repo를 Github, Gitlab 어느 host로 접속하게 되는 가에 따라 다른 키를 자동으로 매핑되도록 관리해줄 수 있다.</p>
+<p>이제 Folder를 open하게 되면 기존과 달리 Windows의 탐색기 창이 뜨지 않고, 아래와 같이 WSL 내부 Directory 구조가 나타나고 원하는 위치의 파일을 열 수 있게 된다.</p>
 
 <p><br /></p>
 
-<h2 id="git-repo">Git repo</h2>
+<p><img src="/assets/2020-03-15-03/3.png" alt="" /></p>
 
-<p><img src="/assets/2020-03-15-02/4.png" alt="" /></p>
+<p>추가로 VSCODE 내부의 터미널 또한… WSL 기반의 터미널로 동작하게 된다!</p>
 
-<p>Git에서 Repo를 Clone할때 SSH를 이용해서 Clone을 하자.<br />
-Clone 후 해당 Repo에 .git/config 파일을 살펴보면,<br />
-[remote] 에 https로 되어있으면, push를 할 때 ssh로 설정으로 동작되지 않을 수 있기 때문에 ssh 주소를 사용하자,<br />
-참고로 ssh config에 Multiuser를 설정해 놓을 경우 각 Repo 안에 어떤 User의 정보를 사용할지를 판단할 수 있는 정보가 들어있다.</p>
+<p><br /></p>
 
-<h3 id="이제-password-입력-불편함-없이-사용하면-된다">이제 Password 입력 불편함 없이 사용하면 된다.!</h3>
+<p><img src="/assets/2020-03-15-03/4.png" alt="" />
+더이상 Mac이 부럽지 않다 ㅠㅠ</p>
 
 </article>
 
 
 
 <section class="tags">
-  <strong>Tags:</strong> <a href="/tag/Github">Github</a>
+  <strong>Tags:</strong> <a href="/tag/WSL">WSL</a>,&nbsp;<a href="/tag/vscode">vscode</a>
 </section>
 
 
