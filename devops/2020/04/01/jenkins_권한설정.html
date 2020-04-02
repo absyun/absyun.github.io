@@ -6,8 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Github sshkey로 계정 연결하기</title>
-  <meta name="description" content="Github sshkey로 계정 연결하기">
+  <title>Jenkins OIDC로 인증 연결하기</title>
+  <meta name="description" content="Jenkins">
   
   <meta name="author" content="absyun">
   <meta name="copyright" content="&copy; absyun 2020">
@@ -32,7 +32,7 @@
 
   <!-- Site styles -->
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="absyun.github.io/environment/2020/03/15/Github_sshkey%EB%A1%9C_%EA%B3%84%EC%A0%95_%EC%97%B0%EA%B2%B0%ED%95%98%EA%B8%B0.html">
+  <link rel="canonical" href="absyun.github.io/devops/2020/04/01/jenkins_%EA%B6%8C%ED%95%9C%EC%84%A4%EC%A0%95.html">
 	<link rel="alternate" type="application/rss+xml" title="별거있나" href="absyun.github.io/feed.xml" />
 	
 	<!-- Tooltips -->
@@ -137,7 +137,7 @@
 <div class="post-header-container " >
   <div class="scrim ">
     <header class="post-header">
-      <h1 class="title">Github sshkey로 계정 연결하기</h1>
+      <h1 class="title">Jenkins OIDC로 인증 연결하기</h1>
       <p class="info">by <strong></strong></p>
     </header>
   </div>
@@ -152,93 +152,95 @@
  
 
 <section class="post-meta">
-  <div class="post-date">March 15, 2020</div>
+  <div class="post-date">April 1, 2020</div>
   <div class="post-categories">
   in 
     
-    <a href="/category/Environment">Environment</a>
+    <a href="/category/Devops">Devops</a>
     
   
   </div>
 </section>
 
 <article class="post-content">
-  <h1 id="github-sshkey로-계정-연결하기">Github sshkey로 계정 연결하기</h1>
+  <h1 id="jenkins">Jenkins</h1>
 
-<p>SSH-key를 이용해서 git-repo 사용하기…</p>
+<p>엄청 유명한.. CICD로 많이 사용되는 툴이다, 하지만 CICD라는 용어와 개념을 접해보지 못한 사람에게는 생소할 것이다.
+CICD는 Continuous Integration / Continuous Delivery의 약어로, 새롭게 업데이트되는 코드들이 지속적으로 산출물로 자동 완성되는 개념(CI)와 User에게 끊임없이 전달되는 새로운, 개선된 서비스들을 칭하는 의미(CD)로 Devops라는 문화와 맞물려 빌드 파이브라인이라는 용어로도 많이 사용된다.</p>
 
-<p>Github을 사용하다보면 보면 username, password를 계속 입력하기 싫어서 config에 Setting하게 되는 데, 이보다 더 안정적으로 매번 password를 입력하는 불편함 없이 사용하기 위해 ssh-key를 이용해서 설정하는 방법을 기록해둔다.</p>
+<p>Github에서 제공하는 Circle CI, Travis CI 등 많은 관련 기능을 위한 다른 훌륭한 툴들 또한 존재한다.</p>
 
-<h3 id="ssh-key-생성">ssh-key 생성</h3>
+<p>필자는 개인적으로 CICD외에도 많은 자동화에 Jenkins를 즐겨 사용한다.
+궁극적으로 Jenkins라는 툴은 굉장한 Generic하게 정해진 Job(Code, Action)을 원하는 조건과 상황에서 실행되도록 해준다. 이에 다양한 Plugin과의 조합으로 Input UI 또한 화려하진 않지만 부족하지 않게 활용이 가능하다.</p>
 
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$&gt;</span> ssh-keygen
-</code></pre></div></div>
+<p>이번에는 팀내에서 많은 개발자들과 함께 사용하는 Jenkins의 계정을 외부 OIDC와 연결해서 관리하는 방법을 기록해두고자 한다.</p>
 
-<p>명령을 수행하면 Key이름을 설정할 수 있고 (하지 않을 경우 id_rsa로 생성) passphrase <a href="https://www.ssh.com/ssh/passphrase">https://www.ssh.com/ssh/passphrase</a>는 private key의 유출 및 탈취 상황을 대비하기 위해 encryption 하는 방식인데, 여기선 입력하지 않는 걸로…<br />
-키를 생성하게 되면 $HOME 밑에 .ssh/ 아래에 id_rsa, id_rsa.pub (다른 이름을 입력했을 경우 해당 이름) 키가 생성된다.</p>
+<p>자체적으로 셋업이 가능한 Keycloak을 이용해서 연결할 예정이며, 이러한 방식은 사내에서 ID Provider를 하나 셋팅해두고 여기에 Jenkins를 포함한 많은 Tool들을 연결함으로써 하나의 계정관리 포인트에서 모든 사내 서비스의 계정들을 통합관리를 할 수 있는 모델로 발전 시키는 시작점이 될 수 있다.</p>
 
-<p><img src="/assets/2020-03-15-02/2.png" alt="" /></p>
+<h1 id="keycloak-준비">Keycloak 준비</h1>
+<p>먼저 Keycloak를 Setup해야하는 데, 이는 아래 포스트에 정리해두었다.
+<br />
+<a href="/development/2020/03/18/OIDC_Login_%EA%B5%AC%ED%98%84%ED%95%B4%EB%B3%B4%EA%B8%B0_Part-1.html">OIDC_Login_구현해보기_Part-1</a></p>
 
-<p>생성된 Public key, Private key는 항상 세트로 움직여야하고<br />
-Public key는 이름 답게 외부에 Open하는 키 이다. SSH로 접속할 서버에 보통 등록을 해두게 되고, 그에 대응하는 Private key는 절대 유출되어서는 안되며, Public key를 등록해놓은 곳에 접속할 때 자신을 인증하는 용도로 사용되어 진다.</p>
+<h1 id="jenkins-setup">Jenkins setup</h1>
+<p>Jenkins의 설치 자체는 OS별로 다양한 설명이 잘되어있다. (찾아보면 너무 많이 나와서 생략하겠다.)</p>
 
-<p>그럼 이제 이 Public key를 Github에 먼저 등록하러 가보자.</p>
+<p>설치가 완료되면 첫 화면은 아래와 같다.</p>
 
-<p><br /></p>
+<p><img src="/assets/2020-04-03-01/1.PNG" alt="" /></p>
 
-<h2 id="github에-public-key-등록하기">Github에 Public key 등록하기</h2>
+<p>맨 먼저 OIDC를 위한 Plugin을 설치해보자
+<img src="/assets/2020-04-03-01/3.PNG" alt="" />
+Plugin의 설치가능 항목 중에 OpenId Connet Authentication을 설치하도록 하자.
+<img src="/assets/2020-04-03-01/4.PNG" alt="" />
+설치 후 Jenkins가 Restart되고 나면 관리 메뉴 중 Configure Global Security를 들어가보자
+<img src="/assets/2020-04-03-01/2.PNG" alt="" />
+정상적으로 해당 Plugin이 설치가 되었다면…
+아래와 같은 메뉴가 생겼을 것이다.
+<img src="/assets/2020-04-03-01/5.PNG" alt="" /></p>
 
-<p><img src="/assets/2020-03-15-02/1.png" alt="" /></p>
+<p>이제 OIDC를 연결할 Provider 값을 설정해주면 된다.
+우리는 여기에 Keycloak을 연결할 것이다.
+Security Realm에 <em>Login with Openid Connect</em> 를 선택해주고,
+Keycloak에 생성해둔 client 값을 등록하도록 하자.</p>
 
-<p>위의 계정내 Settings로 진입하게 되면 “SSH and GPG Keys”<br />
-에서 New SSH key를 입력한다음, Public key의 내용을 복사해서 입력하면 된다.</p>
+<p><img src="/assets/2020-04-03-01/6.PNG" alt="" />
+필자는 위와 같이 Keycloak에 준비해두었다. 앞서 OIDC 구현하기 Part1과 동일하게 셋업을 해두었다.
+Valid Redirect URL은 Jenkins의 Url을 입력해둠으로써 User가 인증된 후 code가 전달될 수 있는 주소를 허용하는 개념이다.</p>
 
-<p>cat ./id_rsa.pub</p>
+<p><img src="/assets/2020-04-03-01/7.PNG" alt="" />
+Credential 항목에서는 Secret 값을 가져올 수 있다. Jenkins의 client id와 같이 입력하도록 하자.</p>
 
-<ul>
-  <li>등록된 상태<br />
-<img src="/assets/2020-03-15-02/3.png" alt="" /></li>
-</ul>
+<p><img src="/assets/2020-04-03-01/8.PNG" alt="" />
+다음 OIDC protocal에 맞춰 Provider측의 endpoint들의 값을 보기 위해 Keycloak Realm Settings의 OpenID Endpoint Configuration을 보자
+<img src="/assets/2020-04-03-01/15.PNG" alt="" /></p>
 
-<p><br /></p>
+<p>여기서 입력해야할 값들인 
+“Token server url” ,”Authorization server url”, “UserInfo server url” 들을 얻을 수 있다.</p>
 
-<h2 id="ssh-config-설정">ssh config 설정</h2>
+<p>이 값들의 의미와 어떻게 사용되며 왜 필요한 지는 지난 Post인 OIDC login 구현하기를 참조하면 알 수 있다. 실제로 해당 Plugin도 거의 동일한 방식으로 구현되어있음을 짐작할 수 있다.</p>
 
-<p>$HOME 아래에 .ssh directory 밑에 config파일 설정을 해야한다.</p>
+<p>값들을 채워넣었으면 이제 jenkins를 restart 해보자
+<img src="/assets/2020-04-03-01/16.PNG" alt="" /></p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Host github.com
-HostName github.com
-User Username
-IdentityFile /home/someuser/.ssh/id_rsa
+<p>Url 뒤에 restart path를 입력하면 된다.
+<img src="/assets/2020-04-03-01/10.PNG" alt="" /></p>
 
-Host github.com
-HostName github.com
-User Username2
-IdentityFile /home/someuser/.ssh/id2_rsa
-</code></pre></div></div>
+<p>이제 Jenkins 로그인화면이 변경된 것을 확인할 수 있다.
+<img src="/assets/2020-04-03-01/11.PNG" alt="" /></p>
 
-<p>위와 같이 설정하게 되면 ssh로 github.com 도메인으로 접속할 경우<br />
-설정된 IdentitiFile (key)와 User ID를 이용해서 로그인을 하게 된다. 보는 바와 같이 Username을 다르게 해서 User에 따라 키를 다르게 사용할 수도 있고, Repo를 Github, Gitlab 어느 host로 접속하게 되는 가에 따라 다른 키를 자동으로 매핑되도록 관리해줄 수 있다.</p>
+<p>아래와 같이 User를 Keycloak에서 추가 / 관리하고 이 계정을 이용해서 Jenkins를 사용하면 된다.
+<img src="/assets/2020-04-03-01/12.PNG" alt="" /></p>
 
-<p><br /></p>
-
-<h2 id="git-repo">Git repo</h2>
-
-<p><img src="/assets/2020-03-15-02/4.png" alt="" /></p>
-
-<p>Git에서 Repo를 Clone할때 SSH를 이용해서 Clone을 하자.<br />
-Clone 후 해당 Repo에 .git/config 파일을 살펴보면,<br />
-[remote] 에 https로 되어있으면, push를 할 때 ssh로 설정으로 동작되지 않을 수 있기 때문에 ssh 주소를 사용하자,<br />
-참고로 ssh config에 Multiuser를 설정해 놓을 경우 각 Repo 안에 어떤 User의 정보를 사용할지를 판단할 수 있는 정보가 들어있다.</p>
-
-<h3 id="이제-password-입력-불편함-없이-사용하면-된다">이제 Password 입력 불편함 없이 사용하면 된다.!</h3>
+<p>개인적으로 OIDC는 굉장히 유용한 Protocal이라고 생각한다.
+요즘 계정을 관리하는 별도의 툴에서 OIDC나 OAuth2를 지원해주기 때문에 툴들은 본연의 기능에 충실하고, 계정관리는 단순히 User의 정보를 건네받아 권한만 부여하는 방식으로 관리를 하게 되면 맴버 추가나 제거시에도 Provider에서만 수정을 해주어도 모든 계정을 사용하는 시스템에 반영이 되는 등 중앙관리 형태가될 수 있기 때문에 유지보수가 편리해짐을 느낄 수 있다.</p>
 
 </article>
 
 
 
 <section class="tags">
-  <strong>Tags:</strong> <a href="/tag/Github">Github</a>
+  <strong>Tags:</strong> <a href="/tag/jenkins">jenkins</a>,&nbsp;<a href="/tag/oidc">oidc</a>
 </section>
 
 
