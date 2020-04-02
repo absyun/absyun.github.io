@@ -109,8 +109,6 @@
 
 	
 
-	
-
 
       </ul>
     </nav>
@@ -232,6 +230,15 @@ Credential 항목에서는 Secret 값을 가져올 수 있다. Jenkins의 client
 <p>아래와 같이 User를 Keycloak에서 추가 / 관리하고 이 계정을 이용해서 Jenkins를 사용하면 된다.
 <img src="/assets/2020-04-03-01/12.PNG" alt="" /></p>
 
+<blockquote>
+  <p>OIDC 연결 후 설정이 잘못되어 Jenkins사용이 불가능할 때…
+<br />
+Ubuntu linux 기준 /var/lib/jenkins/config.xml
+<br />
+파일시스템 내부에 config.xml에서 위 UI를 통해서 설정했던 값들을 직접 수정할 수 있다.
+설정을 수정하고 다시 Jenkins를 실행하면 수동으로 복구가 가능하다.</p>
+</blockquote>
+
 <p>개인적으로 OIDC는 굉장히 유용한 Protocal이라고 생각한다.
 요즘 계정을 관리하는 별도의 툴에서 OIDC나 OAuth2를 지원해주기 때문에 툴들은 본연의 기능에 충실하고, 계정관리는 단순히 User의 정보를 건네받아 권한만 부여하는 방식으로 관리를 하게 되면 맴버 추가나 제거시에도 Provider에서만 수정을 해주어도 모든 계정을 사용하는 시스템에 반영이 되는 등 중앙관리 형태가될 수 있기 때문에 유지보수가 편리해짐을 느낄 수 있다.</p>
 
@@ -312,8 +319,6 @@ s.setAttribute('data-timestamp', +new Date());
 
 	
 	<li class="nav-link"><a href="/posts/">Posts</a>
-	
-
 	
 
 	
