@@ -6,9 +6,25 @@
 </description>
     <link>absyun.github.io/</link>
     <atom:link href="absyun.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 31 Mar 2020 11:15:39 +0900</pubDate>
-    <lastBuildDate>Tue, 31 Mar 2020 11:15:39 +0900</lastBuildDate>
+    <pubDate>Thu, 02 Apr 2020 20:28:25 +0900</pubDate>
+    <lastBuildDate>Thu, 02 Apr 2020 20:28:25 +0900</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>Jenkins OIDC로 인증 연결하기</title>
+        <description>&lt;h1 id=&quot;jenkins&quot;&gt;Jenkins&lt;/h1&gt; &lt;p&gt;엄청 유명한.. CICD로 많이 사용되는 툴이다, 하지만 CICD라는 용어와 개념을 접해보지 못한 사람에게는 생소할 것이다. CICD는 Continuous Integration / Continuous Delivery의 약어로, 새롭게 업데이트되는 코드들이 지속적으로 산출물로 자동...</description>
+        <pubDate>Wed, 01 Apr 2020 23:07:00 +0900</pubDate>
+        <link>absyun.github.io/devops/2020/04/01/OIDC_jenkins_%EC%97%B0%EA%B2%B0.html</link>
+        <guid isPermaLink="true">absyun.github.io/devops/2020/04/01/OIDC_jenkins_%EC%97%B0%EA%B2%B0.html</guid>
+        
+        <category>jenkins</category>
+        
+        <category>oidc</category>
+        
+        
+        <category>Devops</category>
+        
+      </item>
     
       <item>
         <title>Serverless AWS Lambda</title>

@@ -6,8 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Visual studio code + WSL</title>
-  <meta name="description" content="Windows 10 바탕에 WSL 기반으로 개발 환경을 셋팅하고, 본격적 사용을 하다보면 불편한 점이 바로 나타난다.">
+  <title>Jenkins OIDC로 인증 연결하기</title>
+  <meta name="description" content="Jenkins">
   
   <meta name="author" content="absyun">
   <meta name="copyright" content="&copy; absyun 2020">
@@ -32,7 +32,7 @@
 
   <!-- Site styles -->
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="absyun.github.io/environment/2020/03/15/Visual_studio_code_WSL.html">
+  <link rel="canonical" href="absyun.github.io/devops/2020/04/01/OIDC_jenkins_%EC%97%B0%EA%B2%B0.html">
 	<link rel="alternate" type="application/rss+xml" title="별거있나" href="absyun.github.io/feed.xml" />
 	
 	<!-- Tooltips -->
@@ -135,7 +135,7 @@
 <div class="post-header-container " >
   <div class="scrim ">
     <header class="post-header">
-      <h1 class="title">Visual studio code + WSL</h1>
+      <h1 class="title">Jenkins OIDC로 인증 연결하기</h1>
       <p class="info">by <strong></strong></p>
     </header>
   </div>
@@ -150,76 +150,94 @@
  
 
 <section class="post-meta">
-  <div class="post-date">March 15, 2020</div>
+  <div class="post-date">April 1, 2020</div>
   <div class="post-categories">
   in 
     
-    <a href="/category/Environment">Environment</a>
+    <a href="/category/Devops">Devops</a>
     
   
   </div>
 </section>
 
 <article class="post-content">
-  <p>Windows 10 바탕에 WSL 기반으로 개발 환경을 셋팅하고, 본격적 사용을 하다보면 불편한 점이 바로 나타난다.</p>
+  <h1 id="jenkins">Jenkins</h1>
 
-<p>Linux 환경에서의 GUI 환경 부재다. 물론 vi 로 “모든 걸 다 할 수 있어!” 라고 주장하시는 분들이라면 뭐… 딱히 공감을 못할지도 모르겠지만, 자고로… 개발자들은 기술, 문명의 발전… 을 흡수할 수도 있어야하는 것이 아닌가 라는 측면에서 필자는 새로운 Tool들의 장점… 그로부터 오는 생산성을 받아들어야한다고 생각하는 입장이다.</p>
+<p>엄청 유명한.. CICD로 많이 사용되는 툴이다, 하지만 CICD라는 용어와 개념을 접해보지 못한 사람에게는 생소할 것이다.
+CICD는 Continuous Integration / Continuous Delivery의 약어로, 새롭게 업데이트되는 코드들이 지속적으로 산출물로 자동 완성되는 개념(CI)와 User에게 끊임없이 전달되는 새로운, 개선된 서비스들을 칭하는 의미(CD)로 Devops라는 문화와 맞물려 빌드 파이브라인이라는 용어로도 많이 사용된다.</p>
 
-<p>당장 GUI가 되지 않으면 바로 IDE 사용이 힘들어진다.</p>
+<p>Github에서 제공하는 Circle CI, Travis CI 등 많은 관련 기능을 위한 다른 훌륭한 툴들 또한 존재한다.</p>
 
-<p>Windows 환경에서 동작하는 IDE는 기본적으로 WSL상의 File system에서 기본적으로 접근이 되지 않는 것이 문제이다.</p>
+<p>필자는 개인적으로 CICD외에도 많은 자동화에 Jenkins를 즐겨 사용한다.
+궁극적으로 Jenkins라는 툴은 굉장한 Generic하게 정해진 Job(Code, Action)을 원하는 조건과 상황에서 실행되도록 해준다. 이에 다양한 Plugin과의 조합으로 Input UI 또한 화려하진 않지만 부족하지 않게 활용이 가능하다.</p>
 
-<p>이를 해결하기 위해 몇가지 시도를 해보았고, 그 내용을 공유하고자 한다.</p>
+<p>이번에는 팀내에서 많은 개발자들과 함께 사용하는 Jenkins의 계정을 외부 OIDC와 연결해서 관리하는 방법을 기록해두고자 한다.</p>
 
-<p><br /></p>
+<p>자체적으로 셋업이 가능한 Keycloak을 이용해서 연결할 예정이며, 이러한 방식은 사내에서 ID Provider를 하나 셋팅해두고 여기에 Jenkins를 포함한 많은 Tool들을 연결함으로써 하나의 계정관리 포인트에서 모든 사내 서비스의 계정들을 통합관리를 할 수 있는 모델로 발전 시키는 시작점이 될 수 있다.</p>
 
-<h2 id="1-xming의-이용">1. Xming의 이용</h2>
+<h1 id="keycloak-준비">Keycloak 준비</h1>
+<p>먼저 Keycloak를 Setup해야하는 데, 이는 아래 포스트에 정리해두었다.
+<br />
+<a href="/development/2020/03/18/OIDC_Login_%EA%B5%AC%ED%98%84%ED%95%B4%EB%B3%B4%EA%B8%B0_Part-1.html">OIDC_Login_구현해보기_Part-1</a></p>
 
-<p>디스플레이 서버를 이용해서 Linux terminal에서 GUI 프로그램을 실행하게 되면, Windows 측에서 창을 하나 띄워주는 방법이 있다. 하지만 이는 해상도나 성능면에서 개인적으로 만족스럽지 못했다. 환경을 구성했다가 만족 못했기에 특별히 기록을 남기진 않았지만… 필요하신 분은 구글링을 통하면 쉽게 구축이 가능하실 것이다.</p>
+<h1 id="jenkins-setup">Jenkins setup</h1>
+<p>Jenkins의 설치 자체는 OS별로 다양한 설명이 잘되어있다. (찾아보면 너무 많이 나와서 생략하겠다.)</p>
 
-<p><br /></p>
+<p>설치가 완료되면 첫 화면은 아래와 같다.</p>
 
-<h2 id="2-wsl에서-windows-폴더에-접근해서-사용하는-방식">2. WSL에서 Windows 폴더에 접근해서 사용하는 방식</h2>
+<p><img src="/assets/2020-04-03-01/1.PNG" alt="" /></p>
 
-<p>Windows file system에서 workspace를 하나 만들고,WSL에서 이에 접근(/mnt/c)이 가능하므로 여기서 Linux 관련 명령(Git이나 빌드)를 수행한다. 해당 Directory는 Windows file system에 존재하기에 Windows용 IDE 역시 접근이 가능하다.<br />
-다만 실제로 사용해보면 파일 권한 문제등으로 인해 WSL에서의 사용이 불만족스러웠다.</p>
+<p>맨 먼저 OIDC를 위한 Plugin을 설치해보자
+<img src="/assets/2020-04-03-01/3.PNG" alt="" />
+Plugin의 설치가능 항목 중에 OpenId Connet Authentication을 설치하도록 하자.
+<img src="/assets/2020-04-03-01/4.PNG" alt="" />
+설치 후 Jenkins가 Restart되고 나면 관리 메뉴 중 Configure Global Security를 들어가보자
+<img src="/assets/2020-04-03-01/2.PNG" alt="" />
+정상적으로 해당 Plugin이 설치가 되었다면…
+아래와 같은 메뉴가 생겼을 것이다.
+<img src="/assets/2020-04-03-01/5.PNG" alt="" /></p>
 
-<p><br /></p>
+<p>이제 OIDC를 연결할 Provider 값을 설정해주면 된다.
+우리는 여기에 Keycloak을 연결할 것이다.
+Security Realm에 <em>Login with Openid Connect</em> 를 선택해주고,
+Keycloak에 생성해둔 client 값을 등록하도록 하자.</p>
 
-<h2 id="3-visual-studio-code-plugin-활용">3. Visual studio code plugin 활용</h2>
+<p><img src="/assets/2020-04-03-01/6.PNG" alt="" />
+필자는 위와 같이 Keycloak에 준비해두었다. 앞서 OIDC 구현하기 Part1과 동일하게 셋업을 해두었다.</p>
 
-<p>실제로 VSCODE를 사용하지 않는 사람에게는 의미 없는 방법일 수 있지만, 주력 IDE로 사용하는 필자에게는 최고의 Plugin 중 하나이다.</p>
+<p><img src="/assets/2020-04-03-01/7.PNG" alt="" />
+Credential 항목에서는 Secret 값을 가져올 수 있다. Jenkins의 client id에 입력하도록 하자.</p>
 
-<p><img src="/assets/2020-03-15-03/1.png" alt="" /></p>
+<p><img src="/assets/2020-04-03-01/8.PNG" alt="" />
+다음 OIDC protocal에 맞춰 Provider측의 endpoint들의 값을 보기 위해 Keycloak Realm Settings의 OpenID Endpoint Configuration을 보자
+<img src="/assets/2020-04-03-01/15.PNG" alt="" /></p>
 
-<p>설치를 하게 되면 왼쪽 하단에 초록색 아이콘을 클릭하게 되면 WSL 모드로 VSCODE를 실행 시킬 수 있다.</p>
+<p>여기서 입력해야할 값들인 
+“Token server url” ,”Authorization server url”, “UserInfo server url” 들을 얻을 수 있다.</p>
 
-<p><br /></p>
+<p>이 값들의 의미와 어떻게 사용되며 왜 필요한 지는 지난 칼럼인 OIDC login 구현하기를 참조하면 알 수 있다. 실제로 해당 Plugin도 거의 동일한 방식으로 구현되어있음을 짐작할 수 있다.</p>
 
-<ul>
-  <li>WSL 모드로 실행되면 왼쪽 아래와 같이 표시
-<img src="/assets/2020-03-15-03/2.png" alt="" /></li>
-</ul>
+<p>값들을 채워넣었으면 이제 jenkins를 restart 해보자
+<img src="/assets/2020-04-03-01/16.PNG" alt="" /></p>
 
-<p>이제 Folder를 open하게 되면 기존과 달리 Windows의 탐색기 창이 뜨지 않고, 아래와 같이 WSL 내부 Directory 구조가 나타나고 원하는 위치의 파일을 열 수 있게 된다.</p>
+<p>Url 뒤에 restart path를 입력하면 된다.
+<img src="/assets/2020-04-03-01/10.PNG" alt="" /></p>
 
-<p><br /></p>
+<p>이제 Jenkins 로그인화면이 변경된 것을 확인할 수 있다.
+<img src="/assets/2020-04-03-01/11.PNG" alt="" /></p>
 
-<p><img src="/assets/2020-03-15-03/3.png" alt="" /></p>
+<p>아래와 같이 User를 Keycloak에서 추가 / 관리하고 이 계정을 이용해서 Jenkins를 사용하면 된다.
+<img src="/assets/2020-04-03-01/12.PNG" alt="" /></p>
 
-<p>추가로 VSCODE 내부의 터미널 또한… WSL 기반의 터미널로 동작하게 된다!</p>
-
-<p><br /></p>
-
-<p><img src="/assets/2020-03-15-03/4.png" alt="" />
-더이상 Mac이 부럽지 않다 ㅠㅠ</p>
+<p>개인적으로 OIDC는 굉장히 유용한 Protocal이라고 생각한다.
+요즘 계정을 관리하는 별도의 툴에서 OIDC나 OAuth2를 지원해주기 때문에 툴들은 본연의 기능에 충실하고, 계정관리는 단순히 User의 정보를 건네받아 권한만 부여하는 방식으로 관리를 하게 되면 맴버 추가나 제거시에도 Provider에서만 수정을 해주어도 모든 계정을 사용하는 시스템에 반영이 되는 등 중앙관리 형태가될 수 있기 때문에 유지보수가 편리해짐을 느낄 수 있다.</p>
 
 </article>
 
 
 
 <section class="tags">
-  <strong>Tags:</strong> <a href="/tag/WSL">WSL</a>,&nbsp;<a href="/tag/vscode">vscode</a>
+  <strong>Tags:</strong> <a href="/tag/jenkins">jenkins</a>,&nbsp;<a href="/tag/oidc">oidc</a>
 </section>
 
 
