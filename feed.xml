@@ -6,9 +6,25 @@
 </description>
     <link>absyun.github.io/</link>
     <atom:link href="absyun.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 03 Apr 2020 06:27:18 +0900</pubDate>
-    <lastBuildDate>Fri, 03 Apr 2020 06:27:18 +0900</lastBuildDate>
+    <pubDate>Fri, 03 Apr 2020 15:12:37 +0900</pubDate>
+    <lastBuildDate>Fri, 03 Apr 2020 15:12:37 +0900</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>OIDC 인증 Jenkins에 권한 설정하기</title>
+        <description>&lt;h1 id=&quot;jenkins-권한-설정&quot;&gt;Jenkins 권한 설정&lt;/h1&gt; &lt;p&gt;Jenkins 관련 두번째 포스팅이다. 이번에는 권한에 관련된 내용들을 기록하려고 한다. &lt;a href=&quot;/devops/2020/04/01/OIDC_jenkins_%EC%97%B0%EA%B2%B0.html&quot;&gt;앞서 포스팅&lt;/a&gt;에서 Authentication의 한 종류인 OIDC를 이용한 셋팅을 해보았고, 이번에는 Authentication 이후 Authorization에 대한 설정들을...</description>
+        <pubDate>Fri, 03 Apr 2020 11:07:00 +0900</pubDate>
+        <link>absyun.github.io/devops/2020/04/03/jenkins-%EA%B6%8C%ED%95%9C-%EC%84%A4%EC%A0%95.html</link>
+        <guid isPermaLink="true">absyun.github.io/devops/2020/04/03/jenkins-%EA%B6%8C%ED%95%9C-%EC%84%A4%EC%A0%95.html</guid>
+        
+        <category>jenkins</category>
+        
+        <category>oidc</category>
+        
+        
+        <category>Devops</category>
+        
+      </item>
     
       <item>
         <title>Jenkins OIDC로 인증 연결하기</title>
@@ -146,20 +162,6 @@
         <category>WSL</category>
         
         <category>vscode</category>
-        
-        
-        <category>Environment</category>
-        
-      </item>
-    
-      <item>
-        <title>Github sshkey로 계정 연결하기</title>
-        <description>&lt;h1 id=&quot;github-sshkey로-계정-연결하기&quot;&gt;Github sshkey로 계정 연결하기&lt;/h1&gt; &lt;p&gt;SSH-key를 이용해서 git-repo 사용하기…&lt;/p&gt; &lt;p&gt;Github을 사용하다보면 보면 username, password를 계속 입력하기 싫어서 config에 Setting하게 되는 데, 이보다 더 안정적으로 매번 password를 입력하는 불편함 없이 사용하기...</description>
-        <pubDate>Sun, 15 Mar 2020 12:57:43 +0900</pubDate>
-        <link>absyun.github.io/environment/2020/03/15/Github_sshkey%EB%A1%9C_%EA%B3%84%EC%A0%95_%EC%97%B0%EA%B2%B0%ED%95%98%EA%B8%B0.html</link>
-        <guid isPermaLink="true">absyun.github.io/environment/2020/03/15/Github_sshkey%EB%A1%9C_%EA%B3%84%EC%A0%95_%EC%97%B0%EA%B2%B0%ED%95%98%EA%B8%B0.html</guid>
-        
-        <category>Github</category>
         
         
         <category>Environment</category>

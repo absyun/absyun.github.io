@@ -6,8 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Github sshkey로 계정 연결하기</title>
-  <meta name="description" content="Github sshkey로 계정 연결하기">
+  <title>OIDC 인증 Jenkins에 권한 설정하기</title>
+  <meta name="description" content="Jenkins 권한 설정">
   
   <meta name="author" content="absyun">
   <meta name="copyright" content="&copy; absyun 2020">
@@ -32,7 +32,7 @@
 
   <!-- Site styles -->
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="absyun.github.io/environment/2020/03/15/Github_sshkey%EB%A1%9C_%EA%B3%84%EC%A0%95_%EC%97%B0%EA%B2%B0%ED%95%98%EA%B8%B0.html">
+  <link rel="canonical" href="absyun.github.io/devops/2020/04/03/jenkins-%EA%B6%8C%ED%95%9C-%EC%84%A4%EC%A0%95.html">
 	<link rel="alternate" type="application/rss+xml" title="별거있나" href="absyun.github.io/feed.xml" />
 	
 	<!-- Tooltips -->
@@ -137,7 +137,7 @@
 <div class="post-header-container " >
   <div class="scrim ">
     <header class="post-header">
-      <h1 class="title">Github sshkey로 계정 연결하기</h1>
+      <h1 class="title">OIDC 인증 Jenkins에 권한 설정하기</h1>
       <p class="info">by <strong></strong></p>
     </header>
   </div>
@@ -152,93 +152,112 @@
  
 
 <section class="post-meta">
-  <div class="post-date">March 15, 2020</div>
+  <div class="post-date">April 3, 2020</div>
   <div class="post-categories">
   in 
     
-    <a href="/category/Environment">Environment</a>
+    <a href="/category/Devops">Devops</a>
     
   
   </div>
 </section>
 
 <article class="post-content">
-  <h1 id="github-sshkey로-계정-연결하기">Github sshkey로 계정 연결하기</h1>
+  <h1 id="jenkins-권한-설정">Jenkins 권한 설정</h1>
 
-<p>SSH-key를 이용해서 git-repo 사용하기…</p>
+<p>Jenkins 관련 두번째 포스팅이다. 이번에는 권한에 관련된 내용들을 기록하려고 한다.
+<a href="/devops/2020/04/01/OIDC_jenkins_%EC%97%B0%EA%B2%B0.html">앞서 포스팅</a>에서 Authentication의 한 종류인 OIDC를 이용한 셋팅을 해보았고, 이번에는 Authentication 이후 Authorization에 대한 설정들을 정리해보자.</p>
 
-<p>Github을 사용하다보면 보면 username, password를 계속 입력하기 싫어서 config에 Setting하게 되는 데, 이보다 더 안정적으로 매번 password를 입력하는 불편함 없이 사용하기 위해 ssh-key를 이용해서 설정하는 방법을 기록해둔다.</p>
+<p>매우 유사한 단어처럼보이지만 한국어로도 확실히 분리된 개념이다.
+인증, 입증 / 인가, 허가… [인증]은 상대방이 시스템 진입에 허락된 사람입을 입증하는 과정이고, [인가]는 특정 사람에게 어떠한 권한이 허가 되어있느냐에 대한 설정이다.</p>
 
-<h3 id="ssh-key-생성">ssh-key 생성</h3>
+<p>예를 들면 권한 설정에서 A라는 사람에게 1,2,3 이라는 기능 사용이 허락되어있다고 한다면 A라는 사람임을 확인하는 것이 인증이며, 인증 후 그 사람이 기능을 사용하려고 할 때 이 사람에게 해당 기능(1,2,3)이 허가되어있는 지를 확인하는 것의 차이인 것이다.</p>
 
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$&gt;</span> ssh-keygen
-</code></pre></div></div>
+<p>현재 Jenkins가 OIDC로 인증 설정이 되어있는 것을 전제로 
+이번 포스팅은 전적으로 후자에 대한 것임을 고려하고 읽으면 좋다.</p>
 
-<p>명령을 수행하면 Key이름을 설정할 수 있고 (하지 않을 경우 id_rsa로 생성) passphrase <a href="https://www.ssh.com/ssh/passphrase">https://www.ssh.com/ssh/passphrase</a>는 private key의 유출 및 탈취 상황을 대비하기 위해 encryption 하는 방식인데, 여기선 입력하지 않는 걸로…<br />
-키를 생성하게 되면 $HOME 밑에 .ssh/ 아래에 id_rsa, id_rsa.pub (다른 이름을 입력했을 경우 해당 이름) 키가 생성된다.</p>
+<hr />
 
-<p><img src="/assets/2020-03-15-02/2.png" alt="" /></p>
+<h2 id="keycloak-user--group-준비">keycloak User &amp; Group 준비</h2>
 
-<p>생성된 Public key, Private key는 항상 세트로 움직여야하고<br />
-Public key는 이름 답게 외부에 Open하는 키 이다. SSH로 접속할 서버에 보통 등록을 해두게 되고, 그에 대응하는 Private key는 절대 유출되어서는 안되며, Public key를 등록해놓은 곳에 접속할 때 자신을 인증하는 용도로 사용되어 진다.</p>
-
-<p>그럼 이제 이 Public key를 Github에 먼저 등록하러 가보자.</p>
-
-<p><br /></p>
-
-<h2 id="github에-public-key-등록하기">Github에 Public key 등록하기</h2>
-
-<p><img src="/assets/2020-03-15-02/1.png" alt="" /></p>
-
-<p>위의 계정내 Settings로 진입하게 되면 “SSH and GPG Keys”<br />
-에서 New SSH key를 입력한다음, Public key의 내용을 복사해서 입력하면 된다.</p>
-
-<p>cat ./id_rsa.pub</p>
-
-<ul>
-  <li>등록된 상태<br />
-<img src="/assets/2020-03-15-02/3.png" alt="" /></li>
-</ul>
+<p>우선 Keycloak을 좀 더 디테일하게 설정을 해보겠다.
+그룹 단위로 권한을 주기위해 그룹을 만들고…
+<img src="/assets/2020-04-04-01/2.PNG" alt="" />
+테스트용 유저들을 생성한다.
+<img src="/assets/2020-04-04-01/3.PNG" alt="" /></p>
 
 <p><br /></p>
 
-<h2 id="ssh-config-설정">ssh config 설정</h2>
-
-<p>$HOME 아래에 .ssh directory 밑에 config파일 설정을 해야한다.</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Host github.com
-HostName github.com
-User Username
-IdentityFile /home/someuser/.ssh/id_rsa
-
-Host github.com
-HostName github.com
-User Username2
-IdentityFile /home/someuser/.ssh/id2_rsa
-</code></pre></div></div>
-
-<p>위와 같이 설정하게 되면 ssh로 github.com 도메인으로 접속할 경우<br />
-설정된 IdentitiFile (key)와 User ID를 이용해서 로그인을 하게 된다. 보는 바와 같이 Username을 다르게 해서 User에 따라 키를 다르게 사용할 수도 있고, Repo를 Github, Gitlab 어느 host로 접속하게 되는 가에 따라 다른 키를 자동으로 매핑되도록 관리해줄 수 있다.</p>
+<p>유저를 생성 후 그룹에 매핑하는 작업을 선행해주자.
+<img src="/assets/2020-04-04-01/4.PNG" alt="" />
+<img src="/assets/2020-04-04-01/5.PNG" alt="" />
+<img src="/assets/2020-04-04-01/6.PNG" alt="" /></p>
 
 <p><br /></p>
 
-<h2 id="git-repo">Git repo</h2>
+<p>이제 oidc-test client에 로그인할 경우 공유해줄 유저의 정보에 대해서 정의해놓는다.
+Keycloak의 Mappers를 통해서 설정해줄 수 있다.
+Add builtin 항목를 선택하고, 필자의 경우 Email, family name을 지정했다.
+Group 정보는 별도로 create해서 “Group Membership” type으로 설정해주면 된다.
+<img src="/assets/2020-04-04-01/11.PNG" alt="" width="100%" height="100%" /></p>
 
-<p><img src="/assets/2020-03-15-02/4.png" alt="" /></p>
+<p><br /></p>
 
-<p>Git에서 Repo를 Clone할때 SSH를 이용해서 Clone을 하자.<br />
-Clone 후 해당 Repo에 .git/config 파일을 살펴보면,<br />
-[remote] 에 https로 되어있으면, push를 할 때 ssh로 설정으로 동작되지 않을 수 있기 때문에 ssh 주소를 사용하자,<br />
-참고로 ssh config에 Multiuser를 설정해 놓을 경우 각 Repo 안에 어떤 User의 정보를 사용할지를 판단할 수 있는 정보가 들어있다.</p>
+<p>각 항목들의 상세정보이다. 여기서 ‘Token Claim Name’ 값을 봐두자.
+<img src="/assets/2020-04-04-01/9.PNG" alt="" width="100%" height="100%" /></p>
 
-<h3 id="이제-password-입력-불편함-없이-사용하면-된다">이제 Password 입력 불편함 없이 사용하면 된다.!</h3>
+<hr />
+
+<h2 id="jenkins의-oidc-인증시-userinfo-mapping-설정">Jenkins의 OIDC 인증시 UserInfo mapping 설정</h2>
+
+<p>이제 다시 Jenkins로 돌아와서 앞서 OIDC 인증 설정이 되어있는 메뉴… Configure &gt;Global Security &gt; Authentication 의 Advanced 탭을 열어보자.
+인증 후 userInfo를 통해서 얻어오는 값을 매핑하는 설정이 있는 데,
+앞서 확인했던 ‘Token Claim Name’을 맞춰넣으면 된다.
+<img src="/assets/2020-04-04-01/8.PNG" alt="" /></p>
+
+<p>이제 다시 jenkins login 화면에서 앞서 만들어놓은 jenkins_test로 로그인을 해보겠다. 로그인 후 유저 정보를 보면 Group 정보, 사용자 이름 등을 정상적으로 keycloak으로 부터 전달받은 것을 확인할 수 있다.
+<img src="/assets/2020-04-04-01/12.PNG" alt="" /></p>
+
+<hr />
+
+<h2 id="user-group별-실제-권한-설정">User, Group별 실제 권한 설정</h2>
+
+<p>이제 이 Jenkins에서 전달받은 User, Group 정보를 이용해서 권한을 지정해보도록 하자.</p>
+
+<p><img src="/assets/2020-04-04-01/13.PNG" alt="" /></p>
+
+<p>Configure Global Security &gt; Authorization &gt; Matrix-based security
+로 Type을 설정하고, /test1_group(Group), jenkins_test(User)에만 권한을 부여하도록 하자.</p>
+
+<p>이렇게 되면, 최초 Keycloak에 등록했던 User들은 어떻게 될까?</p>
+
+<p>jenkins_test, jenkins_test2, jenkins_test3 중에서
+jenkins_test는 User명 자체로 권한을 부여받았고,
+jenkins_test2는 test1_group이기에 권한을 부여받았다.
+jenkins_test3는 User명으로도 Group명으로도 권한을 받지 못한 케이스가 된다,</p>
+
+<p>그래서 로그인시 아래와 같은 화면이 나타난다.</p>
+
+<p><img src="/assets/2020-04-04-01/14.PNG" alt="" /></p>
+
+<blockquote>
+  <p>혹시라도 설정과정에서 권한 문제로 인해 시스템 편집이 불가능해질 경우
+jenkins의 config.xml (ubuntu의 경우 /var/lib/jenkins/config.xml) 파일의 useSecurity 값을 false로 바꾸면 anyone open으로 초기화 되므로 재설정을 할 수 있다.</p>
+</blockquote>
+
+<hr />
+
+<p>이번 포스팅에서 정리해본 내용은 Matrix에 존재하는 권한들 단위로만 분리할 수 있다는 한계가 있다. 실제 권한 관련해서도 여러 Plugin들이 존재하는 데,
+예를 들어 특정 Job 단위로 권한을 분리하고 싶다면 <em>“Authorize Project”</em> 와 같은 Plugin으로 원하는 셋팅을 할 수 있다.</p>
+
+<p>jenkins를 사용하면 할수록 누군가가 앞서 고민하고 만들어둔 무궁무진한 Plugin들을 이용해서 왠만큼 원하는 것들을 다 충족시킬 수 있음을 느낄 수 있다.</p>
 
 </article>
 
 
 
 <section class="tags">
-  <strong>Tags:</strong> <a href="/tag/Github">Github</a>
+  <strong>Tags:</strong> <a href="/tag/jenkins">jenkins</a>,&nbsp;<a href="/tag/oidc">oidc</a>
 </section>
 
 
