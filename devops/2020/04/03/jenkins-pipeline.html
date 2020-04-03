@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Jenkins 2.0 Pipeline</title>
+  <meta name="description" content="Jenkins 2.0">
+  
+  <meta name="author" content="absyun">
+  <meta name="copyright" content="&copy; absyun 2020">
+  
+
+  <!-- External libraries -->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/monokai-sublime.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/css/lightbox.css">
+
+  <!-- Favicon and other icons (made with http://www.favicon-generator.org/) -->
+  <link rel="manifest" href="/assets/icons/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/assets/icons/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+  
+
+  
+
+  
+
+  <!-- Site styles -->
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="absyun.github.io/devops/2020/04/03/jenkins-pipeline.html">
+	<link rel="alternate" type="application/rss+xml" title="별거있나" href="absyun.github.io/feed.xml" />
+	
+	<!-- Tooltips -->
+	<script type="text/javascript">
+		window.tooltips = []
+	</script>
+</head>
+
+
+  <body>
+
+    <header class="navigation" role="banner">
+  <div class="navigation-wrapper">
+    <a href="/" class="logo">
+      <span>HOME</span>
+    </a>
+    <a href="javascript:void(0)" class="navigation-menu-button" id="js-mobile-menu">
+      <i class="fa fa-bars"></i>
+    </a>
+    <nav role="navigation">
+      <ul id="js-navigation-menu" class="navigation-menu show">
+				
+	
+	<li class="nav-link"><a href="/about/">About</a>
+	
+
+	
+
+	
+
+	
+	<li class="nav-link"><a href="/posts/">Posts</a>
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+      </ul>
+    </nav>
+  </div>
+</header>
+
+
+    <div class="page-content">
+        <head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-161444856-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-161444856-1');
+</script>
+
+</head>
+
+<div class="post">
+
+<div class="post-header-container " >
+  <div class="scrim ">
+    <header class="post-header">
+      <h1 class="title">Jenkins 2.0 Pipeline</h1>
+      <p class="info">by <strong></strong></p>
+    </header>
+  </div>
+</div>
+
+<div class="wrapper">
+
+ <span class="page-divider">
+  <span class="one"></span>
+  <span class="two"></span>
+</span>
+ 
+
+<section class="post-meta">
+  <div class="post-date">April 3, 2020</div>
+  <div class="post-categories">
+  in 
+    
+    <a href="/category/Devops">Devops</a>
+    
+  
+  </div>
+</section>
+
+<article class="post-content">
+  <h1 id="jenkins-20">Jenkins 2.0</h1>
+
+<p>jenkins는 오랜 역사를 가진 툴이다. 필자는 jenkins를 알게되고 사용하게 된지 아직 얼마되지도 않았고, 처음 접했을 때 부터 2.0이상의 버전이었다.</p>
+
+<p>jenkin는 2.0으로 한번 큰 변화를 주었다고 한다. 그 큰 변화의 중심에는 pipeline의 개념이있다. 사실 이 2.0 또한 아주 오래전인 2016년도에 발표(<a href="https://jenkins.io/blog/2016/04/26/jenkins-20-is-here/">Jenkins 2.0 !!</a>)된 것이지만…</p>
+
+<p>Pipeline은 개인적으로 jenkins를 유지보수 함에 있어 훌륭한 도약을 할 수 있는 기능이라고 생각한다. 기존에는 Job내부의 각종 script들 직접 기술하였고, jenkins에서 제공하는 GUI를 통해서 각종 속성 값들을 관리해야했고 히스토리 역시 로컬에서 관리 되어야했다. 하지만 Pipeline라는 개념을 도입하면서 대부분의 Job 내부의 속성을 파일로 기술하고 이 파일을 Remote repo에 둠으로써, 여러 벌의 jenkins가 동일한 히스토리 관리 및 Job을 편리하게 공유할 수 있는 형태가 되었다.</p>
+
+<p>또한 Script 형태로 기술이 가능해지면서 자유도가 훨씬 높아졌다고도 할 수 있다. 언어의 특성을 소화할 수 있게 됨으로써, 조건문 반복문 등이 가능해졌기 때문이다.</p>
+
+<p>이번 포스트에서는 이 jenkins pipeline의 문법과 여러 상황에서의 사용법에 대해서 정리해두고자 한다.</p>
+
+<hr />
+
+<h1 id="job-생성">Job 생성</h1>
+<p>생성은 간단하다. Pipeline이라는 항목이 바로 눈에 보이므로 그냥 선택해주고 name을 설정하고 생성해주면 되겠다.
+<img src="/assets/2020-04-04-02/1.PNG" alt="" /></p>
+
+<h1 id="job-configuration">Job configuration</h1>
+<p><img src="/assets/2020-04-04-02/2.PNG" alt="" />
+Pipeline job을 생성했으면 configuration을 들어다보자. 앞서 설명한 것처럼 Pipeline의 script 파일을 Git repo로 설정이 가능하다. Repository URL과 Credential, branch를 입력하게 되면 Job이 Trigger될때 해당 Repo를 clone하게 되고, 맨 밑에 Script path에 있는 파일을 참조하여 동작이 수행되게 된다.</p>
+
+<hr />
+
+<h1 id="jenkinsfile-script">Jenkinsfile script</h1>
+<p>기본적인 Guide는 <a href="https://jenkins.io/doc/book/pipeline/">[DOC]</a>을 참조하면 된다.</p>
+
+<h2 id="dsl-기반의-groovy">DSL 기반의 Groovy</h2>
+<p>DSL 이므로 사실상 pipeline을 기술하기 위한 문법은 새롭게 알아가면서 사용해 나가야한다 이는 필요시 위에 명기한 DOC을 참고하면 도움이 되며, Groovy 언어로 작성한 Function등을 섞어서 사용할 수 있도록 지원한다.</p>
+
+<p>이제부터 필자가 실제로 사용해보면서 응용했던 문법들과 여러 케이스별 상황등을 살펴보자.</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pipeline</span> <span class="o">{</span>
+    <span class="n">agent</span> <span class="o">{</span> <span class="n">label</span> <span class="s1">'master'</span> <span class="o">}</span>
+
+    <span class="n">parameters</span> <span class="o">{</span>
+        <span class="n">choice</span><span class="o">(</span><span class="nl">name:</span> <span class="s1">'type'</span><span class="o">,</span> <span class="nl">choices:</span> <span class="o">[</span><span class="s1">'deploy'</span><span class="o">,</span> <span class="s1">'test'</span><span class="o">],</span> <span class="nl">description:</span> <span class="s1">'build type'</span><span class="o">)</span>
+    <span class="o">}</span>
+    <span class="n">stages</span> <span class="o">{</span>
+        <span class="n">stage</span><span class="o">(</span><span class="s1">'Checking parameters'</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">steps</span> <span class="o">{</span>
+                <span class="n">script</span> <span class="o">{</span>
+                    <span class="k">try</span> <span class="o">{</span>
+                        <span class="n">echo</span> <span class="s2">"type :"</span> <span class="o">+</span> <span class="n">type</span>
+                    <span class="o">}</span>
+                    <span class="k">catch</span><span class="o">(</span><span class="n">ex</span><span class="o">)</span> <span class="o">{</span>
+                        <span class="n">error</span> <span class="s2">"default paramater is necessary, please run again !!"</span>
+                    <span class="o">}</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="n">stage</span><span class="o">(</span><span class="s1">'Deployment'</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">steps</span> <span class="o">{</span>
+                <span class="n">sh</span><span class="s1">'''
+                    echo 'Good'
+                '''</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="n">post</span> <span class="o">{</span> 
+        <span class="n">always</span> <span class="o">{</span>
+            <span class="n">withEnv</span><span class="o">([</span><span class="s2">"job_result=${currentBuild.currentResult}"</span><span class="o">])</span> <span class="o">{</span>
+                <span class="n">sh</span><span class="s1">'''
+                    echo $job_result
+                '''</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>뭔가 길어 보이지만 쭉 훝어보면 내용이 많진 않다.
+먼저 제일 바깥 쪽에 Pipeline의 시작을 알리는 syntax가 있고, agent는 실제로 해당 job이 수행될 agent이나 master라고 입력해두면 jenkins의 master에서 바로 수행된다. GUI가 있는 Main화면을 가진 것이 master라고 생각하면 빠르다. 설정에 따라 slave 역할을 분리해서 동작을 시키는 것이 가능한데, 본 포스팅에서는 주제 밖인 것 같아서 설명하지 않으려한다.</p>
+
+<p>parameters는 job이 수행될 때 Trigger user로 부터 받을 variable이다. 처음 pipeline code가 수행될 때는 이 job은 해당 parameter에 대한 정보가 없을 것이다. 왜냐하면 한번도 저 parameter를 정의해둔 pipeline 코드를 읽은 적이 없으니까…
+<img src="/assets/2020-04-04-02/4.PNG" alt="" />
+그래서 위와 같이 단순 <em>‘Build Now’</em> command가 있다.</p>
+
+<p>필자는 필수로 pipeline 수행시 변수를 받기를 원했기에 아래 처음 스테이지에서 parameter 검증 코드를 넣었다. 이렇게 하면 최초 한번 pipeline 코드가 수행되면 paramater를 출력하면서 정의되지 않았기 때문에 에러가 발생된다.
+<img src="/assets/2020-04-04-02/5.PNG" alt="" /></p>
+
+<p>첫 실행시 pipeline 코드가 수행되면 해당 job의 config에 parameter를 추가하게 되므로 다음 실행부터는 동작이 변하게 된다.
+<img src="/assets/2020-04-04-02/6.PNG" alt="" />
+<img src="/assets/2020-04-04-02/7.PNG" alt="" /></p>
+
+<p>그리고 다음 build에서 parmater 값과 함께 정상적 job이 수행된다.
+위의 sample은 2개의 stage안에 각각 하나의 step씩 동작이 수행되며, 둘다 shell script만 수행하는 pipeline 이다.</p>
+
+<p>마지막에 post의 경우 job이 실행 도중에러가 나든 성공을 하든 always로 설정이 되어있기에 무조건 수행이 된다.
+그리고 jenkins 내부에 정의된 값을 env변수 job_result로 받아 이를 출력해주는 역할을 수행하고 있다.
+post step은 build결과를 어딘가에 notify할때 사용할 수도 있다.</p>
+
+<h2 id="multi-branch---parallel-execution">Multi branch - parallel execution</h2>
+
+<p>pipeline에서는 parallel 한 동작 수행도 가능하다.</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pipeline</span> <span class="o">{</span>
+    <span class="n">agent</span> <span class="o">{</span> <span class="n">label</span> <span class="s2">"master"</span> <span class="o">}</span>
+    <span class="n">options</span> <span class="o">{</span>
+        <span class="n">parallelsAlwaysFailFast</span><span class="o">()</span>
+    <span class="o">}</span>
+    <span class="n">stages</span> <span class="o">{</span>
+        <span class="n">stage</span><span class="o">(</span><span class="s1">'parallel test'</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">parallel</span> <span class="o">{</span>
+                <span class="n">stage</span><span class="o">(</span><span class="s1">'A'</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="n">stages</span><span class="o">{</span>
+                        <span class="n">stage</span><span class="o">(</span><span class="s1">'echo1'</span><span class="o">)</span> <span class="o">{</span>
+                            <span class="n">steps</span> <span class="o">{</span>
+                                <span class="n">script</span> <span class="o">{</span>
+                                    <span class="n">sh</span><span class="s1">'''
+                                    echo 'A-1'
+                                    '''</span>
+                                <span class="o">}</span>
+                            <span class="o">}</span>
+                        <span class="o">}</span>
+                        <span class="n">stage</span><span class="o">(</span><span class="s1">'echo2'</span><span class="o">)</span> <span class="o">{</span>
+                            <span class="n">steps</span> <span class="o">{</span>
+                                <span class="n">script</span> <span class="o">{</span>
+                                    <span class="n">sh</span><span class="s1">'''
+                                    echo 'A-2'
+                                    '''</span>
+                                <span class="o">}</span>
+                            <span class="o">}</span>
+                        <span class="o">}</span>
+                    <span class="o">}</span>
+                <span class="o">}</span>
+                <span class="n">stage</span><span class="o">(</span><span class="s1">'B'</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="n">stages</span><span class="o">{</span>
+                        <span class="n">stage</span><span class="o">(</span><span class="s1">'echo1'</span><span class="o">)</span> <span class="o">{</span>
+                            <span class="n">steps</span> <span class="o">{</span>
+                                <span class="n">script</span> <span class="o">{</span>
+                                    <span class="n">sh</span><span class="s1">'''
+                                    echo 'B-1'
+                                    '''</span>
+                                <span class="o">}</span>
+                            <span class="o">}</span>
+                        <span class="o">}</span>
+                        <span class="n">stage</span><span class="o">(</span><span class="s1">'echo2'</span><span class="o">)</span> <span class="o">{</span>
+                            <span class="n">steps</span> <span class="o">{</span>
+                                <span class="n">script</span> <span class="o">{</span>
+                                    <span class="n">sh</span><span class="s1">'''
+                                    echo 'B-2'
+                                    '''</span>
+                                <span class="o">}</span>
+                            <span class="o">}</span>
+                        <span class="o">}</span>
+                    <span class="o">}</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>option의 <em>‘parallelsAlwaysFailFast’</em> 는 병렬 수행 중 한쪽에서 에러가 발생할 경우 바로 job을 종료시키는 옵션이다.
+필요에 따라 한쪽에서 반대쪽의 결과를 기다려야하는 관계라면 동작 중인 코드가 중간에 에러가 발생하여 함흥차사가 되었을 때 대기하는 쪽이 무기한으로 기다리지 않도록 이런 옵션이 유용할 때가 있다.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Success콘솔 출력
+Started by user unknown or anonymous
+Running <span class="k">in </span>Durability level: MAX_SURVIVABILITY
+<span class="o">[</span>Pipeline] Start of Pipeline
+<span class="o">[</span>Pipeline] node
+Running on Jenkins <span class="k">in</span> /var/lib/jenkins/workspace/pipeline-test
+<span class="o">[</span>Pipeline] <span class="o">{</span>
+<span class="o">[</span>Pipeline] stage
+<span class="o">[</span>Pipeline] <span class="o">{</span> <span class="o">(</span>Start<span class="o">)</span>
+<span class="o">[</span>Pipeline] parallel
+<span class="o">[</span>Pipeline] <span class="o">{</span> <span class="o">(</span>Branch: A<span class="o">)</span>
+<span class="o">[</span>Pipeline] <span class="o">{</span> <span class="o">(</span>Branch: B<span class="o">)</span>
+<span class="o">[</span>Pipeline] stage
+<span class="o">[</span>Pipeline] <span class="o">{</span> <span class="o">(</span>A<span class="o">)</span>
+<span class="o">[</span>Pipeline] stage
+<span class="o">[</span>Pipeline] <span class="o">{</span> <span class="o">(</span>B<span class="o">)</span>
+<span class="o">[</span>Pipeline] stage
+<span class="o">[</span>Pipeline] <span class="o">{</span> <span class="o">(</span>echo1<span class="o">)</span>
+<span class="o">[</span>Pipeline] stage
+<span class="o">[</span>Pipeline] <span class="o">{</span> <span class="o">(</span>echo1<span class="o">)</span>
+<span class="o">[</span>Pipeline] script
+<span class="o">[</span>Pipeline] <span class="o">{</span>
+<span class="o">[</span>Pipeline] script
+<span class="o">[</span>Pipeline] <span class="o">{</span>
+<span class="o">[</span>Pipeline] sh
+<span class="o">[</span>Pipeline] sh
++ <span class="nb">echo </span>A-1
+A-1
+<span class="o">[</span>Pipeline] <span class="o">}</span>
++ <span class="nb">echo </span>B-1
+B-1
+<span class="o">[</span>Pipeline] // script
+<span class="o">[</span>Pipeline] <span class="o">}</span>
+<span class="o">[</span>Pipeline] <span class="o">}</span>
+<span class="o">[</span>Pipeline] // stage
+<span class="o">[</span>Pipeline] // script
+<span class="o">[</span>Pipeline] <span class="o">}</span>
+<span class="o">[</span>Pipeline] // stage
+<span class="o">[</span>Pipeline] stage
+<span class="o">[</span>Pipeline] <span class="o">{</span> <span class="o">(</span>echo2<span class="o">)</span>
+<span class="o">[</span>Pipeline] stage
+<span class="o">[</span>Pipeline] <span class="o">{</span> <span class="o">(</span>echo2<span class="o">)</span>
+<span class="o">[</span>Pipeline] script
+<span class="o">[</span>Pipeline] <span class="o">{</span>
+<span class="o">[</span>Pipeline] script
+<span class="o">[</span>Pipeline] <span class="o">{</span>
+<span class="o">[</span>Pipeline] sh
+<span class="o">[</span>Pipeline] sh
++ <span class="nb">echo </span>A-2
+A-2
+<span class="o">[</span>Pipeline] <span class="o">}</span>
+<span class="o">[</span>Pipeline] // script
++ <span class="nb">echo </span>B-2
+B-2
+<span class="o">[</span>Pipeline] <span class="o">}</span>
+<span class="o">[</span>Pipeline] // stage
+<span class="o">[</span>Pipeline] <span class="o">}</span>
+<span class="o">[</span>Pipeline] <span class="o">}</span>
+<span class="o">[</span>Pipeline] // stage
+<span class="o">[</span>Pipeline] // script
+<span class="o">[</span>Pipeline] <span class="o">}</span>
+<span class="o">[</span>Pipeline] <span class="o">}</span>
+<span class="o">[</span>Pipeline] // stage
+<span class="o">[</span>Pipeline] <span class="o">}</span>
+<span class="o">[</span>Pipeline] // stage
+<span class="o">[</span>Pipeline] <span class="o">}</span>
+<span class="o">[</span>Pipeline] // parallel
+<span class="o">[</span>Pipeline] <span class="o">}</span>
+<span class="o">[</span>Pipeline] // stage
+<span class="o">[</span>Pipeline] <span class="o">}</span>
+<span class="o">[</span>Pipeline] // node
+<span class="o">[</span>Pipeline] End of Pipeline
+Finished: SUCCESS
+</code></pre></div></div>
+
+<p>실행시 위와 같이 2개의 branch가 동시에 수행됨을 확인할 수 있다.
+[pipeline] 이라는 tag로 자세한 로그가 출력된다.</p>
+
+<h2 id="groovy-function">Groovy function</h2>
+
+<p>pipeline에 groovy를 함께 사용하면 좀 더 유연한 job을 만드는 것이 가능하다.</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">def</span> <span class="nf">_get_feedback</span><span class="o">(</span><span class="n">msg</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kt">def</span> <span class="n">response</span>
+    <span class="nf">timeout</span><span class="o">(</span><span class="nl">time:</span> <span class="mi">10</span><span class="o">,</span> <span class="nl">unit:</span> <span class="s1">'SECONDS'</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="n">input</span><span class="o">(</span><span class="nl">message:</span> <span class="n">msg</span> <span class="o">+</span> <span class="s1">'?'</span><span class="o">,</span> <span class="nl">ok:</span> <span class="s1">'Yes'</span><span class="o">)</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="s2">"ok"</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">err</span><span class="o">)</span> <span class="o">{</span>
+            <span class="kt">def</span> <span class="n">user</span> <span class="o">=</span> <span class="n">err</span><span class="o">.</span><span class="na">getCauses</span><span class="o">()[</span><span class="mi">0</span><span class="o">].</span><span class="na">getUser</span><span class="o">()</span>
+            <span class="k">if</span><span class="o">(</span><span class="s2">"SYSTEM"</span><span class="o">.</span><span class="na">equalsIgnoreCase</span><span class="o">(</span><span class="n">user</span><span class="o">.</span><span class="na">toString</span><span class="o">()))</span> <span class="o">{</span>
+                <span class="n">response</span> <span class="o">=</span> <span class="s2">"Timeout"</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="n">response</span> <span class="o">=</span> <span class="s2">"abort"</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>   
+    <span class="k">return</span> <span class="n">response</span>
+<span class="o">}</span>
+
+<span class="n">pipeline</span> <span class="o">{</span>
+    <span class="n">agent</span> <span class="o">{</span> <span class="n">label</span> <span class="s1">'master'</span> <span class="o">}</span>
+
+    <span class="n">stages</span> <span class="o">{</span>
+        <span class="n">stage</span><span class="o">(</span><span class="s1">'Waiting'</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">steps</span> <span class="o">{</span>
+                <span class="n">script</span> <span class="o">{</span>
+                    <span class="k">while</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span> <span class="o">{</span>
+                        <span class="n">msg</span><span class="o">=</span><span class="n">sh</span><span class="o">(</span><span class="nl">script:</span> <span class="s1">'echo $BUILD_ID'</span><span class="o">,</span>
+                            <span class="nl">returnStdout:</span> <span class="kc">true</span>
+                        <span class="o">)</span>
+                        <span class="n">result</span> <span class="o">=</span> <span class="n">_get_feedback</span><span class="o">(</span><span class="n">msg</span><span class="o">)</span>
+                        <span class="k">if</span><span class="o">(</span><span class="n">result</span> <span class="o">==</span> <span class="s2">"ok"</span><span class="o">)</span> <span class="o">{</span>
+                            <span class="k">return</span> <span class="mi">1</span>
+                        <span class="o">}</span>
+                    <span class="o">}</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>해당 pipeline은 위와는 달리 groovy script를 포함하고 있다.
+_get_feedback이라는 함수는 input을 받는 데, 10초 timeout을 정의하고 있다. ok 선택지를 리턴 받으며 err 발생시 timeout일 경우는 input을 한 user가 SYSTEM일태니 이를 timeout으로 분류하고 아닐 경우 User가 ok를 선택하지 않았다 판단하고 abort를 리턴한다.</p>
+
+<p>이제 job을 수행시켜보면 아래와 같은 에러가 발생할 것이다.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Running <span class="k">in </span>Durability level: MAX_SURVIVABILITY
+<span class="o">[</span>Pipeline] Start of Pipeline
+<span class="o">[</span>Pipeline] node
+Running on Jenkins <span class="k">in</span> /var/lib/jenkins/workspace/pipeline-test
+<span class="o">[</span>Pipeline] <span class="o">{</span>
+<span class="o">[</span>Pipeline] stage
+<span class="o">[</span>Pipeline] <span class="o">{</span> <span class="o">(</span>Waiting<span class="o">)</span>
+<span class="o">[</span>Pipeline] script
+<span class="o">[</span>Pipeline] <span class="o">{</span>
+<span class="o">[</span>Pipeline] sh
++ <span class="nb">echo </span>8
+<span class="o">[</span>Pipeline] <span class="nb">timeout
+</span>Timeout <span class="nb">set </span>to expire <span class="k">in </span>10 sec
+<span class="o">[</span>Pipeline] <span class="o">{</span>
+<span class="o">[</span>Pipeline] input
+8
+?
+Yes or Abort
+Cancelling nested steps due to <span class="nb">timeout
+</span>Scripts not permitted to use method org.jenkinsci.plugins.workflow.steps.FlowInterruptedException getCauses. Administrators can decide whether to approve or reject this signature.
+<span class="nb">.</span>
+<span class="nb">.</span>
+<span class="nb">.</span>
+</code></pre></div></div>
+<blockquote>
+  <p>Scripts not permitted to use method org.jenkinsci.plugins.workflow.steps.FlowInterruptedException getCauses. Administrators can decide whether to approve or reject this signature.</p>
+</blockquote>
+
+<p>Groovy script는 jenkins의 admin이 허가되지 않으면 대부분의 모듈들이 수행되지 않는 다.
+에러 메시지에 링크가 있는 데 이를 따라가보면 수행하려고 한 script와 이를 approve할 수 있도록 GUI가 나온다.
+(Management 메뉴의 <em>In-process Script Approval</em> 로 진입해도 된다.)</p>
+
+<p><img src="/assets/2020-04-04-02/8.PNG" alt="" />
+필요한 Script들은 실행될 수 있도록 approve 해주자.</p>
+
+<blockquote>
+  <p>여담이지만… 필자는 개인적으로 별도로 approve를 해줘야하는 불편함 때문에 꼭 필요한 상황이 아니면 groovy script를 pipeline에 포함시키지 않는 다. 대부분의 기능을 shell script로 빼서 단독으로 수행되도록 pipeline을 구성한다.</p>
+</blockquote>
+
+<p>모두 approve를 해주게 되면 드디어 job이 정상적으로 실행된다.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Running on Jenkins <span class="k">in</span> /var/lib/jenkins/workspace/pipeline-test
+<span class="o">[</span>Pipeline] <span class="o">{</span>
+<span class="o">[</span>Pipeline] stage
+<span class="o">[</span>Pipeline] <span class="o">{</span> <span class="o">(</span>Waiting<span class="o">)</span>
+<span class="o">[</span>Pipeline] script
+<span class="o">[</span>Pipeline] <span class="o">{</span>
+<span class="o">[</span>Pipeline] sh
++ <span class="nb">echo </span>10
+<span class="o">[</span>Pipeline] <span class="nb">timeout
+</span>Timeout <span class="nb">set </span>to expire <span class="k">in </span>10 sec
+<span class="o">[</span>Pipeline] <span class="o">{</span>
+<span class="o">[</span>Pipeline] input
+10
+?
+Yes or Abort
+Cancelling nested steps due to <span class="nb">timeout</span>
+<span class="o">[</span>Pipeline] <span class="o">}</span>
+<span class="o">[</span>Pipeline] // <span class="nb">timeout</span>
+<span class="o">[</span>Pipeline] sh
++ <span class="nb">echo </span>10
+<span class="o">[</span>Pipeline] <span class="nb">timeout
+</span>Timeout <span class="nb">set </span>to expire <span class="k">in </span>10 sec
+<span class="o">[</span>Pipeline] <span class="o">{</span>
+<span class="o">[</span>Pipeline] input
+10
+?
+Yes or Abort
+<span class="o">[</span>Pipeline] <span class="o">}</span>
+<span class="o">[</span>Pipeline] // <span class="nb">timeout</span>
+<span class="o">[</span>Pipeline] sh
++ <span class="nb">echo </span>10
+<span class="o">[</span>Pipeline] <span class="nb">timeout
+</span>Timeout <span class="nb">set </span>to expire <span class="k">in </span>10 sec
+<span class="o">[</span>Pipeline] <span class="o">{</span>
+<span class="o">[</span>Pipeline] input
+10
+?
+Yes or Abort
+<span class="o">[</span>Pipeline] <span class="o">}</span>
+<span class="o">[</span>Pipeline] // <span class="nb">timeout</span>
+<span class="o">[</span>Pipeline] <span class="o">}</span>
+<span class="o">[</span>Pipeline] // script
+<span class="o">[</span>Pipeline] <span class="o">}</span>
+<span class="o">[</span>Pipeline] // stage
+<span class="o">[</span>Pipeline] <span class="o">}</span>
+<span class="o">[</span>Pipeline] // node
+<span class="o">[</span>Pipeline] End of Pipeline
+Finished: SUCCESS
+</code></pre></div></div>
+<p>jenkins 자체적으로 갖고 있는 build id를 가져와서 msg로 보여주고 ‘?’와 함께 Yes or Abort 선택지가 나온다.
+10초이상을 그대로 두면 timeout이 리턴되고 해당 코드는 while문 안에서 Yes(ok)를 선택할때까지 무한 반복하게 된다.</p>
+
+<h2 id="shell-script와의-조합">Shell script와의 조합</h2>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">def</span> <span class="n">AGENT</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="na">SPECFIC</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">?</span> <span class="s1">'master'</span> <span class="o">:</span> <span class="n">env</span><span class="o">.</span><span class="na">SPECFIC</span>
+
+<span class="n">pipeline</span> <span class="o">{</span>
+    <span class="n">agent</span> <span class="o">{</span> <span class="n">label</span> <span class="s2">"${AGENT}"</span> <span class="o">}</span>
+
+    <span class="n">stages</span> <span class="o">{</span>
+        <span class="n">stage</span><span class="o">(</span><span class="s1">'A'</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">steps</span> <span class="o">{</span>
+                <span class="n">script</span> <span class="o">{</span>
+                    <span class="n">sh</span><span class="s1">'''
+                    /bin/bash ./prepare.sh
+                    '''</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="n">stage</span><span class="o">(</span><span class="s1">'B'</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">steps</span> <span class="o">{</span>
+                <span class="n">script</span> <span class="o">{</span>
+                    <span class="n">sh</span><span class="s1">'''
+                    /bin/bash ./build.sh
+                    '''</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>이번에는 AGENT 환경변수가 어떤 것이 정의되어있는 가에 따라 job이 수행되는 agent를 변경할 수 있는 코드를 적용 해보았다.</p>
+
+<p>그리고 실제 script가 수행되는 부분은 모두 *.sh 파일로 대체했다. groovy script의 수행과는 달리 shell script의 수행은 앞서 살펴봤던 approve로 부터 자유롭기 때문에 더 많은 것을 할 수 있다. 필자는 주로 shell script나 python script를 이용해서 Step별로 원하는 동작을 수행할 수 있도록 pipeline을 구성한다.</p>
+
+<hr />
+
+<p>필자는 실제로 jenkins를 사용해서 많은 자동화 업무 구성을 진행하고 있는 데, 이렇게까지 유용하게 사용할 수 있는 이유가 바로 이 pipeline의 유연함 때문이라고 생각한다. -_-b</p>
+
+</article>
+
+
+
+<section class="tags">
+  <strong>Tags:</strong> <a href="/tag/jenkins">jenkins</a>,&nbsp;<a href="/tag/pipeline">pipeline</a>
+</section>
+
+
+
+<section class="rss">
+  <p class="rss-subscribe text"><strong>Subscribe <a href="/feed.xml">via RSS</a></strong></p>
+</section>
+
+<section class="share">
+  <span>Share: </span>
+  
+    
+    
+    
+    
+    
+    
+    
+    
+  
+</section>
+
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://absyun.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+</div>
+</div>
+
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h3 class="footer-heading">별거있나</h3>
+
+    <div class="site-navigation">
+
+      <p><strong>Site Map</strong></p>
+      <ul class="pages">
+				
+	
+	<li class="nav-link"><a href="/about/">About</a>
+	
+
+	
+
+	
+
+	
+	<li class="nav-link"><a href="/posts/">Posts</a>
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+      </ul>
+    </div>
+
+    <div class="site-contact">
+
+      <p><strong>Contact</strong></p>
+      <ul class="social-media-list">
+        <li>
+          <a href="mailto:tjln0608@gmail.com">
+            <i class="fa fa-envelope-o"></i>
+            <span class="username">tjln0608@gmail.com</span>
+          </a>
+        </li>
+
+        
+          
+          <li>
+            <a href="https://github.com/absyun" title="GitHub">
+              <i class="fa fa-github"></i>
+              <span class="username">absyun</span>
+            </a>
+          </li>
+          
+        
+
+      </ul>
+    </div>
+
+    <div class="site-signature">
+      <p class="rss-subscribe text"><strong>Subscribe <a href="/feed.xml">via RSS</a></strong></p>
+      <p class="text">A simple yet classy theme for your Jekyll website or blog.
+</p>
+    </div>
+
+  </div>
+
+</footer>
+
+<!-- Scripts -->
+<script src="//code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.1/js/lightbox.min.js"></script>
+<script src="//unpkg.com/popper.js@1"></script>
+<script src="//unpkg.com/tippy.js@5"></script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  // Default syntax highlighting
+  hljs.initHighlightingOnLoad();
+
+  // Header
+  var menuToggle = $('#js-mobile-menu').unbind();
+  $('#js-navigation-menu').removeClass("show");
+  menuToggle.on('click', function(e) {
+    e.preventDefault();
+    $('#js-navigation-menu').slideToggle(function(){
+      if($('#js-navigation-menu').is(':hidden')) {
+        $('#js-navigation-menu').removeAttr('style');
+      }
+    });
+  });
+
+	// Enable tooltips via Tippy.js
+	if (Array.isArray(window.tooltips)) {
+		window.tooltips.forEach(function(tooltip) {
+			var selector = tooltip[0];
+			var config = tooltip[1];
+			tippy(selector, config);
+		})
+	}
+});
+
+</script>
+
+
+
+
+
+
+  </body>
+
+</html>

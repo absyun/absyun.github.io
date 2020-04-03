@@ -45,6 +45,10 @@
 <lastmod>2020-04-03T11:07:00+09:00</lastmod>
 </url>
 <url>
+<loc>absyun.github.io/devops/2020/04/03/jenkins-pipeline.html</loc>
+<lastmod>2020-04-03T20:07:00+09:00</lastmod>
+</url>
+<url>
 <loc>absyun.github.io/about/</loc>
 </url>
 <url>
@@ -91,6 +95,9 @@
 </url>
 <url>
 <loc>absyun.github.io/tag/jenkins/</loc>
+</url>
+<url>
+<loc>absyun.github.io/tag/pipeline/</loc>
 </url>
 <url>
 <loc>absyun.github.io/category/environment/</loc>
