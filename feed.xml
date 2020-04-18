@@ -6,9 +6,23 @@
 </description>
     <link>absyun.github.io/</link>
     <atom:link href="absyun.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 03 Apr 2020 20:46:02 +0900</pubDate>
-    <lastBuildDate>Fri, 03 Apr 2020 20:46:02 +0900</lastBuildDate>
+    <pubDate>Sun, 19 Apr 2020 00:21:20 +0900</pubDate>
+    <lastBuildDate>Sun, 19 Apr 2020 00:21:20 +0900</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>Design pattern - Composite pattern</title>
+        <description>&lt;h1 id=&quot;design-pattern&quot;&gt;Design pattern&lt;/h1&gt; &lt;p&gt;“객체 지향 프로그래밍 설계를 할 때 자주 발생하는 문제들을 피하기 위해 사용되는 패턴” 디자인 패턴이라는 정의에 대해서 누군가에게 설명 해본 적이 없어 구글링해서 나온 위키에 첫 문구를...</description>
+        <pubDate>Sat, 18 Apr 2020 20:07:00 +0900</pubDate>
+        <link>absyun.github.io/development/2020/04/18/designpattern_composite.html</link>
+        <guid isPermaLink="true">absyun.github.io/development/2020/04/18/designpattern_composite.html</guid>
+        
+        <category>design pattern</category>
+        
+        
+        <category>Development</category>
+        
+      </item>
     
       <item>
         <title>Jenkins 2.0 Pipeline</title>
@@ -146,22 +160,6 @@
         <category>WSL</category>
         
         <category>Windows10</category>
-        
-        
-        <category>Environment</category>
-        
-      </item>
-    
-      <item>
-        <title>WSL2 ... and Docker</title>
-        <description>&lt;p&gt;WSL + VSCODE의 조합으로 많은 것들을 편리한 환경에서 수행해 올 수 있었다. 하지만 WSL에서 아쉬움으로 와 닿았던 것… 바로 Docker 실행이다. 초반에는 Docker를 포기하고 준비된 환경안에서 할 수 있는 것들에...</description>
-        <pubDate>Sun, 15 Mar 2020 12:57:43 +0900</pubDate>
-        <link>absyun.github.io/environment/2020/03/15/WSL2_and_Docker.html</link>
-        <guid isPermaLink="true">absyun.github.io/environment/2020/03/15/WSL2_and_Docker.html</guid>
-        
-        <category>WSL2</category>
-        
-        <category>docker</category>
         
         
         <category>Environment</category>
