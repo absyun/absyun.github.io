@@ -6,16 +6,34 @@
 </description>
     <link>absyun.github.io/</link>
     <atom:link href="absyun.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 19 Apr 2020 00:24:39 +0900</pubDate>
-    <lastBuildDate>Sun, 19 Apr 2020 00:24:39 +0900</lastBuildDate>
+    <pubDate>Sun, 19 Apr 2020 17:55:10 +0900</pubDate>
+    <lastBuildDate>Sun, 19 Apr 2020 17:55:10 +0900</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>GSON - Composite pattern class</title>
+        <description>&lt;h1 id=&quot;gson&quot;&gt;GSON&lt;/h1&gt; &lt;p&gt;&lt;a href=&quot;https://github.com/google/gson&quot;&gt;https://github.com/google/gson&lt;/a&gt; &lt;br /&gt; Google에서 내어놓은 open source library이다, 용도는 간단하다.&lt;/p&gt; &lt;h3 id=&quot;java-class-object---json&quot;&gt;java class object &amp;lt;-&amp;gt; json&lt;/h3&gt; &lt;p&gt;json은 워낙 유명한 데이터 저장 포멧이므로 특별히 설명은 하지 않으려고 한다....</description>
+        <pubDate>Sun, 19 Apr 2020 01:07:00 +0900</pubDate>
+        <link>absyun.github.io/development/2020/04/19/composite_gson.html</link>
+        <guid isPermaLink="true">absyun.github.io/development/2020/04/19/composite_gson.html</guid>
+        
+        <category>gson</category>
+        
+        <category>composite pattern</category>
+        
+        <category>android</category>
+        
+        
+        <category>Development</category>
+        
+      </item>
     
       <item>
         <title>Design pattern - Composite pattern</title>
         <description>&lt;h1 id=&quot;design-pattern&quot;&gt;Design pattern&lt;/h1&gt; &lt;p&gt;“객체 지향 프로그래밍 설계를 할 때 자주 발생하는 문제들을 피하기 위해 사용되는 패턴” 디자인 패턴이라는 정의에 대해서 누군가에게 설명 해본 적이 없어 구글링해서 나온 위키에 첫 문구를...</description>
         <pubDate>Sat, 18 Apr 2020 20:07:00 +0900</pubDate>
-        <link>absyun.github.io/development/2020/04/18/designpattern_composite.html</link>
-        <guid isPermaLink="true">absyun.github.io/development/2020/04/18/designpattern_composite.html</guid>
+        <link>absyun.github.io/development/2020/04/18/designpattern_composite-copy.html</link>
+        <guid isPermaLink="true">absyun.github.io/development/2020/04/18/designpattern_composite-copy.html</guid>
         
         <category>design pattern</category>
         
@@ -147,22 +165,6 @@
         
         
         <category>Development</category>
-        
-      </item>
-    
-      <item>
-        <title>Windows 10 WSL</title>
-        <description>&lt;h1 id=&quot;wsl-windows-subsystem-for-linux&quot;&gt;WSL (Windows Subsystem for Linux)&lt;/h1&gt; &lt;p&gt;Microsoft에서 Windows PC로 더 훌륭한 개발경험을 제공해주기 위해 내놓은 시스템이다. 익숙해지면 Mac이 아쉬워지지 않을까… 개인적으로 단일 디바이스를 선호하는 데, Windows는 여러 이유로 포기하기가 어려웠던...</description>
-        <pubDate>Sun, 15 Mar 2020 12:57:43 +0900</pubDate>
-        <link>absyun.github.io/environment/2020/03/15/Windows_10_WSL.html</link>
-        <guid isPermaLink="true">absyun.github.io/environment/2020/03/15/Windows_10_WSL.html</guid>
-        
-        <category>WSL</category>
-        
-        <category>Windows10</category>
-        
-        
-        <category>Environment</category>
         
       </item>
     
