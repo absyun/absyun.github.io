@@ -6,8 +6,8 @@
 </description>
     <link>absyun.github.io/</link>
     <atom:link href="absyun.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 19 Apr 2020 17:55:10 +0900</pubDate>
-    <lastBuildDate>Sun, 19 Apr 2020 17:55:10 +0900</lastBuildDate>
+    <pubDate>Sun, 26 Apr 2020 22:16:43 +0900</pubDate>
+    <lastBuildDate>Sun, 26 Apr 2020 22:16:43 +0900</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
     
       <item>
@@ -32,8 +32,8 @@
         <title>Design pattern - Composite pattern</title>
         <description>&lt;h1 id=&quot;design-pattern&quot;&gt;Design pattern&lt;/h1&gt; &lt;p&gt;“객체 지향 프로그래밍 설계를 할 때 자주 발생하는 문제들을 피하기 위해 사용되는 패턴” 디자인 패턴이라는 정의에 대해서 누군가에게 설명 해본 적이 없어 구글링해서 나온 위키에 첫 문구를...</description>
         <pubDate>Sat, 18 Apr 2020 20:07:00 +0900</pubDate>
-        <link>absyun.github.io/development/2020/04/18/designpattern_composite-copy.html</link>
-        <guid isPermaLink="true">absyun.github.io/development/2020/04/18/designpattern_composite-copy.html</guid>
+        <link>absyun.github.io/development/2020/04/18/designpattern_composite.html</link>
+        <guid isPermaLink="true">absyun.github.io/development/2020/04/18/designpattern_composite.html</guid>
         
         <category>design pattern</category>
         
