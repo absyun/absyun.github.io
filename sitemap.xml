@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
-<loc>absyun.github.io/privatepolicy/-0001/12/31/msgsecretory_policy.html</loc>
-<lastmod>-0001-12-31T23:29:36+08:27</lastmod>
-</url>
-<url>
 <loc>absyun.github.io/environment/2020/03/15/Github_sshkey%EB%A1%9C_%EA%B3%84%EC%A0%95_%EC%97%B0%EA%B2%B0%ED%95%98%EA%B8%B0.html</loc>
 <lastmod>2020-03-15T12:57:43+09:00</lastmod>
 </url>
@@ -122,9 +118,6 @@
 </url>
 <url>
 <loc>absyun.github.io/tag/android/</loc>
-</url>
-<url>
-<loc>absyun.github.io/category/privatepolicy/</loc>
 </url>
 <url>
 <loc>absyun.github.io/category/environment/</loc>
