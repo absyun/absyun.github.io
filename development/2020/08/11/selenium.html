@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Selenium webdriver - test automation</title>
+  <meta name="description" content="Selenium">
+  
+  <meta name="author" content="absyun">
+  <meta name="copyright" content="&copy; absyun 2020">
+  
+
+  <!-- External libraries -->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/monokai-sublime.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/css/lightbox.css">
+
+  <!-- Favicon and other icons (made with http://www.favicon-generator.org/) -->
+  <link rel="manifest" href="/assets/icons/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/assets/icons/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+  
+
+  
+
+  
+
+  <!-- Site styles -->
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="absyun.github.io/development/2020/08/11/selenium.html">
+	<link rel="alternate" type="application/rss+xml" title="별거있나" href="absyun.github.io/feed.xml" />
+	
+	<!-- Tooltips -->
+	<script type="text/javascript">
+		window.tooltips = []
+	</script>
+</head>
+
+
+  <body>
+
+    <header class="navigation" role="banner">
+  <div class="navigation-wrapper">
+    <a href="/" class="logo">
+      <span>HOME</span>
+    </a>
+    <a href="javascript:void(0)" class="navigation-menu-button" id="js-mobile-menu">
+      <i class="fa fa-bars"></i>
+    </a>
+    <nav role="navigation">
+      <ul id="js-navigation-menu" class="navigation-menu show">
+				
+	
+	<li class="nav-link"><a href="/about/">About</a>
+	
+
+	
+
+	
+
+	
+	<li class="nav-link"><a href="/posts/">Posts</a>
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+      </ul>
+    </nav>
+  </div>
+</header>
+
+
+    <div class="page-content">
+        <head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-161444856-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-161444856-1');
+</script>
+
+</head>
+
+<div class="post">
+
+<div class="post-header-container " >
+  <div class="scrim ">
+    <header class="post-header">
+      <h1 class="title">Selenium webdriver - test automation</h1>
+      <p class="info">by <strong></strong></p>
+    </header>
+  </div>
+</div>
+
+<div class="wrapper">
+
+ <span class="page-divider">
+  <span class="one"></span>
+  <span class="two"></span>
+</span>
+ 
+
+<section class="post-meta">
+  <div class="post-date">August 11, 2020</div>
+  <div class="post-categories">
+  in 
+    
+    <a href="/category/Development">Development</a>
+    
+  
+  </div>
+</section>
+
+<article class="post-content">
+  <h1 id="selenium">Selenium</h1>
+
+<p>근래에 웹테스트 자동화를 위한 방안을 모색하던 중 Selenium을 접하게 되었다.
+Selenium을 설명하자면 일종의 Platform과도 같은 느낌이 있는 것 같다. <a href="https://www.selenium.dev/documentation/ko/">참고사이트</a></p>
+
+<p>Selenium IDE, Selenium Webdriver, Selenium Grid…</p>
+
+<p>처음엔 IDE로 이를 접해보았다.
+IDE는 Chrome, Firefox 등에서 Plugin으로 설치가 가능하며 Recording 기능을 이용하면 손쉽게 Macro과 같은 형태로 반복 작업에 필요한 시나리오를 만드는 것이 가능하다. 결과물을 Code로 export하는 것도 가능하며, 완성된 Project 파일을 command line으로 실행시켜 줄 수 있는 selenium-side-runner도 지원한다.</p>
+
+<p>Webdriver의 경우 각 Browser별로 <a href="https://www.selenium.dev/documentation/en/webdriver/driver_requirements/#quick-reference/">지원(링크)</a>하며 (이를 통합관리 해줄 수 있는 WebDriverManager도 존재한다.)</p>
+
+<p>실제 Browser를 UI레벨에서 코드 레벨에서 제어가 가능하다.</p>
+
+<p>Webdriver를 Google에서 검색해보면 주로 사용처가 웹크롤링, 자동화 테스트등에서 주로 사용됨을 확인할 수 있는 데, 필자의 경우 Webpage 개발 후 자동화 테스트에 이용하기 위한 목적으로 발을 담그게 되었다.</p>
+
+<hr />
+
+<h2 id="webdriver">Webdriver</h2>
+
+<p>처음 Webdriver의 사용 코드를 예제로 접했을 때, 직관적으로 이를 어떻게 사용하면 될지 바로 감이 올 정도로 쉬워보였다.</p>
+
+<p><em>지금부터 사용할 예제는 모두 python으로 작성되었습니다. Webdriver 자체가
+python, java, javascript등 많은 언어를 지원하지만 필자가 python을 가볍게 쓰는 용도로 즐겨쓰는 이유 입니다.</em></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">driver</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">Chrome</span><span class="p">()</span>
+<span class="n">driver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">"https://www.test.com"</span><span class="p">)</span>
+<span class="n">driver</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">ID</span><span class="p">,</span> <span class="s">"test_button"</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+<span class="n">driver</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">ID</span><span class="p">,</span> <span class="s">"test_input"</span><span class="p">)</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="s">"test"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>그냥 Chrome용 webdriver를 생성하고, 원하는 웹페이지를 불러온 다음, 원하는 버튼을 찾아서 클릭!</p>
+
+<p>실제로 첫 코드를 작성해서 돌려보기 전까지는 앞으로 어떤 고생을 하게 될지 전혀 몰랐으니…</p>
+
+<p>Webdriver는 실제 Network 환경에서 Browser를 시뮬레이션 하는 형태로 동작하는 것에 가깝다. 그러다보니, Network 환경 혹은 Client측의 상황에 따라서 각종 타이밍 이슈등이 발생하기 쉽상이다. 그러다보니 동일한 코드임에도 불구하고 실패했다가… 성공했다가… 한다.</p>
+
+<p>이런 코드를 자동화에 사용할 수는 없었다. 에러가 났을 때, 이 에러가 정말 내가 작성한 시나리오 과정에서 발생한 오류인지, Browser 동작 과정에서 발생한 타이밍 적인 상황 때문에 시나리오가 진행되다가 먹통이 된건지 확인해 봐야하는 것도 낭비이기 때문이다.</p>
+
+<p>이를 보정하기 위해 여러가지 방책을 고민했고, 이를 해결하기 위한 Wrapper를 만들기에 이르렀다.
+아래에 소개될 Wrapper는 정답으로 볼 형태가 아니라, 개인적으로 풀어나간 노하우에 가까운 Logic처리 임을 감안하고 봐주시면 좋겠다.</p>
+
+<h2 id="webdriver-wrapper">Webdriver wrapper</h2>
+
+<p><strong>Driver wrapper</strong></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">TestDriverEngine</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">driver</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_driver</span> <span class="o">=</span> <span class="n">driver</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Test Driver init"</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'Get | {} '</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_driver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">set_window_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'Set window size | {} / {} '</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_driver</span><span class="o">.</span><span class="n">set_window_size</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">find_element</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">by_type</span><span class="p">,</span> <span class="n">param</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'Find | {} : {}'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">by_type</span><span class="p">,</span> <span class="n">param</span><span class="p">))</span>
+        <span class="n">WebDriverWait</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_driver</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span><span class="o">.</span><span class="n">until</span><span class="p">(</span><span class="n">expected_conditions</span><span class="o">.</span><span class="n">presence_of_all_elements_located</span><span class="p">((</span><span class="n">by_type</span><span class="p">,</span> <span class="n">param</span><span class="p">)))</span>
+        <span class="n">WebDriverWait</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_driver</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span><span class="o">.</span><span class="n">until</span><span class="p">(</span><span class="n">expected_conditions</span><span class="o">.</span><span class="n">visibility_of_element_located</span><span class="p">((</span><span class="n">by_type</span><span class="p">,</span> <span class="n">param</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="n">TestElement</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_driver</span><span class="p">,</span> <span class="n">by_type</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">quit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_driver</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_driver</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">getDriver</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_driver</span>
+</code></pre></div></div>
+
+<p>먼저 Driver wrapper는 find_element 시점에 공통적인 사전 점검을 general한 방식으로 통일 하기 위함이다.
+찾고자 하는 Element가 rendering후 positioning이 완료 되었는 지, 유저의 관점 테스트를 하다보니 실제 Action을 취할 Element들은 당연히 Visible한 상태가 되어어야 하기에 해당 스테이트를 확인하는 작업이 find_element의 선 작업으로 들어가 있다.</p>
+
+<p>그 외에 Method들은 단순히 내부 Driver의 호출이나, 공통적인 Log를 찍어주기 위한 용도이다.
+Find의 결과로 return되는 element 또한 Wrapper로 구성하였다.</p>
+
+<p><strong>Element wrapper</strong></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">TestElement</span><span class="p">():</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">driver</span><span class="p">,</span> <span class="n">by_type</span><span class="p">,</span> <span class="n">param</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_driver</span> <span class="o">=</span> <span class="n">driver</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_by_type</span> <span class="o">=</span> <span class="n">by_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_param</span> <span class="o">=</span> <span class="n">param</span>
+
+    <span class="k">def</span> <span class="nf">click</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">withlog</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">element</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_driver</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_by_type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_param</span><span class="p">)</span>
+                <span class="n">WebDriverWait</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_driver</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span><span class="o">.</span><span class="n">until</span><span class="p">(</span><span class="n">expected_conditions</span><span class="o">.</span><span class="n">visibility_of</span><span class="p">(</span><span class="n">element</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">withlog</span><span class="p">:</span>
+                    <span class="n">text</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">text</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">:</span>
+                        <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">9</span><span class="p">]</span>
+                    <span class="k">print</span><span class="p">(</span><span class="s">'Click | {} : {}({})'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_by_type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_param</span><span class="p">,</span> <span class="n">text</span><span class="p">))</span>
+                <span class="n">element</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">BASE_WAITING</span><span class="p">)</span>
+                <span class="k">return</span><span class="p">;</span>
+            <span class="k">except</span> <span class="p">(</span><span class="n">NoSuchElementException</span><span class="p">,</span> <span class="n">ElementClickInterceptedException</span><span class="p">,</span> <span class="n">StaleElementReferenceException</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">withlog</span><span class="p">:</span>
+                    <span class="k">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                    <span class="k">print</span><span class="p">(</span><span class="s">"retry..."</span><span class="p">)</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">BASE_WAITING</span><span class="p">)</span>
+                <span class="k">continue</span>
+
+    <span class="k">def</span> <span class="nf">send_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys</span><span class="p">):</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">element</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_driver</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_by_type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_param</span><span class="p">)</span>
+                <span class="n">WebDriverWait</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_driver</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span><span class="o">.</span><span class="n">until</span><span class="p">(</span><span class="n">expected_conditions</span><span class="o">.</span><span class="n">element_to_be_clickable</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_by_type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_param</span><span class="p">)))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="n">withlog</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+                <span class="n">dp</span> <span class="o">=</span> <span class="s">"****"</span>
+                <span class="n">element_type</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s">"type"</span><span class="p">);</span> 
+                <span class="k">if</span> <span class="n">element_type</span> <span class="o">!=</span> <span class="s">"password"</span><span class="p">:</span>
+                    <span class="n">dp</span> <span class="o">=</span> <span class="n">keys</span>
+
+                <span class="k">print</span><span class="p">(</span><span class="s">'Send key | {} : {} ({})'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_by_type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_param</span><span class="p">,</span> <span class="n">dp</span><span class="p">))</span>
+                <span class="n">element</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span>
+                <span class="k">return</span><span class="p">;</span>
+            <span class="k">except</span> <span class="p">(</span><span class="n">NoSuchElementException</span><span class="p">,</span> <span class="n">StaleElementReferenceException</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">"retry..."</span><span class="p">)</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">BASE_WAITING</span><span class="p">)</span>
+                <span class="k">continue</span>
+        
+
+    <span class="k">def</span> <span class="nf">find_element</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">by_type</span><span class="p">,</span> <span class="n">param</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'Find | {} : {}'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">by_type</span><span class="p">,</span> <span class="n">param</span><span class="p">))</span>
+        <span class="n">WebDriverWait</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_driver</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span><span class="o">.</span><span class="n">until</span><span class="p">(</span><span class="n">expected_conditions</span><span class="o">.</span><span class="n">presence_of_all_elements_located</span><span class="p">((</span><span class="n">by_type</span><span class="p">,</span> <span class="n">param</span><span class="p">)))</span>
+        <span class="n">WebDriverWait</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_driver</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span><span class="o">.</span><span class="n">until</span><span class="p">(</span><span class="n">expected_conditions</span><span class="o">.</span><span class="n">visibility_of_element_located</span><span class="p">((</span><span class="n">by_type</span><span class="p">,</span> <span class="n">param</span><span class="p">)))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_driver</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_by_type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_param</span><span class="p">)</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="n">by_type</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_driver</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_by_type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_param</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>실제 웹페이지에서 유저가 주로 하게될 주요 Action은 input박스에 값을 입력하거나, Button 클릭임으로 대표적인 처리를 예제로 구성하였다. Rendering 중 Click event가 발생할 경우 오류가 발생할 수 있기 때문에 Retry logic도 공통적으로 처리하기 위해 Wrapper안에 두었다. input박스에 값을 입력하는 경우 User의 Action과 동일하게 Click을 먼저 하고, 입력하도록 하였다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">driver</span> <span class="o">=</span> <span class="n">TestDriverEngine</span><span class="p">(</span><span class="n">webdriver</span><span class="o">.</span><span class="n">Chrome</span><span class="p">())</span>
+
+<span class="n">driver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">"https://www.test.com"</span><span class="p">)</span>
+<span class="n">driver</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">ID</span><span class="p">,</span> <span class="s">"test_button"</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+<span class="n">driver</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">ID</span><span class="p">,</span> <span class="s">"test_input"</span><span class="p">)</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="s">"test"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="/assets/2020-08-11-01/1.PNG" alt="" /></p>
+
+<p>실제 구성한 구조를 Class diagram으로 나타내는 위와 같은 형태로 나타낼 수 있다.
+사실 TestElement는 자체 Element를 갖고있는 구조가 아니라, 필요할 때 Driver로 부터 갖고오는 형태로 구성되어져있다.</p>
+
+<p>이는 Element를 얻어오는 과정에서 발생하는 오류들을 가급적 피하기 위해 실제로 필요한 순간으로 미루기 위함이었다.</p>
+
+<p>위와 같이 Warpper를 구성한 후에는 최초 작성한 Testcase가 잘동작 됨을 확인할 수 있었다.</p>
+
+<p>이제는 가벼운 마음으로 심플하게 유저의 엑션 단위로 라인을 추가해가며 쉽게 Testcase를 확장할 수 있게 되었다.</p>
+
+
+</article>
+
+
+
+<section class="tags">
+  <strong>Tags:</strong> <a href="/tag/selenium">selenium</a>,&nbsp;<a href="/tag/webdriver">webdriver</a>
+</section>
+
+
+
+<section class="rss">
+  <p class="rss-subscribe text"><strong>Subscribe <a href="/feed.xml">via RSS</a></strong></p>
+</section>
+
+<section class="share">
+  <span>Share: </span>
+  
+    
+    
+    
+    
+    
+    
+    
+    
+  
+</section>
+
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://absyun.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+</div>
+</div>
+
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h3 class="footer-heading">별거있나</h3>
+
+    <div class="site-navigation">
+
+      <p><strong>Site Map</strong></p>
+      <ul class="pages">
+				
+	
+	<li class="nav-link"><a href="/about/">About</a>
+	
+
+	
+
+	
+
+	
+	<li class="nav-link"><a href="/posts/">Posts</a>
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+      </ul>
+    </div>
+
+    <div class="site-contact">
+
+      <p><strong>Contact</strong></p>
+      <ul class="social-media-list">
+        <li>
+          <a href="mailto:tjln0608@gmail.com">
+            <i class="fa fa-envelope-o"></i>
+            <span class="username">tjln0608@gmail.com</span>
+          </a>
+        </li>
+
+        
+          
+          <li>
+            <a href="https://github.com/absyun" title="GitHub">
+              <i class="fa fa-github"></i>
+              <span class="username">absyun</span>
+            </a>
+          </li>
+          
+        
+
+      </ul>
+    </div>
+
+    <div class="site-signature">
+      <p class="rss-subscribe text"><strong>Subscribe <a href="/feed.xml">via RSS</a></strong></p>
+      <p class="text">A simple yet classy theme for your Jekyll website or blog.
+</p>
+    </div>
+
+  </div>
+
+</footer>
+
+<!-- Scripts -->
+<script src="//code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.1/js/lightbox.min.js"></script>
+<script src="//unpkg.com/popper.js@1"></script>
+<script src="//unpkg.com/tippy.js@5"></script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  // Default syntax highlighting
+  hljs.initHighlightingOnLoad();
+
+  // Header
+  var menuToggle = $('#js-mobile-menu').unbind();
+  $('#js-navigation-menu').removeClass("show");
+  menuToggle.on('click', function(e) {
+    e.preventDefault();
+    $('#js-navigation-menu').slideToggle(function(){
+      if($('#js-navigation-menu').is(':hidden')) {
+        $('#js-navigation-menu').removeAttr('style');
+      }
+    });
+  });
+
+	// Enable tooltips via Tippy.js
+	if (Array.isArray(window.tooltips)) {
+		window.tooltips.forEach(function(tooltip) {
+			var selector = tooltip[0];
+			var config = tooltip[1];
+			tippy(selector, config);
+		})
+	}
+});
+
+</script>
+
+
+
+
+
+
+  </body>
+
+</html>

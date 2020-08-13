@@ -6,9 +6,25 @@
 </description>
     <link>absyun.github.io/</link>
     <atom:link href="absyun.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 11 Aug 2020 23:02:30 +0900</pubDate>
-    <lastBuildDate>Tue, 11 Aug 2020 23:02:30 +0900</lastBuildDate>
+    <pubDate>Fri, 14 Aug 2020 02:44:34 +0900</pubDate>
+    <lastBuildDate>Fri, 14 Aug 2020 02:44:34 +0900</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>Selenium webdriver - test automation</title>
+        <description>&lt;h1 id=&quot;selenium&quot;&gt;Selenium&lt;/h1&gt; &lt;p&gt;근래에 웹테스트 자동화를 위한 방안을 모색하던 중 Selenium을 접하게 되었다. Selenium을 설명하자면 일종의 Platform과도 같은 느낌이 있는 것 같다. &lt;a href=&quot;https://www.selenium.dev/documentation/ko/&quot;&gt;참고사이트&lt;/a&gt;&lt;/p&gt; &lt;p&gt;Selenium IDE, Selenium Webdriver, Selenium Grid…&lt;/p&gt; &lt;p&gt;처음엔...</description>
+        <pubDate>Tue, 11 Aug 2020 20:07:00 +0900</pubDate>
+        <link>absyun.github.io/development/2020/08/11/selenium.html</link>
+        <guid isPermaLink="true">absyun.github.io/development/2020/08/11/selenium.html</guid>
+        
+        <category>selenium</category>
+        
+        <category>webdriver</category>
+        
+        
+        <category>Development</category>
+        
+      </item>
     
       <item>
         <title>GSON - Composite pattern class</title>
@@ -146,20 +162,6 @@
         <pubDate>Wed, 18 Mar 2020 12:15:00 +0900</pubDate>
         <link>absyun.github.io/development/2020/03/18/OIDC_Login_%EA%B5%AC%ED%98%84%ED%95%B4%EB%B3%B4%EA%B8%B0_Part-2.html</link>
         <guid isPermaLink="true">absyun.github.io/development/2020/03/18/OIDC_Login_%EA%B5%AC%ED%98%84%ED%95%B4%EB%B3%B4%EA%B8%B0_Part-2.html</guid>
-        
-        <category>oidc</category>
-        
-        
-        <category>Development</category>
-        
-      </item>
-    
-      <item>
-        <title>OIDC Login 구현해보기 Part-1</title>
-        <description>&lt;h1 id=&quot;oidc&quot;&gt;OIDC…&lt;/h1&gt; &lt;p&gt;Open ID Connect 일명 OIDC … 요즘 많은 사이트에서 볼 수 있는, 카카오, 네이버 로그인, 페이스북, 구글 계정 등으로 로그인과 같이 서비스를 제공해주는 측에서는 민감한 사용자의 개인정보 (아이디,...</description>
-        <pubDate>Wed, 18 Mar 2020 11:15:00 +0900</pubDate>
-        <link>absyun.github.io/development/2020/03/18/OIDC_Login_%EA%B5%AC%ED%98%84%ED%95%B4%EB%B3%B4%EA%B8%B0_Part-1.html</link>
-        <guid isPermaLink="true">absyun.github.io/development/2020/03/18/OIDC_Login_%EA%B5%AC%ED%98%84%ED%95%B4%EB%B3%B4%EA%B8%B0_Part-1.html</guid>
         
         <category>oidc</category>
         
