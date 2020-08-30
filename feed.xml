@@ -6,9 +6,29 @@
 </description>
     <link>absyun.github.io/</link>
     <atom:link href="absyun.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 14 Aug 2020 02:44:34 +0900</pubDate>
-    <lastBuildDate>Fri, 14 Aug 2020 02:44:34 +0900</lastBuildDate>
+    <pubDate>Sun, 30 Aug 2020 22:55:34 +0900</pubDate>
+    <lastBuildDate>Sun, 30 Aug 2020 22:55:34 +0900</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>Intellij setup and WSL2 to Windows port sharing</title>
+        <description>&lt;h1 id=&quot;connect-from-wsl2-to-windows-port&quot;&gt;Connect from WSL2 to Windows port&lt;/h1&gt; &lt;p&gt;Visual studio code(이하 VSC) 사용하는 동안에는 이런 불편함이 없었다. VSC에는 Remote wsl 이라는 훌륭한 Plugin이 있기 때문에 IDE에서 개발 후 Network 프로그램을 실행시키면...</description>
+        <pubDate>Sat, 29 Aug 2020 00:00:00 +0900</pubDate>
+        <link>absyun.github.io/development/2020/08/29/wsl2_windows_port.html</link>
+        <guid isPermaLink="true">absyun.github.io/development/2020/08/29/wsl2_windows_port.html</guid>
+        
+        <category>Intellij</category>
+        
+        <category>WSL2</category>
+        
+        <category>Windows</category>
+        
+        <category>port</category>
+        
+        
+        <category>Development</category>
+        
+      </item>
     
       <item>
         <title>Selenium webdriver - test automation</title>
@@ -148,20 +168,6 @@
         <pubDate>Wed, 18 Mar 2020 22:15:00 +0900</pubDate>
         <link>absyun.github.io/development/2020/03/18/OIDC_Login_%EA%B5%AC%ED%98%84%ED%95%B4%EB%B3%B4%EA%B8%B0_Part-3.html</link>
         <guid isPermaLink="true">absyun.github.io/development/2020/03/18/OIDC_Login_%EA%B5%AC%ED%98%84%ED%95%B4%EB%B3%B4%EA%B8%B0_Part-3.html</guid>
-        
-        <category>oidc</category>
-        
-        
-        <category>Development</category>
-        
-      </item>
-    
-      <item>
-        <title>OIDC Login 구현해보기 Part-2</title>
-        <description>&lt;p&gt;사용할 IDP를 설정했으므로, 이제 본격적으로 User에게 Input을 받을 Frontend 그리고 최종적으로 인증을 완료하고 Token을 받게될 Backend를 구현해보기로 하자.&lt;/p&gt; &lt;p&gt;Frontend쪽은 React 기반의 Javascript, Backend쪽은 Gin 기반의 GO 언어를 이용해보려고 한다. 실제...</description>
-        <pubDate>Wed, 18 Mar 2020 12:15:00 +0900</pubDate>
-        <link>absyun.github.io/development/2020/03/18/OIDC_Login_%EA%B5%AC%ED%98%84%ED%95%B4%EB%B3%B4%EA%B8%B0_Part-2.html</link>
-        <guid isPermaLink="true">absyun.github.io/development/2020/03/18/OIDC_Login_%EA%B5%AC%ED%98%84%ED%95%B4%EB%B3%B4%EA%B8%B0_Part-2.html</guid>
         
         <category>oidc</category>
         
